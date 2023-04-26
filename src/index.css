@@ -3,13 +3,13 @@ html, body, #root {
 }
 
 body {
-  margin: 0;
-  display: block;
+  margin: 0;  
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #160B35;
 }
 
 
@@ -25,4 +25,29 @@ main {
 .form-signin {
   max-width: 330px;
   padding: 15px;
+}
+
+.carousel {
+  height: 500px;
+}
+
+
+footer{
+  position: fixed;
+  width: 100%;
+  margin-bottom: 0;
+
+}
+.roundlogo {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.btn-login{
+  background-color: transparent;
+  border: none;
+}
+
+.register{
+  max-width: 600px;
 }

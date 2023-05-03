@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { GetCities, GetCountries, ValidateUserName } from './APIExtras';
 import { FaUser } from 'react-icons/fa';
 import { SetNewUser } from './API';
+import { Modal } from 'react-bootstrap';
 
 export const SingUp = () => {
   var invalidate = false;
@@ -21,9 +22,10 @@ export const SingUp = () => {
     city: "",
     street: ""
   };
-
-
+  
+  const [show, setShow] = useState(false);
   const dateBirth = useRef(null);
+  const form = useRef(null);
   const txtUsername = useRef(null);
   const txtPassword = useRef(null);
   const txtReplyPassword = useRef(null);
@@ -109,14 +111,26 @@ export const SingUp = () => {
     setUser({ ...user, [event.target.name]: event.target.value });
   }
 
-  function OnSubmit(e) {
+  function CallForm(){
+    form.current.submit();
+  }
+
+  async function OnSubmit(e) {
     e.preventDefault();
 
     if (invalidate)
       return;
 
     const formData = new FormData(e.target);
-    SetNewUser(formData);
+    const res = await SetNewUser(formData);
+
+    if (res) {
+
+    }
+  }
+
+  function CallModal(){
+    setShow(!show);  	
   }
 
   function ValidateImage(event) {
@@ -126,7 +140,7 @@ export const SingUp = () => {
       event.target.classList.remove("is-valid");
       event.target.classList.remove("border-success");
       event.target.value = null;
-    }else{
+    } else {
       event.target.classList.remove("is-invalid");
       event.target.classList.add("is-valid");
     }
@@ -134,7 +148,7 @@ export const SingUp = () => {
   }
 
   return (
-    <form className='pt-2 text-white container register' onSubmit={OnSubmit}>
+    <form className='pt-2 text-white container register' ref={form} onSubmit={OnSubmit}>
       <h1 className='text-center '>Nuevo registro</h1>
       <div className='card border-success text-white bg-transparent mt-5'>
         <h5 className="card-header border-success text-white">Datos generales</h5>
@@ -295,9 +309,19 @@ export const SingUp = () => {
           </div>
         </div>
       </div>
+      <Modal backdrop="static" show={show} onHide={CallModal} centered={true}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body >
+            Se procedera a la creación de su usuario. Recibira un correo electronico en {user.email}. Allí se le especificara como continuar posterior a su aprobación.
+                ¿Desea continuar?
+        </Modal.Body>
+        <Modal.Footer>
+            <button className="btn btn-success mt-3" type="button" onClick={CallForm}>Aceptar</button>
+        </Modal.Footer>
+      </Modal>
     </form>
-
-
   );
 
 };

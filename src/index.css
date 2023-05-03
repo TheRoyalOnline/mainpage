@@ -9,9 +9,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #160B35;
+  background-color: rgba(103,9,121,1);
+  background-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(103,9,121,1) 100%);
+  background-repeat: no-repeat;
+  background-size:cover;
 }
-
+.extra-border{
+  border-width: 5px;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -41,6 +46,7 @@ footer{
 .roundlogo {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  max-width: 150px;
 }
 
 .btn-login{

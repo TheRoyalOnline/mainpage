@@ -3,10 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 
 
 import MainPage from './Slots';
-import Navbar from './Navbar';
-import Footer from './Footer';
 import SingUp from './Singup';
 import Login from './Login';
+import Navbar from './Navbar';
 
 export default function App() {
     return (
@@ -16,10 +15,8 @@ export default function App() {
             <Routes>
                 <Route exact path='/' Component={MainPage} />
                 <Route exact path='/Singup' Component={SingUp} />
-                <Route exact path='/Login' Component={Login} />
             </Routes>
 
-            {/* <Footer /> */}
 
         </div>
     );

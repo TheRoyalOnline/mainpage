@@ -35,7 +35,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg pb-5">
             <div className="container">
                 <div className="bg-black p-4 text-white roundlogo navbar-brand">
-                    <Link to="/"><img src={logo} width="100px" /></Link>
+                    <Link to="/"><img src={logo} width="100px" alt="logo"/></Link>
                 </div>
                 <div className="navbar-nav ms-auto">
                     {

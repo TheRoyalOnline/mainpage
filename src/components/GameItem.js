@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Logo from './imgs/logo.png'
 
 export const GameItem = props => {
@@ -24,7 +24,7 @@ export const GameItem = props => {
         <div className="col-4 flex-fill">
             <div ref={card} className="card card-body bg-black mt-2 extra-border">
                 <h3 className="card-title text-white">{props.item.idgame}</h3>
-                <img src={Logo} onClick={Selectgame}/>
+                <img src={Logo} onClick={Selectgame} alt='logo'/>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import * as API from './API';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';

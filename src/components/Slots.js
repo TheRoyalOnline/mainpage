@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Carousel } from "react-bootstrap";
 import { GameItem } from "./GameItem";
 import { GetRooms } from "./APIExtras";
 
@@ -10,6 +9,7 @@ export const MainPage = () => {
         async function LoadData(){
             const values = await GetRooms();
             setRooms(values);
+            console.log(values);
         }
         LoadData();
     }, []);

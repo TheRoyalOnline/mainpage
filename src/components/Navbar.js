@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import logo from './imgs/logo.png';
-import { Modal } from "react-bootstrap";
+//import { Modal } from "react-bootstrap";
 import { Login } from "./Login";
 import Cookies from "universal-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import { render } from "@testing-library/react";
+
 
 
 export const Navbar = () => {
@@ -13,8 +13,8 @@ export const Navbar = () => {
     var isLogged = cookie.get('isLogged');
 
     useEffect(() => {
-        if (isLogged == undefined)
-            isLogged = false;
+        // if (isLogged === undefined)
+        //     isLogged = false;
     });
 
     function Signup() {

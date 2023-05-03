@@ -87,9 +87,12 @@ export const SingUp = () => {
       case 'replypassword':
         if (event.target.value.length > 0) {
           ref = txtReplyPassword;
-          invalidate = user.password != event.target.value;
+          invalidate = user.password !== event.target.value;
         }
         break;
+
+        default:
+          break;
     }
 
     if (invalidate) {

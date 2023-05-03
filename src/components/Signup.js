@@ -5,7 +5,7 @@ import { FaUser } from 'react-icons/fa';
 import { SetNewUser } from './API';
 import { Modal } from 'react-bootstrap';
 
-export const SingUp = () => {
+export const SignUp = () => {
   var invalidate = false;
   const initialValues = {
     username: "",
@@ -329,6 +329,6 @@ export const SingUp = () => {
 
 };
 
-export default SingUp;
+export default SignUp;
 
 

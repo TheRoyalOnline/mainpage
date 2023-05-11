@@ -9,7 +9,6 @@ export const MainPage = () => {
         async function LoadData(){
             const values = await GetRooms();
             setRooms(values);
-            console.log(values);
         }
         LoadData();
     }, []);

@@ -1,8 +1,8 @@
 
-const URI_ValidateUsername = "http://royalonline.cloud/api/validateusername";
-const URI_Countries = "http://royalonline.cloud/api/countries";
-const URI_Cities = "http://royalonline.cloud/api/cities";
-const URI_Rooms = "http://royalonline.cloud/api/rooms";
+const URI_ValidateUsername = "https://royalonline.cloud/api/validateusername";
+const URI_Countries = "https://royalonline.cloud/api/countries";
+const URI_Cities = "https://royalonline.cloud/api/cities";
+const URI_Rooms = "https://royalonline.cloud/api/rooms";
 
 export const ValidateUserName = async (user) => {
     const requestOptions = {

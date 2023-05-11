@@ -1,7 +1,8 @@
 import Cookies from "universal-cookie";
 
-const URILogin = "http://royalonline.cloud/api/login";
-const URISetNewUser = "http://royalonline.cloud/api/createuser"
+const URILogin = "https://royalonline.cloud/api/login";
+const URISetNewUser = "https://royalonline.cloud/api/createuser"
+const URIGetUser = "https://royalonline.cloud/api/user/"
 
 export const GetUser = async (user, pass) => {
     const requestOptions = {
@@ -18,7 +19,6 @@ export const GetUser = async (user, pass) => {
         cookies.set('token', token);
         cookies.set('username', user);
         cookies.set('isLogged', true);
-        console.log(cookies.get('token'));
         return true;
     }
 
@@ -36,4 +36,18 @@ export const SetNewUser = async (formData) => {
             return res.status === 200;
         }
     );
+};
+
+export const GetUserDetails = async (username) => {
+    const token = new Cookies();
+    const requestOptions = {        
+        method: 'GET',
+        headers: { 'token': token.get('token')}
+    };
+    const headers = new Headers(window?.headers);
+    console.log(headers['token']);
+    const uri = URIGetUser + username;
+    const res = await fetch(uri, requestOptions);
+    return res.json();
+
 };

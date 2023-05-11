@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import * as API from './API';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
@@ -16,7 +16,9 @@ export function Login() {
     try {
       const res = await API.GetUser(user.username.trim(), user.password);
       console.log(res ? "logueado" : "error de logueo");
-
+      console.log(res);
+      if(res)
+        setShow(false);
     } catch (error) {
       console.log(error);
     }
@@ -49,9 +51,10 @@ export function Login() {
     setRemember(event.target.checked);
   };
 
-  function GoToSingup(event) { 
+  function GoToSingup(event) {
     Showing();
-    navigate("/singup"); 
+    setShow(false);
+    navigate("/singup");
   }
 
   return (

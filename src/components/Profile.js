@@ -3,12 +3,14 @@ import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { GetCities, GetCountries } from "./APIExtras";
-import { GetUserDetails } from "./API";
+import { GetUserDetails, TestPassword, UpdateUserDetails } from "./API";
 
 export const Profile = () => {
     const initialValues = {
+        iduser: 0,
         username: "",
         password: "",
+        newpassword:"",
         name: "",
         surname: "",
         dni: "",
@@ -19,7 +21,8 @@ export const Profile = () => {
         phonenumber: "",
         district: 1,
         city: "",
-        street: ""
+        street: "",
+        active: 0
     };
 
     const cookie = new Cookies();
@@ -28,15 +31,18 @@ export const Profile = () => {
     const form = useRef(null);
     const [changePass, setChangePass] = useState(true);
     const txtPassword = useRef(null);
+    const txtNewPassword = useRef(null);
     const txtReplyPassword = useRef(null);
     let ref = useRef(null);
+    const [show, setShow] = useState(false);
     const [user, setUser] = useState(initialValues);
     const [countries, setCountry] = useState([]);
     const [cities, setCity] = useState([]);
 
     useEffect(() => {
-        // if(!false)
-        //     navigate('/');
+        const cookie = new Cookies();
+        if(cookie.get("isLogged") == undefined)
+            navigate('/');
     }, []);
 
     useEffect(() => {
@@ -49,17 +55,43 @@ export const Profile = () => {
             
             const cookie = new Cookies();
             const user = await GetUserDetails(cookie.get('username'));
-            setUser(user);
+
+            const values = {
+                iduser: user.id,
+                username: user.username,
+                password: "",
+                name: user.name,
+                surname: user.surname,
+                dni: user.dni,
+                email: user.email,
+                birthdate: user.birth,
+                nationality: "PRY",
+                phonecode: user.cellphone.slice(0, 4),
+                phonenumber: user.cellphone.slice(-9),
+                district: user.district,
+                city: user.city,
+                street: user.street,
+                active:user.active
+            };
+            
+            setUser(values);
         }
         LoadData();
     }, []);
 
-    function OnSubmit(e) {
-
-    }
-
+    
     function ChangePassword(e) {
         setChangePass(!e.target.checked);
+        if(e.target.checked)
+        {
+            txtPassword.current.setAttribute('required','');
+            txtReplyPassword.current.setAttribute('required','');
+            txtNewPassword.current.setAttribute('required','');
+        }else{
+            txtPassword.current.setAttribute('required',null);
+            txtReplyPassword.current.setAttribute('required',null);
+            txtNewPassword.current.setAttribute('required',null);
+        }
     }
 
     function OnChangeEvent(event) {
@@ -69,11 +101,12 @@ export const Profile = () => {
 
     async function OnValidate(event) {
         var usercase = false;
-
+        if (event.target.value == "")
+            return;
         switch (event.target.name) {
-            case 'password':
+            case 'newpassword':
                 if (event.target.value.length > 0) {
-                    ref = txtPassword;
+                    ref = txtNewPassword;
                     invalidate = event.target.value.length < 8;
                 }
                 break;
@@ -81,7 +114,7 @@ export const Profile = () => {
             case 'replypassword':
                 if (event.target.value.length > 0) {
                     ref = txtReplyPassword;
-                    invalidate = user.password !== event.target.value;
+                    invalidate = user.newpassword !== event.target.value;
                 }
                 break;
 
@@ -103,9 +136,52 @@ export const Profile = () => {
         }
     }
 
+   async function OnSubmit(e) {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        var change = 0;
+        if(form.get('changepass') != null)
+        {
+            change = 1;
+            const res = await TestPassword(user.username, user.password);
+
+            if(!res)
+            {
+                console.log("contraseña incorrecta");
+                txtPassword.current.classList.add("is-invalid");
+                return;
+            }
+        }
+
+        const values = {
+            iduser: form.get('iduser'),
+            password: form.get('newpassword'),
+            name: form.get('name'),
+            surname: form.get('surname'),
+            email: form.get('email'),
+            phonecode: form.get('phonecode'),
+            phonenumber: form.get('phonenumber'),
+            district: form.get('district'),
+            city: form.get('city'),
+            street: form.get('street'),
+            active: 0,
+            changepass: change
+        };
+
+        console.log(values)
+        const res = await UpdateUserDetails(values);
+       if(res)
+        setShow(true);
+    }
+
+    function Showing(){
+        setShow(false);
+    }
+
     return (
         <form className='pt-2 text-white container register' ref={form} onSubmit={OnSubmit}>
             <h1 className='text-center '>Mi perfil</h1>
+            <input type="hidden" value={user.iduser} name="iduser" />
             <div className='card border-success text-white bg-transparent mt-5'>
                 <h5 className="card-header border-success text-white">Datos generales</h5>
 
@@ -145,7 +221,7 @@ export const Profile = () => {
                 </div>
 
                 <h5 className="card-header border-success text-white pt-4">Cambiar contraseña<div className="form-check form-switch">
-                    <input type="checkbox" className="form-check-input" onChange={ChangePassword}></input>
+                    <input type="checkbox" className="form-check-input" name="changepass" onChange={ChangePassword}></input>
                 </div> </h5>
 
                 <div className='flex-column justify-content-center p-3' >
@@ -155,25 +231,25 @@ export const Profile = () => {
                         <div className="justify-content-center  pt-3">
                             <label htmlFor="idPass">Contraseña actual</label>
                             <input type="password" className="form-control bg-dark border-success text-white" min="8" id="idPass" placeholder="Contraseña" aria-describedby="inputGroupPrepend3"
-                                required name='password' ref={txtPassword} value={user.password} onChange={OnChangeEvent} onBlur={OnValidate} />
+                                 name='password' ref={txtPassword} value={user.password} onChange={OnChangeEvent} />
                             <div className="invalid-feedback">
-                                Contraseñas debe contener al menos 8 caracteres.
+                                Contraseñas incorrecta.
                             </div>
                         </div>
 
                         <div className="justify-content-center  pt-3">
                             <label htmlFor="idPass2">Nueva contraseña</label>
                             <input type="password" className="form-control bg-dark border-success text-white" id="idPassrep" placeholder="Nueva contraseña" aria-describedby="inputGroupPrepend3"
-                                required name='replypassword' ref={txtReplyPassword} onBlur={OnValidate} />
+                                 name='newpassword' ref={txtNewPassword} value={user.newpassword} onBlur={OnValidate} onChange={OnChangeEvent} />
                             <div className="invalid-feedback">
-                                Contraseñas no coinciden.
+                                Contraseñas debe contener al menos 8 caracteres.
                             </div>
                         </div>
 
                         <div className="justify-content-center  pt-3">
                             <label htmlFor="idPass2">Repetir contraseña</label>
                             <input type="password" className="form-control bg-dark border-success text-white" id="idPassrep2" placeholder="Repite la contraseña" aria-describedby="inputGroupPrepend3"
-                                required name='replypassword' ref={txtReplyPassword} onBlur={OnValidate} />
+                                 name='replypassword' ref={txtReplyPassword} onBlur={OnValidate} />
                             <div className="invalid-feedback">
                                 Contraseñas no coinciden.
                             </div>
@@ -216,7 +292,16 @@ export const Profile = () => {
                     </div>
                 </div>
             </div>
-
+            <Modal size="sm" backdrop="static" show={show} onHide={Showing} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Info:</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    Usuario actualizado.
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+            </Modal>               
         </form>
     );
 };

@@ -128,7 +128,7 @@ export const SignUp = () => {
     const res = await SetNewUser(formData);
 
     if (res) {
-
+        //mandar correo y redireccionar
     }
   }
 

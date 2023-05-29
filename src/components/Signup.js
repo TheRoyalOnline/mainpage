@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { GetCities, GetCountries, ValidateUserName } from './APIExtras';
 import { FaUser } from 'react-icons/fa';
-import { SetNewUser } from './API';
+import { SetNewUser, SendMail } from './API';
 import { Modal } from 'react-bootstrap';
 
 export const SignUp = () => {
@@ -24,8 +24,10 @@ export const SignUp = () => {
   };
   
   const [show, setShow] = useState(false);
+  const [finish, setFinish] = useState(false);
   const dateBirth = useRef(null);
   const form = useRef(null);
+  const btnSubmit = useRef(null);
   const txtUsername = useRef(null);
   const txtPassword = useRef(null);
   const txtReplyPassword = useRef(null);
@@ -124,12 +126,17 @@ export const SignUp = () => {
     if (invalidate)
       return;
 
+    btnSubmit.current.setAttribute('disabled', '');  
     const formData = new FormData(e.target);
     const res = await SetNewUser(formData);
+    
+    setFinish(true);
+    const message = 'Favor ingrese al siguiente <a href="https://royalonline.cloud/api/confirmation/'+res+'">link</a> para confirmar su usuario.<br>Contara con 24hs a partir de ahora para confirmar este correo de lo contrario quedara invalidado.'+
+    '<br><hr><br>Si usted no solicito esta inscripcion, favor dar aviso al mismo correo.'+
+    '<br><br>Gracias,<br>Equipo Casino Royal Online.'
 
-    if (res) {
-        //mandar correo y redireccionar
-    }
+    SendMail("Confirmacion de registro", message, formData.get('email'), res);
+    
   }
 
   function CallModal(){
@@ -306,7 +313,7 @@ export const SignUp = () => {
 
             <div className='d-flex flex-column container w-75'>
               <button className="btn btn-primary mt-3" type="button" onClick={eventManager}>Leer términos</button>
-              <button className="btn btn-success mt-3" type="submit">Registrarse</button>
+              <button ref={btnSubmit} className="btn btn-success mt-3" type="submit">Registrarse</button>
             </div>
 
           </div>
@@ -322,6 +329,18 @@ export const SignUp = () => {
         </Modal.Body>
         <Modal.Footer>
             <button className="btn btn-success mt-3" type="button" onClick={CallForm}>Aceptar</button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal backdrop="static" show={finish} centered={true}>
+        <Modal.Header>
+          <Modal.Title>Usuario creado! 😁</Modal.Title>
+        </Modal.Header>
+        <Modal.Body >            
+            Verifica tu correo electronico para activar correctamente tu usuario.
+        </Modal.Body>
+        <Modal.Footer>
+            <button className="btn btn-success mt-3" type="button" onClick={eventManager}>Volver</button>
         </Modal.Footer>
       </Modal>
     </form>

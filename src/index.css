@@ -57,3 +57,7 @@ footer{
 .register{
   max-width: 600px;
 }
+
+.image{
+  border-radius: 10px;
+}

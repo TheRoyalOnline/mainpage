@@ -6,6 +6,8 @@ const URILogin = "https://royalonline.cloud/api/login";
 const URISetNewUser = "https://royalonline.cloud/api/createuser"
 const URIGetUser = "https://royalonline.cloud/api/user/"
 const URIUpdateUser = "https://royalonline.cloud/api/user"
+const URIrol = "https://royalonline.cloud/api/user/rol"
+const URImail = "https://royalonline.cloud/api/sendmail"
 
 export const GetUser = async (user, pass) => {
     const requestOptions = {
@@ -15,7 +17,6 @@ export const GetUser = async (user, pass) => {
     };
 
     const res = await fetch(URILogin, requestOptions);
-
     if (res.status === 200) {
         const cookies = new Cookies();
         var token = await res.text();
@@ -34,11 +35,8 @@ export const SetNewUser = async (formData) => {
         body: formData
     };
 
-    fetch(URISetNewUser, requestOptions).then(
-        res => {
-            return res.status === 200;
-        }
-    );
+    const res = await fetch(URISetNewUser, requestOptions);
+    return res.text();
 };
 
 export const GetUserDetails = async (username) => {
@@ -104,4 +102,36 @@ export const TestPassword = async (user, pass) => {
     }
 
     return false;
+};
+
+
+export const GetRol = async () => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            token:token.get("Authorization"),
+            username:token.get("username"),
+     })
+    };
+
+    const res = await fetch(URIrol, requestOptions);
+
+    return res.json();
+};
+
+export const SendMail = async (_subject, _message, mail, _token) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: _token,
+            email: mail,
+            subject: _subject,
+            message: _message
+        })
+    };
+
+    fetch(URImail, requestOptions);
 };

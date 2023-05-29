@@ -106,16 +106,23 @@ export const Navbar = () => {
                                     <button className="btn btn-success text-white" onClick={Show}>Iniciar sesión</button>
                                 </div>
                             ) : (
-                                <div>
-                                    <button className="btn btn-success text-white" onClick={Profile}>Mi perfil</button>
-                                    <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
-                                </div>
+                                true?(
+                                    <div>
+                                        <button className="btn btn-success text-white" onClick={Profile}>Mi perfil</button>
+                                        <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
+                                    </div>
+                                ):(
+                                    <div>
+                                        <button className="btn btn-success text-white" onClick={Profile}>Mi perfile</button>
+                                        <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
+                                    </div>
+                                )
 
                             )
                     }
                 </div>
 
-                <Modal backdrop="static" show={show} onHide={Showing} centered={true}>
+                <Modal className="container" backdrop="static" show={show} onHide={Showing} centered={true}>
                     <Modal.Header closeButton>
                         <Modal.Title></Modal.Title>
                     </Modal.Header>

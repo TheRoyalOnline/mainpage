@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GameItem } from "./GameItem";
 import { GetRooms } from "./APIExtras";
 
-export const MainPage = () => {
+export const MainPage = (props) => {
     const [rooms, setRooms] = useState([]);
 
     useEffect(()=>{
@@ -19,7 +19,7 @@ export const MainPage = () => {
             <div className="row d-flex">
                 {
                     rooms.map(room =>(
-                        <GameItem item={room} key={room.id}/>                        
+                        <GameItem item={room} key={room.id} handler={props.handler}/>                        
                     ))
                 }
             </div>

@@ -48,6 +48,12 @@ export const Login = (props) => {
 
   function GoToSingup(event) {
     navigate("/singup");
+    props.handler();
+  }
+
+  function GoToRecover(event) {
+    navigate("/recover");
+    props.handler();
   }
 
   return (
@@ -83,7 +89,7 @@ export const Login = (props) => {
               <button className="w-100 btn btn-sm btn-dark" type="button" onClick={GoToSingup}> Registrarse</button>
             </div>
             <div className='pt-1'>
-              <button className="w-100 btn btn-sm btn-dark text-white" type="button">¿Olvidaste tu contraseña?</button>
+              <button className="w-100 btn btn-sm btn-dark text-white" type="button" onClick={GoToRecover}>¿Olvidaste tu contraseña?</button>
 
             </div>
             <p className="mt-5 mb-3 text-body-secondary ">© Tupapõ Games {year} </p>

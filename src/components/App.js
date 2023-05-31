@@ -8,13 +8,13 @@ import { SignUp } from './Signup';
 import Navbar from './Navbar';
 import Profile from './Profile';
 import Login from './Login';
+import { Recover } from './Recover';
 import { useState } from 'react';
 
 export const App = () => {
     const [show, setShow] = useState(false);
 
     function handleLogin(){
-        console.log("cerrar")
         setShow(!show);
     }
 
@@ -27,6 +27,7 @@ export const App = () => {
                 <Route exact path='/' element={<MainPage handler={handleLogin}/>} />
                 <Route exact path='/Singup' element={<SignUp />} />
                 <Route exact path='/Profile' element={<Profile />} />
+                <Route exact path='/Recover' element={<Recover />} />
             </Routes>
         </div>
     );

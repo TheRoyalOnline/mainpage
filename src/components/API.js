@@ -1,6 +1,5 @@
 import Cookies from "universal-cookie";
 import axios from "axios";
-import { json } from "react-router-dom";
 
 const URILogin = "https://royalonline.cloud/api/login";
 const URISetNewUser = "https://royalonline.cloud/api/createuser"
@@ -9,8 +8,10 @@ const URIUpdateUser = "https://royalonline.cloud/api/user"
 const URIrol = "https://royalonline.cloud/api/user/rol"
 const URImail = "https://royalonline.cloud/api/sendmail"
 const URIrecover = "https://royalonline.cloud/api/recover"
+const URIFind = "https://royalonline.cloud/api/user/find"
 
 export const GetUser = async (user, pass) => {
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,13 +166,28 @@ export const RecoverPassword = async (user, mail) => {
     const res = await fetch(URIrecover, requestOptions);
 
     const data = await res.json();
-    if(data['iduser'] != 0)
-    {
-        const message = "Hemos recibido tu peticion de reseteo de contraseña. Si no lo solicitaste favor comunicar esta informacion por este mismo canal.<br><hr><br>"+
-        "<b>Usuario: </b>"+user+
-        "<b><br>Contraseña: </b>"+newPass+
-        "<br><br>No olvide cambiar su contraseña una vez accedido nuevamente a la aplicacion.<br><hr><br>"+"Gracias,<br>Equipo Casino Royal Online";
+    if (data['iduser'] != 0) {
+        const message = "Hemos recibido tu peticion de reseteo de contraseña. Si no lo solicitaste favor comunicar esta informacion por este mismo canal.<br><hr><br>" +
+            "<b>Usuario: </b>" + user +
+            "<b><br>Contraseña: </b>" + newPass +
+            "<br><br>No olvide cambiar su contraseña una vez accedido nuevamente a la aplicacion.<br><hr><br>" + "Gracias,<br>Equipo Casino Royal Online";
         SendMail("Cambio de contraseña", message, mail, "");
     }
 
+};
+
+
+export const FindUser = async (_dni) => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token.get("Authorization"),
+            dni: _dni,
+        })
+    };
+    const res = await fetch(URIFind, requestOptions);
+
+    return res.json();
 };

@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 import Profile from './Profile';
 import Login from './Login';
 import { Recover } from './Recover';
+import { Operations } from './Operations';
 import { useState } from 'react';
 
 export const App = () => {
@@ -28,6 +29,7 @@ export const App = () => {
                 <Route exact path='/Singup' element={<SignUp />} />
                 <Route exact path='/Profile' element={<Profile />} />
                 <Route exact path='/Recover' element={<Recover />} />
+                <Route exact path='/Operations' element={<Operations />} />
             </Routes>
         </div>
     );

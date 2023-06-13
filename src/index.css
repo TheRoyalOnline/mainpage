@@ -61,3 +61,11 @@ footer{
 .image{
   border-radius: 10px;
 }
+
+.btn-purple{  
+  background-color: #b700ff;
+}
+
+.btn-purple:hover{
+  background-color: #7e00af;
+}

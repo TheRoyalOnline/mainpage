@@ -1,22 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from './imgs/logo.png';
 import Cookies from "universal-cookie";
 import { Link, useNavigate } from "react-router-dom";
 
-
-
 export const Navbar = (props) => {
-    
+
     const navigate = useNavigate();
     const cookie = new Cookies();
     var isLogged = cookie.get('isLogged');
-    
+
+    useEffect(() => {
+        //console.log("start")
+    }, []);
+
     function Signup() {
         navigate('/Singup');
     }
 
     function Profile() {
         navigate('/Profile');
+    }
+
+    function Operations() {
+        navigate('/Operations');
     }
 
     function Logout() {
@@ -40,21 +46,16 @@ export const Navbar = (props) => {
                                     <button className="btn btn-success text-white" onClick={props.handler}>Iniciar sesión</button>
                                 </div>
                             ) : (
-                                true?(
-                                    <div>
-                                        <button className="btn btn-success text-white" onClick={Profile}>Mi perfil</button>
-                                        <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
-                                    </div>
-                                ):(
-                                    <div>
-                                        <button className="btn btn-success text-white" onClick={Profile}>Mi perfile</button>
-                                        <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
-                                    </div>
-                                )
+
+                                <div>
+                                    <button className="btn btn-success text-white" onClick={Profile}>Mi perfil</button>
+                                    <button className="btn btn-success text-white  mx-2" onClick={Operations}>Operaciones</button>
+                                    <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
+                                </div>
 
                             )
                     }
-                </div>                
+                </div>
             </div>
         </nav>
 

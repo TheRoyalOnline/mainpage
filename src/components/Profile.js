@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,6 @@ export const Profile = () => {
         active: 0
     };
 
-    const cookie = new Cookies();
     var invalidate = false;
     const navigate = useNavigate();
     const form = useRef(null);
@@ -41,7 +40,7 @@ export const Profile = () => {
 
     useEffect(() => {
         const cookie = new Cookies();
-        if(cookie.get("isLogged") == undefined)
+        if(cookie.get("isLogged") === undefined)
             navigate('/');
     }, []);
 
@@ -101,7 +100,7 @@ export const Profile = () => {
 
     async function OnValidate(event) {
         var usercase = false;
-        if (event.target.value == "")
+        if (event.target.value === "")
             return;
         switch (event.target.name) {
             case 'newpassword':
@@ -294,10 +293,10 @@ export const Profile = () => {
             </div>
             <Modal size="sm" backdrop="static" show={show} onHide={Showing} centered={true}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Info:</Modal.Title>
+                    <Modal.Title>Informacion </Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
-                    Usuario actualizado.
+                    Usuario actualizado 😀
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>

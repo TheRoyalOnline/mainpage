@@ -9,6 +9,11 @@ const URIrol = "https://royalonline.cloud/api/user/rol"
 const URImail = "https://royalonline.cloud/api/sendmail"
 const URIrecover = "https://royalonline.cloud/api/recover"
 const URIFind = "https://royalonline.cloud/api/user/find"
+const URIAssign = "https://royalonline.cloud/api/user/assign"
+const URICredits = "https://royalonline.cloud/api/user/credits"
+const URITransact = "https://royalonline.cloud/api/user/transact"
+const URICreate = "https://royalonline.cloud/api/user/createconomy"
+const URITransactions = "https://royalonline.cloud/api/user/transactions"
 
 export const GetUser = async (user, pass) => {
 
@@ -190,4 +195,89 @@ export const FindUser = async (_dni) => {
     const res = await fetch(URIFind, requestOptions);
 
     return res.json();
+};
+
+export const GetUserCredits = async (_iduser) => {
+    const token = new Cookies();
+    const body = {
+        token: token.get("Authorization"),
+        iduser: _iduser
+    }
+    const res = await axios.post(URICredits, body, {
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+
+    return res.data;
+
+};
+
+
+
+export const AssignToUser = async (data) => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token.get("Authorization"),
+            from: data.from,
+            for: data.for,
+            credits: data.credits,
+            cash: data.cash
+        })
+    };
+    const res = await fetch(URIAssign, requestOptions);
+    return await res.status;
+};
+
+export const TransactToUser = async (data) => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token.get("Authorization"),
+            from: data.from,
+            for: data.for,
+            credits: data.credits,
+            cash: data.cash,
+            type: data.type
+        })
+    };
+    const res = await fetch(URITransact, requestOptions);
+    return await res.status;
+};
+
+
+export const CreateEconomy = async (data) => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token.get("Authorization"),
+            from: data.from,
+            credits: data.credits,
+            cash: data.cash,
+            code: data.code
+        })
+    };
+    const res = await fetch(URICreate, requestOptions);
+    return await res.status;
+};
+
+export const MovementsList = async (iduser) => {
+    const token = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token.get("Authorization"),
+            iduser: iduser
+        })
+    };
+    const res = await fetch(URITransactions, requestOptions);
+    return await res.json();
 };

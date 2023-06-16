@@ -3,6 +3,7 @@ const URI_ValidateUsername = "https://royalonline.cloud/api/validateusername";
 const URI_Countries = "https://royalonline.cloud/api/countries";
 const URI_Cities = "https://royalonline.cloud/api/cities";
 const URI_Rooms = "https://royalonline.cloud/api/rooms";
+const URI_Global = "https://royalonline.cloud/api/global";
 
 export const ValidateUserName = async (user) => {
     const requestOptions = {
@@ -45,4 +46,16 @@ export const GetRooms = async () => {
         return await res.json();
     }
 
+};
+
+export const GetGlobal = async (_key) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            key: _key
+        })
+    };
+    const res = await fetch(URI_Global, requestOptions);
+    return await res.text();
 };

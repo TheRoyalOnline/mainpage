@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowAltCircleRight } from "react-icons/fa";
+import { RiCoinFill, RiCoinLine } from "react-icons/ri";
+import { GiCreditsCurrency } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { GetUserDetails } from "./API";
 import { Modal } from "react-bootstrap";
-import { FindUser } from "./API";
+import { GetUserDetails, FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
+import { GetGlobal } from "./APIExtras";
 
 export const Operations = () => {
     const navigate = useNavigate();
+    const [errMessage2, setErrMessage2] = useState('');
+    const [userdata, setUserdata] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [showAsing, setShowAsing] = useState(false);
-    const [asign, setAsign] = useState(false);
+    const [assign, setAsign] = useState(false);
+    const [convertion, setConvertion] = useState(0);
     const [transact, setTransact] = useState(false);
     const [others, setOthers] = useState(false);
     const [showTable, setShowTable] = useState(true);
@@ -19,6 +25,10 @@ export const Operations = () => {
     const [user2, setUser2] = useState([]);
     const [opType, setOpType] = useState('');
     const [dni, setDni] = useState(0);
+    const [typeConfirm, setTypeConfirm] = useState('');
+    const [ccash, setCcash] = useState(0);
+    const [ccredit, setCcredit] = useState(0);
+    const [deposit, setDeposit] = useState(0);
 
     const access = {
         '1': [1, 1, 1, 1],
@@ -39,10 +49,22 @@ export const Operations = () => {
             setAsign(access[res.role][1])
             setTransact(access[res.role][2])
             setOthers(access[res.role][3])
+
+            const cre = await GetUserCredits(res.id);
+            setUserdata(res);
+            setUserdata(u => ({ ...u, ...cre }));
+
+            const c = await GetGlobal('convertion');
+            setConvertion(c);
         }
 
         Starting();
     }, []);
+
+    function ShowMovements() {
+        const props = { iduser: userdata.id }
+        navigate('/Operations/Movements', { state: props })
+    }
 
     function CallModal(e) {
         setOpType(e);
@@ -70,6 +92,17 @@ export const Operations = () => {
             case 'transacttype':
                 setUser2({ ...user2, type: e.target.value })
                 break;
+
+            case 'ccash':
+                setCcash(e.target.value)
+                break;
+            case 'ccredit':
+                setCcredit(e.target.value)
+                break;
+
+            case 'cdeposit':
+                setDeposit(e.target.value)
+                break;
         }
     }
 
@@ -81,11 +114,14 @@ export const Operations = () => {
         }
     }
 
-    function Assign(e) {
+    async function Assign(e) {
         if (opType === 'op1')
             setUser1(u => ({ ...u, ...user }));
-        else
+        else {
             setUser2(u => ({ ...u, ...user }));
+            const cre = await GetUserCredits(user.iduser);
+            setUser2(u => ({ ...u, ...cre }));
+        }
 
         setUser([]);
         setShowModal(false);
@@ -94,10 +130,140 @@ export const Operations = () => {
     }
 
     function OnSubmit(e) {
+        e.preventDefault();
+        setTypeConfirm('');
         switch (e.target.name) {
-            case 'transact':
+            case 'assign':
+                if (user1.iduser === undefined)
+                    return;
+
+                setTypeConfirm('assign');
+                setShowConfirmDialog(true);
+
                 break;
-            case 'asign':
+
+            case 'transact':
+                setErrMessage2('');
+                if (user2.iduser === undefined) {
+                    setErrMessage2('Ingresar operador para la transaccion.');
+                    return;
+                }
+
+                if (user2.type === "buy") {
+                    if ((parseFloat(userdata.cash) < (parseFloat(user2.amount) * convertion))) {
+                        setErrMessage2('Monto debe ser inferior o igual al efectivo poseido.');
+                        return;
+                    }
+
+                    if (parseFloat(user2.credits) < parseFloat(user2.amount)) {
+                        setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
+                        return;
+                    }
+                } else if (parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
+                    setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
+                    return;
+                }
+
+                setTypeConfirm('transact');
+                setShowConfirmDialog(true);
+                break;
+
+            case 'createcash':
+                setTypeConfirm('createcash');
+                setShowConfirmDialog(true);
+                break;
+
+            case 'createcredit':
+                setTypeConfirm('createcredit');
+                setShowConfirmDialog(true);
+                break;
+
+            case 'deposit':
+                setTypeConfirm('deposit');
+                setShowConfirmDialog(true);
+                break;
+        }
+    }
+
+    function Validate(type, amount) {
+        if (amount > 0)
+            switch (type) {
+                case 'credits':
+                    if (amount < parseFloat(userdata.credits))
+                        return true;
+                    break;
+
+                case 'money':
+                    if (amount < parseFloat(userdata.cash))
+                        return true;
+                    break;
+            }
+
+        return false;
+    }
+
+    async function ConfirmSubmit() {
+        var res = 0;
+        switch (typeConfirm) {
+            case 'assign':
+                user1.from = userdata.id;
+                user1.for = user1.iduser;
+
+                if (user1.type === 'credits' && Validate('credits', user1.amount)) {
+                    user1.credits = user1.amount;
+                    user1.cash = 0;
+                } else if (Validate('money', user1.amount)) {
+                    user1.cash = user1.amount;
+                    user1.credits = 0;
+                }
+
+                AssignToUser(user1);
+                document.getElementById('assign').submit();
+                break;
+
+            case 'transact':
+                user2.from = userdata.id;
+                user2.for = user2.iduser;
+                user2.credits = parseFloat(user2.amount);
+                user2.cash = parseFloat(user2.amount) * convertion;
+                TransactToUser(user2);
+                document.getElementById('transact').submit();
+                break;
+
+            case 'createcash':
+                const data = {
+                    from: userdata.id,
+                    credits: 0,
+                    cash: ccash,
+                    code: 'CEFEC'
+                }
+                res = await CreateEconomy(data);
+                if (res === 200)
+                    document.getElementById('createcash').submit();
+                break;
+
+            case 'createcredit':
+                const data2 = {
+                    from: userdata.id,
+                    credits: ccredit,
+                    cash: 0,
+                    code: 'CCRED'
+                }
+                res = await CreateEconomy(data2);
+                if (res === 200)
+                    document.getElementById('createcredit').submit();
+                break;
+
+            case 'deposit':
+                const data3 = {
+                    from: userdata.id,
+                    credits: 0,
+                    cash: deposit,
+                    code: 'DEFEC'
+                }
+                res = await CreateEconomy(data3);
+                if (res === 200)
+                    document.getElementById('deposit').submit();
                 break;
         }
     }
@@ -114,15 +280,25 @@ export const Operations = () => {
                             showAsing ? (
                                 <div>
                                     <div className="form-group justify-content-center row pt-3">
-                                        <label htmlFor="idNombre" className="col-sm-3 col-form-label">Asignacion</label>
+                                        <label htmlFor="as" className="col-sm-3 col-form-label">Asignacion</label>
                                         <div className="col-sm-5">
-                                            <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" value='9999' name='street' />
+                                            <div className="input-group">
+                                                <div className="input-group-prepend ">
+                                                    <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><GiCreditsCurrency /></span>
+                                                </div>
+                                                <input type="text" id="as" className="form-control bg-dark border-success text-white" value={parseFloat((parseFloat(userdata.credits) * convertion) + parseFloat(userdata.cash)).toLocaleString()} readOnly />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="form-group justify-content-center row pt-3">
-                                        <label htmlFor="idNombre" className="col-sm-3 col-form-label">Guaranies</label>
+                                        <label htmlFor="mon" className="col-sm-3 col-form-label">Guaranies</label>
                                         <div className="col-sm-5">
-                                            <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" value='999' name='street' readOnly />
+                                            <div className="input-group">
+                                                <div className="input-group-prepend ">
+                                                    <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><GiCreditsCurrency /></span>
+                                                </div>
+                                                <input type="text" id="mon" className="form-control bg-dark border-success text-white" value={parseFloat(userdata.cash).toLocaleString()} readOnly />
+                                            </div>
                                         </div>
                                     </div>
 
@@ -131,9 +307,14 @@ export const Operations = () => {
                         }
 
                         <div className="form-group justify-content-center row pt-3">
-                            <label htmlFor="idNombre" className="col-sm-3 col-form-label">Creditos</label>
+                            <label className="col-sm-3 col-form-label">Creditos</label>
                             <div className="col-sm-5">
-                                <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" value='999' name='street' readOnly />
+                                <div className="input-group">
+                                    <div className="input-group-prepend ">
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                    </div>
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={parseFloat(userdata.credits).toLocaleString()} readOnly />
+                                </div>
                             </div>
                         </div>
 
@@ -143,23 +324,23 @@ export const Operations = () => {
             </div>
 
             {
-                asign ? (
+                assign ? (
 
-                    <form className='pt-2 text-white container register' name='asign' onSubmit={OnSubmit}>
+                    <form className='pt-2 text-white container register' name='assign' id="assign" onSubmit={OnSubmit}>
                         <div className='card border-success text-white bg-transparent mt-5'>
                             <h5 className="card-header border-success text-white">Asignacion con Caja</h5>
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="assigntype" id="idcredits" value="credits" onChange={OnChange} />
-                                    <label className="btn btn-outline-success text-white" for="idcredits">
+                                    <input className="btn-check" type="radio" name="assigntype" id="idcredits" value="credits" onChange={OnChange} required />
+                                    <label className="btn btn-outline-success text-white" htmlFor="idcredits">
                                         Creditos
                                     </label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="assigntype" id="idmoney" value="money" onChange={OnChange} />
-                                    <label className="btn btn-outline-success text-white" for="idmoney">
+                                    <input className="btn-check" type="radio" name="assigntype" id="idmoney" value="money" onChange={OnChange} required />
+                                    <label className="btn btn-outline-success text-white" htmlFor="idmoney">
                                         Guaranies
                                     </label>
                                 </div>
@@ -168,7 +349,7 @@ export const Operations = () => {
                                 <div className="form-group row pt-3">
                                     <label htmlFor="idNombre" className="col-sm-3 col-form-label">Monto</label>
                                     <div className="col-sm-8">
-                                        <input type="number" className="form-control bg-dark border-success text-white" value={user1.amount} name='amount1' min={0} onChange={OnChange} />
+                                        <input type="number" className="form-control bg-dark border-success text-white" value={user1.amount} name='amount1' min={1} onChange={OnChange} required />
                                     </div>
                                 </div>
                             </div>
@@ -197,39 +378,51 @@ export const Operations = () => {
 
             {
                 transact ? (
-                    <form className='pt-2 text-white container register' name="transact" onSubmit={OnSubmit}>
+                    <form className='pt-2 text-white container register' name="transact" id="transact" onSubmit={OnSubmit}>
                         <div className='card border-success text-white bg-transparent mt-5'>
                             <h5 className="card-header border-success text-white">Transacciones con Caja</h5>
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="transacttype" id="idsell" value="sell" onChange={OnChange} />
-                                    <label className="btn btn-outline-success text-white" for="idsell">
+                                    <input className="btn-check" type="radio" name="transacttype" id="idsell" value="sell" onChange={OnChange} required />
+                                    <label className="btn btn-outline-success text-white" htmlFor="idsell">
                                         Vender
                                     </label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="transacttype" id="idpay" value="pay" onChange={OnChange} />
-                                    <label className="btn btn-outline-success text-white" for="idpay">
-                                        Pagar
+                                    <input className="btn-check" type="radio" name="transacttype" id="idpay" value="buy" onChange={OnChange} required />
+                                    <label className="btn btn-outline-success text-white" htmlFor="idpay">
+                                        Comprar
                                     </label>
                                 </div>
                             </div>
-                            <div className='d-flex justify-content-center'>
-                                <div className="form-group row pt-3">
-                                    <label htmlFor="idNombre" className="col-sm-3 col-form-label">Monto</label>
-                                    <div className="col-sm-8">
-                                        <input type="number" className="form-control bg-dark border-success text-white" value={user2.amount} min={0} name='amount2' onChange={OnChange} />
+                            <div className="form-group justify-content-center row pt-3">
+                                <label htmlFor="monto" className="col-sm-2 col-form-label">Monto</label>
+                                <div className="col-sm-5">
+                                    <div className="input-group">
+                                        <div className="input-group-prepend ">
+                                            <span className="input-group-text bg-success border-success text-white text-white h-100"><RiCoinFill /></span>
+                                        </div>
+                                        <input type="number" className="form-control bg-dark border-success text-white" value={user2.amount} min={1} name='amount2' onChange={OnChange} required />
                                     </div>
                                 </div>
                             </div>
                             <div className='d-flex justify-content-center'>
                                 <div className="form-inline">
-                                    <label htmlFor="label1 ">Asignado a:</label>
-                                    <label className="p-3" id="label1"><b>{user2.iduser != undefined ? '(' + user2.dni + ') ' + user2.surname + ', ' + user2.name : 'Sin Asignacion'}</b></label>
+                                    <label htmlFor="label1">Guaranies:</label>
+                                    <label className="p-1" id="label1"><b>₲ {user2.amount !== undefined ? parseFloat(parseFloat(user2.amount) * convertion).toLocaleString() : 0}</b></label>
                                 </div>
                             </div>
+
+                            <div className='d-flex justify-content-center'>
+                                <div className="form-inline">
+                                    <label htmlFor="label1 ">Asignado a:</label>
+                                    <label className="p-3" id="label1"><b>{user2.iduser != undefined ? '(' + user2.dni + ') ' + user2.surname + ', ' + user2.name : 'Sin Asignacion'}</b></label>
+                                    <label className="p-3" id="label1"><b>{(user2.credits !== undefined ? parseFloat(user2.credits) : 0) + ' Creditos'}</b></label>
+                                </div>
+                            </div>
+                            <label className="text-center text-danger"><b>{errMessage2}</b></label>
                             <h5 className="card-header border-success text-white pt-4"></h5>
                             <div className='text-center mt-3 mb-4'>
                                 <div className="form-group ">
@@ -249,47 +442,50 @@ export const Operations = () => {
             }
             {
                 others ? (
-                    <form className='pt-2 pb-5 text-white container register' name='others' onSubmit={OnSubmit}>
+                    <div className='pt-2 pb-5 text-white container register' name='others'>
                         <div className='card border-success text-white bg-transparent mt-5'>
                             <h5 className="card-header border-success text-white">Otros movimientos</h5>
 
                             <div className='flex-column p-3'>
-                                <div className="form-group row justify-content-center pt-3">
+                                <form className="form-group row justify-content-center pt-3" id='createcredit' name="createcredit" onSubmit={OnSubmit}>
                                     <label htmlFor="idNombre" className="col-sm-4 col-form-label">Crear creditos</label>
                                     <div className="col-sm-5">
-                                        <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" placeholder="Calle" value='999' name='street' readonly />
+                                        <input type="number" className="form-control bg-dark border-success text-white" min={1} name="ccredit" value={ccredit} required onChange={OnChange} />
                                     </div>
                                     <div className="col-sm-2">
                                         <button className="btn btn-success" type="submit"><FaArrowAltCircleRight /></button>
                                     </div>
-                                </div>
+                                </form>
 
-                                <div className="form-group row justify-content-center pt-3">
+                                <form className="form-group row justify-content-center pt-3" id="createcash" name="createcash" onSubmit={OnSubmit}>
                                     <label htmlFor="idNombre" className="col-sm-4 col-form-label">Ingresar efectivo</label>
                                     <div className="col-sm-5">
-                                        <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" placeholder="Calle" value='999' name='street' readonly />
+                                        <input type="number" className="form-control bg-dark border-success text-white" min={1} name="ccash" value={ccash} required onChange={OnChange} />
                                     </div>
                                     <div className="col-sm-2">
                                         <button className="btn btn-success" type="submit"><FaArrowAltCircleRight /></button>
                                     </div>
-                                </div>
+                                </form>
 
-                                <div className="form-group row justify-content-center pt-3">
+                                <form className="form-group row justify-content-center pt-3" id="deposit" name="deposit" onSubmit={OnSubmit}>
                                     <label htmlFor="idNombre" className="col-sm-4 col-form-label">Depositar efectivo</label>
                                     <div className="col-sm-5">
-                                        <input type="number" className="form-control bg-dark border-success text-white" id="idCalle" placeholder="Calle" value='999' name='street' readonly />
+                                        <input type="number" className="form-control bg-dark border-success text-white" min={1} name="cdeposit" value={deposit} required onChange={OnChange} />
                                     </div>
                                     <div className="col-sm-2">
                                         <button className="btn btn-success" type="submit"><FaArrowAltCircleRight /></button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
 
                         </div>
-                    </form>
+                    </div>
 
                 ) : null
             }
+            <div className="d-flex justify-content-center pb-5">
+                <button className="btn btn-success p-3" onClick={ShowMovements}>Ver movimientos</button>
+            </div>
             <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal} size="lg" centered={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>Buscar</Modal.Title>
@@ -305,29 +501,45 @@ export const Operations = () => {
                         </div>
                     </div>
                     <div className="table-responsive pt-4" hidden={showTable}>
-                        <table className="table">
-                            <tr>
-                                <th className="bg-dark text-white text-center">Nombre</th>
-                                <th className="bg-dark text-white text-center">Apellido</th>
-                                <th className="bg-dark text-white text-center">Cedula</th>
-                                <th className="bg-dark text-white text-center">Email</th>
-                                <th className="bg-dark "></th>
-                            </tr>
-                            <tr>
-                                <td className="text-center ">{user.name}</td>
-                                <td className="text-center">{user.surname}</td>
-                                <td className="text-center">{user.dni}</td>
-                                <td className="text-center">{user.email}</td>
-                                <td className="text-center">
-                                    <div className="form-group">
-                                        <button className="btn btn-success" type="button" onClick={Assign}>Asignar</button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <table className="table table-dark table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Cedula</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{user.name}</td>
+                                    <td>{user.surname}</td>
+                                    <td>{user.dni}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <div className="form-group">
+                                            <button className="btn btn-success" type="button" onClick={Assign}>Asignar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmacion 🤔</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    <p>Esta seguro que desea confirmar la operacion?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
         </div>

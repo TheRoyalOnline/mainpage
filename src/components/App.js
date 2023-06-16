@@ -11,6 +11,7 @@ import Login from './Login';
 import { Recover } from './Recover';
 import { Operations } from './Operations';
 import { useState } from 'react';
+import { Movements } from './Movements';
 
 export const App = () => {
     const [show, setShow] = useState(false);
@@ -30,6 +31,7 @@ export const App = () => {
                 <Route exact path='/Profile' element={<Profile />} />
                 <Route exact path='/Recover' element={<Recover />} />
                 <Route exact path='/Operations' element={<Operations />} />
+                <Route exact path='/Operations/Movements' element={<Movements />} />
             </Routes>
         </div>
     );

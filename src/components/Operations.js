@@ -32,14 +32,14 @@ export const Operations = () => {
 
     const access = {
         '1': [1, 1, 1, 1],
-        '2': [1, 1, 0, 0],
-        '3': [1, 1, 0, 0],
-        '4': [1, 1, 0, 0],
+        '2': [1, 1, 1, 0],
+        '3': [1, 0, 1, 0],
+        '4': [1, 0, 1, 0],
         '5': [0, 0, 0, 0]
     }
 
     useEffect(() => {
-        async function Starting() {
+        (async () => {
             const cookie = new Cookies();
             if (cookie.get("isLogged") === undefined)
                 navigate('/');
@@ -56,9 +56,9 @@ export const Operations = () => {
 
             const c = await GetGlobal('convertion');
             setConvertion(c);
-        }
+        })();
 
-        Starting();
+        //Starting();
     }, []);
 
     function ShowMovements() {
@@ -107,9 +107,20 @@ export const Operations = () => {
     }
 
     async function Search(e) {
+        setErrMessage2('');
         const u = await FindUser(dni);
         if (u.iduser !== undefined) {
             setUser(u);
+            if(userdata.id === u.iduser){
+                setErrMessage2('No se puede interactuar con uno mismo.');
+                setShowModal(false);
+                return;
+            }
+            if(userdata.role > u.role){
+                setErrMessage2('No se puede interactuar con usuarios de rol superior.');
+                setShowModal(false);
+                return;
+            }
             setShowTable(false);
         }
     }
@@ -122,7 +133,6 @@ export const Operations = () => {
             const cre = await GetUserCredits(user.iduser);
             setUser2(u => ({ ...u, ...cre }));
         }
-
         setUser([]);
         setShowModal(false);
         setShowTable(true);
@@ -217,8 +227,9 @@ export const Operations = () => {
                     user1.credits = 0;
                 }
 
-                AssignToUser(user1);
-                document.getElementById('assign').submit();
+                res = await AssignToUser(user1);
+                if (res === 200)
+                    document.getElementById('assign').submit();
                 break;
 
             case 'transact':
@@ -226,8 +237,9 @@ export const Operations = () => {
                 user2.for = user2.iduser;
                 user2.credits = parseFloat(user2.amount);
                 user2.cash = parseFloat(user2.amount) * convertion;
-                TransactToUser(user2);
-                document.getElementById('transact').submit();
+                res = await TransactToUser(user2);
+                if (res === 200)
+                    document.getElementById('transact').submit();
                 break;
 
             case 'createcash':
@@ -272,6 +284,7 @@ export const Operations = () => {
         <div>
             <div className='pt-2 text-white container register'>
                 <h1 className='text-center'>Operaciones</h1>
+                <h2 className='text-center'>{userdata.surname}, {userdata.name} - {userdata.rolename}</h2>
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Datos operacionales</h5>
 
@@ -328,7 +341,7 @@ export const Operations = () => {
 
                     <form className='pt-2 text-white container register' name='assign' id="assign" onSubmit={OnSubmit}>
                         <div className='card border-success text-white bg-transparent mt-5'>
-                            <h5 className="card-header border-success text-white">Asignacion con Caja</h5>
+                            <h5 className="card-header border-success text-white">Asignaciones</h5>
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
@@ -380,7 +393,7 @@ export const Operations = () => {
                 transact ? (
                     <form className='pt-2 text-white container register' name="transact" id="transact" onSubmit={OnSubmit}>
                         <div className='card border-success text-white bg-transparent mt-5'>
-                            <h5 className="card-header border-success text-white">Transacciones con Caja</h5>
+                            <h5 className="card-header border-success text-white">Transacciones</h5>
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
@@ -410,7 +423,7 @@ export const Operations = () => {
                             </div>
                             <div className='d-flex justify-content-center'>
                                 <div className="form-inline">
-                                    <label htmlFor="label1">Guaranies:</label>
+                                    <label htmlFor="label1">Conversion:</label>
                                     <label className="p-1" id="label1"><b>₲ {user2.amount !== undefined ? parseFloat(parseFloat(user2.amount) * convertion).toLocaleString() : 0}</b></label>
                                 </div>
                             </div>
@@ -419,7 +432,13 @@ export const Operations = () => {
                                 <div className="form-inline">
                                     <label htmlFor="label1 ">Asignado a:</label>
                                     <label className="p-3" id="label1"><b>{user2.iduser != undefined ? '(' + user2.dni + ') ' + user2.surname + ', ' + user2.name : 'Sin Asignacion'}</b></label>
+                                </div>
+                            </div>
+                            <div className='d-flex justify-content-center'>
+                                <div className="form-inline">
                                     <label className="p-3" id="label1"><b>{(user2.credits !== undefined ? parseFloat(user2.credits) : 0) + ' Creditos'}</b></label>
+                                    <label className="p-3" id="label1"><b>₲ {(user2.cash !== undefined ? parseInt(user2.cash).toLocaleString() : 0)}</b></label>
+                                    <label className="p-3" id="label1"><b>Rol: {(user2.rolename !== undefined ? user2.rolename : 'No definido')}</b></label>
                                 </div>
                             </div>
                             <label className="text-center text-danger"><b>{errMessage2}</b></label>
@@ -430,7 +449,7 @@ export const Operations = () => {
                                         <button className="btn btn-purple mt-3 text-white" type="button" name="findb" onClick={() => CallModal('op2')}>Seleccionar operador</button>
                                     </div>
                                     <div className='d-flex flex-column container w-75'>
-                                        <button className="btn btn-success mt-3" type="submit">Mandar</button>
+                                        <button className="btn btn-success mt-3" type="submit">Confirmar</button>
                                     </div>
 
                                 </div>
@@ -483,7 +502,7 @@ export const Operations = () => {
 
                 ) : null
             }
-            <div className="d-flex justify-content-center pb-5">
+            <div className="d-flex justify-content-center pt-3 pb-5">
                 <button className="btn btn-success p-3" onClick={ShowMovements}>Ver movimientos</button>
             </div>
             <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal} size="lg" centered={true}>

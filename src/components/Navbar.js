@@ -9,10 +9,6 @@ export const Navbar = (props) => {
     const cookie = new Cookies();
     var isLogged = cookie.get('isLogged');
 
-    useEffect(() => {
-        //console.log("start")
-    }, []);
-
     function Signup() {
         navigate('/Singup');
     }
@@ -28,7 +24,7 @@ export const Navbar = (props) => {
     function Logout() {
         cookie.remove('isLogged');
         isLogged = false;
-        window.location.reload();
+        navigate('/');
     }
 
     return (

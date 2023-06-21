@@ -69,3 +69,12 @@ footer{
 .btn-purple:hover{
   background-color: #7e00af;
 }
+
+.link-custom{
+  text-decoration: none;
+  color: rgb(69, 194, 132);
+}
+
+.link-custom:hover{
+  color: rgb(66, 235, 150);
+}

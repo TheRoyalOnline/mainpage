@@ -183,6 +183,7 @@ export const RecoverPassword = async (user, mail) => {
 
 
 export const FindUser = async (_dni) => {
+
     const token = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -193,8 +194,8 @@ export const FindUser = async (_dni) => {
         })
     };
     const res = await fetch(URIFind, requestOptions);
-
     return res.json();
+
 };
 
 export const GetUserCredits = async (_iduser) => {
@@ -246,7 +247,17 @@ export const TransactToUser = async (data) => {
             type: data.type
         })
     };
+
     const res = await fetch(URITransact, requestOptions);
+
+    if (res.status === 200) {
+        if (data.role === 5) {
+            const message = data.type === "buy"?
+             `Venta de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`:
+             `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`;
+            SendMail("Transaccion realizada", message, data.email, "");
+        }
+    }
     return await res.status;
 };
 

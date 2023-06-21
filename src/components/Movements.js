@@ -9,6 +9,12 @@ export const Movements = () => {
     const [movements, setMovements] = useState([]);
 
     useEffect(() => {
+        console.log(props)
+        if (props === null){
+            navigate('/');
+            return;
+        }
+
         if (props.iduser === undefined)
             navigate('/Operations');
 
@@ -34,7 +40,9 @@ export const Movements = () => {
                                 <tr >
                                     <th>Codigo</th>
                                     <th>Creditos</th>
+                                    <th>Saldo</th>
                                     <th>Efectivo</th>
+                                    <th>Saldo</th>
                                     <th>Origen</th>
                                     <th>Destino</th>
                                     <th>Modulo</th>
@@ -46,8 +54,10 @@ export const Movements = () => {
                                     movements.map((item) => (
                                         <tr>
                                             <td>{item.code}</td>
-                                            <td>{item.credits}</td>
-                                            <td>{item.cash}</td>
+                                            <td>{parseInt(item.credits).toLocaleString()}</td>
+                                            <td>{parseInt(item.balancecre).toLocaleString()}</td>
+                                            <td>₲ {parseInt(item.cash).toLocaleString()}</td>
+                                            <td>₲ {parseInt(item.balancecash).toLocaleString()}</td>
                                             <td>{item.origin}</td>
                                             <td>{item.destine}</td>
                                             <td>{item.module}</td>

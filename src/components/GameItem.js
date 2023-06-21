@@ -48,7 +48,6 @@ export const GameItem = props => {
     return (
         <div className="col-4 flex-fill">
             <div ref={card} className="card card-body bg-black mt-2 extra-border">
-                {/* <h3 className="card-title text-white">{props.item.idgame}</h3> */}
                 <img src={Images[props.item.idgame]} className='image' onClick={Selectgame} alt='logo'/>
                 <ShowDialog show={show} handler={Handler} title={"Sala ocupada.. 😥"} message={"Actualmente esta sala se encuentra ocupada por otro usuario, favor intentalo mas tarde. "}/>
             </div>

@@ -7,7 +7,7 @@ export const Login = (props) => {
   const navigate = useNavigate();
 
   const initialValues = { username: "", password: "" };
-  const [user, setUser] = useState(initialValues); //variable y su setter
+  const [user, setUser] = useState(initialValues); 
   const year = new Date().getFullYear();
   const userRef = useRef(null);
   const passRef = useRef(null);
@@ -42,10 +42,6 @@ export const Login = (props) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  // function CheckedEvent(event) {
-  //   setRemember(event.target.checked);
-  // };
-
   function GoToSingup(event) {
     navigate("/singup");
     props.handler();
@@ -78,12 +74,6 @@ export const Login = (props) => {
                 Usuario o contraseña invalidos.
               </div>
             </div>
-
-            {/* <div className="checkbox mb-3 mt-3">
-              <label>
-                <input type="checkbox" checked={rememberme} onChange={CheckedEvent} /> Recuerdame
-              </label>
-            </div> */}
             <button className="w-100 btn btn-lg btn-dark mb-3 mt-5" type="submit">Iniciar</button>
             <div className='pt-4'>
               <button className="w-100 btn btn-sm btn-dark" type="button" onClick={GoToSingup}> Registrarse</button>
@@ -92,7 +82,7 @@ export const Login = (props) => {
               <button className="w-100 btn btn-sm btn-dark text-white" type="button" onClick={GoToRecover}>¿Olvidaste tu contraseña?</button>
 
             </div>
-            <p className="mt-5 mb-3 text-body-secondary ">© Tupapõ Games {year} </p>
+            <p className="mt-5 mb-3 text-body-secondary ">Mantenida por <a className='link-custom' target='_blank'  rel='noreferrer' href='https://tupapo.games'><b>Tupapõ Games</b></a></p>
           </form>
         </main>
       </Modal.Body>

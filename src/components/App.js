@@ -21,7 +21,6 @@ export const App = () => {
     }
 
     return (
-
         <div className='containter-fluid'>
             <Navbar show={show} handler={handleLogin}/>
             <Login show={show} handler={handleLogin}/>

@@ -4,13 +4,14 @@ import { GetRooms } from "./APIExtras";
 
 export const MainPage = (props) => {
     const [rooms, setRooms] = useState([]);
-
+    
     useEffect(()=>{
-        async function LoadData(){
+
+        (async () => {            
             const values = await GetRooms();
             setRooms(values);
-        }
-        LoadData();
+        })();
+
     }, []);
 
     return (

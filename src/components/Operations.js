@@ -5,7 +5,7 @@ import { GiCreditsCurrency } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
-import { GetUserDetails, FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
+import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
 import { GetGlobal } from "./APIExtras";
 
 export const Operations = () => {
@@ -41,28 +41,27 @@ export const Operations = () => {
     useEffect(() => {
         (async () => {
             const cookie = new Cookies();
-            if (cookie.get("isLogged") === undefined)
-                navigate('/');
+            if (cookie.get("userdata") === undefined)
+                navigate('/');            
 
-            const res = await GetUserDetails(cookie.get('username'));
-            setShowAsing(access[res.role][0])
-            setAsign(access[res.role][1])
-            setTransact(access[res.role][2])
-            setOthers(access[res.role][3])
+            setUserdata(cookie.get('userdata'));            
+            
+            setShowAsing(access[cookie.get('userdata').role][0])
+            setAsign(access[cookie.get('userdata').role][1])
+            setTransact(access[cookie.get('userdata').role][2])
+            setOthers(access[cookie.get('userdata').role][3])
 
-            const cre = await GetUserCredits(res.id);
-            setUserdata(res);
+            const cre = await GetUserCredits(cookie.get('userdata').iduser);
             setUserdata(u => ({ ...u, ...cre }));
 
             const c = await GetGlobal('convertion');
             setConvertion(c);
         })();
 
-        //Starting();
     }, []);
 
     function ShowMovements() {
-        const props = { iduser: userdata.id }
+        const props = { iduser: userdata.iduser }
         navigate('/Operations/Movements', { state: props })
     }
 
@@ -111,7 +110,7 @@ export const Operations = () => {
         const u = await FindUser(dni);
         if (u.iduser !== undefined) {
             setUser(u);
-            if(userdata.id === u.iduser){
+            if(userdata.iduser === u.iduser){
                 setErrMessage2('No se puede interactuar con uno mismo.');
                 setShowModal(false);
                 return;
@@ -131,6 +130,7 @@ export const Operations = () => {
         else {
             setUser2(u => ({ ...u, ...user }));
             const cre = await GetUserCredits(user.iduser);
+            
             setUser2(u => ({ ...u, ...cre }));
         }
         setUser([]);
@@ -216,7 +216,7 @@ export const Operations = () => {
         var res = 0;
         switch (typeConfirm) {
             case 'assign':
-                user1.from = userdata.id;
+                user1.from = userdata.iduser;
                 user1.for = user1.iduser;
 
                 if (user1.type === 'credits' && Validate('credits', user1.amount)) {
@@ -233,7 +233,7 @@ export const Operations = () => {
                 break;
 
             case 'transact':
-                user2.from = userdata.id;
+                user2.from = userdata.iduser;
                 user2.for = user2.iduser;
                 user2.credits = parseFloat(user2.amount);
                 user2.cash = parseFloat(user2.amount) * convertion;
@@ -244,7 +244,7 @@ export const Operations = () => {
 
             case 'createcash':
                 const data = {
-                    from: userdata.id,
+                    from: userdata.iduser,
                     credits: 0,
                     cash: ccash,
                     code: 'CEFEC'
@@ -256,7 +256,7 @@ export const Operations = () => {
 
             case 'createcredit':
                 const data2 = {
-                    from: userdata.id,
+                    from: userdata.iduser,
                     credits: ccredit,
                     cash: 0,
                     code: 'CCRED'
@@ -268,7 +268,7 @@ export const Operations = () => {
 
             case 'deposit':
                 const data3 = {
-                    from: userdata.id,
+                    from: userdata.iduser,
                     credits: 0,
                     cash: deposit,
                     code: 'DEFEC'

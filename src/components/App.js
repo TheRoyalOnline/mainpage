@@ -1,6 +1,6 @@
 
 import { Route, Routes } from 'react-router-dom';
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 
 
 import MainPage from './Slots';
@@ -15,17 +15,17 @@ import { Movements } from './Movements';
 
 export const App = () => {
     const [show, setShow] = useState(false);
-
+    
     function handleLogin(){
         setShow(!show);
     }
 
     return (
         <div className='containter-fluid'>
-            <Navbar show={show} handler={handleLogin}/>
+            <Navbar handler={handleLogin}/>
             <Login show={show} handler={handleLogin}/>
             <Routes>
-                <Route exact path='/' element={<MainPage handler={handleLogin}/>} />
+                <Route exact path='/' element={<MainPage handler={handleLogin} />} />
                 <Route exact path='/Singup' element={<SignUp />} />
                 <Route exact path='/Profile' element={<Profile />} />
                 <Route exact path='/Recover' element={<Recover />} />

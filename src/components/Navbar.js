@@ -7,7 +7,7 @@ export const Navbar = (props) => {
 
     const navigate = useNavigate();
     const cookie = new Cookies();
-    var isLogged = cookie.get('isLogged');
+    var isLogged = cookie.get('userdata') !== undefined;
 
     function Signup() {
         navigate('/Singup');
@@ -22,7 +22,7 @@ export const Navbar = (props) => {
     }
 
     function Logout() {
-        cookie.remove('isLogged');
+        cookie.remove('userdata');
         isLogged = false;
         navigate('/');
     }

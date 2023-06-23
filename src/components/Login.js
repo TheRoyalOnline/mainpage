@@ -14,17 +14,15 @@ export const Login = (props) => {
 
   const TryLogin = async () => {
     try {
-        const res = await API.GetUser(user.username.trim(), user.password);
-        if (res)
-        {            
-            window.location.reload();
-        }
+        const res = await API.Logon(user.username.trim(), user.password);
+        if (res)             
+            window.location.reload();        
         else {
             userRef.current.classList.add("is-invalid");
             passRef.current.classList.add("is-invalid");
         }
     } catch (error) {
-        console.log(error);
+       // console.log(error);
     }
 };
 
@@ -33,7 +31,7 @@ export const Login = (props) => {
     try {
       TryLogin();
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 

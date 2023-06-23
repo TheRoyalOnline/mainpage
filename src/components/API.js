@@ -15,21 +15,35 @@ const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
 
-export const GetUser = async (user, pass) => {
+export const Logon = async (user, pass) => {
 
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
     };
-
+    
     const res = await fetch(URILogin, requestOptions);
     if (res.status === 200) {
         const cookies = new Cookies();
         var token = await res.text();
-        cookies.set('Authorization', token);
-        cookies.set('username', user);
-        cookies.set('isLogged', true);
+        var userdata = {
+            token: token
+        }
+        cookies.set('userdata', userdata);
+        const data = await GetUserDetails(user.trim());
+
+        userdata = {
+            iduser: data.id,
+            username: data.username,
+            name: data.name,
+            surname: data.surname,
+            email: data.email,
+            role: data.role,
+            rolename: data.rolename,
+            token: token
+        }
+        cookies.set('userdata', userdata);
         return true;
     }
 
@@ -47,10 +61,10 @@ export const SetNewUser = async (formData) => {
 };
 
 export const GetUserDetails = async (username) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const uri = URIGetUser + username;
     const body = {
-        token: token.get("Authorization")
+        token: cookie.get('userdata').token
     }
     const res = await axios.post(uri, body, {
         headers: {
@@ -59,19 +73,18 @@ export const GetUserDetails = async (username) => {
     });
 
     return res.data;
-
 };
 
 
 export const UpdateUserDetails = async user => {
-    const token = new Cookies();
+    const cookie = new Cookies();
 
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
             {
-                token: token.get("Authorization"),
+                token: cookie.get('userdata').token,
                 iduser: user.iduser,
                 password: user.password,
                 name: user.name,
@@ -113,13 +126,13 @@ export const TestPassword = async (user, pass) => {
 
 
 export const GetRol = async () => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
-            username: token.get("username"),
+            token: cookie.get('userdata').token,
+            username: cookie.get('userdata').username,
         })
     };
 
@@ -184,12 +197,12 @@ export const RecoverPassword = async (user, mail) => {
 
 export const FindUser = async (_dni) => {
 
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
+            token: cookie.get('userdata').token,
             dni: _dni,
         })
     };
@@ -199,9 +212,9 @@ export const FindUser = async (_dni) => {
 };
 
 export const GetUserCredits = async (_iduser) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const body = {
-        token: token.get("Authorization"),
+        token: cookie.get('userdata').token,
         iduser: _iduser
     }
     const res = await axios.post(URICredits, body, {
@@ -217,12 +230,12 @@ export const GetUserCredits = async (_iduser) => {
 
 
 export const AssignToUser = async (data) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
+            token: cookie.get('userdata').token,
             from: data.from,
             for: data.for,
             credits: data.credits,
@@ -234,12 +247,12 @@ export const AssignToUser = async (data) => {
 };
 
 export const TransactToUser = async (data) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
+            token: cookie.get('userdata').token,
             from: data.from,
             for: data.for,
             credits: data.credits,
@@ -263,12 +276,12 @@ export const TransactToUser = async (data) => {
 
 
 export const CreateEconomy = async (data) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
+            token: cookie.get('userdata').token,
             from: data.from,
             credits: data.credits,
             cash: data.cash,
@@ -280,12 +293,12 @@ export const CreateEconomy = async (data) => {
 };
 
 export const MovementsList = async (iduser) => {
-    const token = new Cookies();
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: token.get("Authorization"),
+            token: cookie.get('userdata').token,
             iduser: iduser
         })
     };

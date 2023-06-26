@@ -40,7 +40,7 @@ export const Profile = () => {
 
     useEffect(() => {
         const cookie = new Cookies();
-        if(cookie.get("isLogged") === undefined)
+        if(cookie.get("userdata") === undefined)
             navigate('/');
     }, []);
 
@@ -53,7 +53,7 @@ export const Profile = () => {
             setCity(data2);
             
             const cookie = new Cookies();
-            const user = await GetUserDetails(cookie.get('username'));
+            const user = await GetUserDetails(cookie.get('userdata').username);
 
             const values = {
                 iduser: user.id,

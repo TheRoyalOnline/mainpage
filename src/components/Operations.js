@@ -229,7 +229,7 @@ export const Operations = () => {
 
                 res = await AssignToUser(user1);
                 if (res === 200)
-                    document.getElementById('assign').submit();
+                    window.location.reload();
                 break;
 
             case 'transact':
@@ -239,7 +239,7 @@ export const Operations = () => {
                 user2.cash = parseFloat(user2.amount) * convertion;
                 res = await TransactToUser(user2);
                 if (res === 200)
-                    document.getElementById('transact').submit();
+                    window.location.reload();
                 break;
 
             case 'createcash':
@@ -251,7 +251,7 @@ export const Operations = () => {
                 }
                 res = await CreateEconomy(data);
                 if (res === 200)
-                    document.getElementById('createcash').submit();
+                    window.location.reload();
                 break;
 
             case 'createcredit':
@@ -263,19 +263,19 @@ export const Operations = () => {
                 }
                 res = await CreateEconomy(data2);
                 if (res === 200)
-                    document.getElementById('createcredit').submit();
+                    window.location.reload();
                 break;
 
             case 'deposit':
                 const data3 = {
                     from: userdata.iduser,
                     credits: 0,
-                    cash: deposit,
+                    cash: -deposit,
                     code: 'DEFEC'
                 }
                 res = await CreateEconomy(data3);
                 if (res === 200)
-                    document.getElementById('deposit').submit();
+                    window.location.reload();
                 break;
         }
     }

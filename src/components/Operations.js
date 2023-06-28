@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { RiCoinFill, RiCoinLine } from "react-icons/ri";
 import { GiCreditsCurrency } from "react-icons/gi";
@@ -10,6 +10,7 @@ import { GetGlobal } from "./APIExtras";
 
 export const Operations = () => {
     const navigate = useNavigate();
+    const [confirm, setConfirm] = useState(false);
     const [errMessage2, setErrMessage2] = useState('');
     const [userdata, setUserdata] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -30,6 +31,14 @@ export const Operations = () => {
     const [ccredit, setCcredit] = useState(0);
     const [deposit, setDeposit] = useState(0);
 
+    const refInputAssing = useRef(null);
+    const refInputTransact = useRef(null);
+    const refCheckAssing1 = useRef(null);
+    const refCheckAssing2 = useRef(null);
+    const refCheckTransact1 = useRef(null);
+    const refCheckTransact2 = useRef(null);
+    const refBtnConfirm = useRef(null);
+
     const access = {
         '1': [1, 1, 1, 1],
         '2': [1, 1, 1, 0],
@@ -39,26 +48,27 @@ export const Operations = () => {
     }
 
     useEffect(() => {
-        (async () => {
-            const cookie = new Cookies();
-            if (cookie.get("userdata") === undefined)
-                navigate('/');            
-
-            setUserdata(cookie.get('userdata'));            
-            
-            setShowAsing(access[cookie.get('userdata').role][0])
-            setAsign(access[cookie.get('userdata').role][1])
-            setTransact(access[cookie.get('userdata').role][2])
-            setOthers(access[cookie.get('userdata').role][3])
-
-            const cre = await GetUserCredits(cookie.get('userdata').iduser);
-            setUserdata(u => ({ ...u, ...cre }));
-
-            const c = await GetGlobal('convertion');
-            setConvertion(c);
-        })();
-
+        Starting();
     }, []);
+
+    async function Starting() {
+        const cookie = new Cookies();
+        if (cookie.get("userdata") === undefined)
+            navigate('/');
+
+        setUserdata(cookie.get('userdata'));
+
+        setShowAsing(access[cookie.get('userdata').role][0])
+        setAsign(access[cookie.get('userdata').role][1])
+        setTransact(access[cookie.get('userdata').role][2])
+        setOthers(access[cookie.get('userdata').role][3])
+
+        const cre = await GetUserCredits(cookie.get('userdata').iduser);
+        setUserdata(u => ({ ...u, ...cre }));
+
+        const c = await GetGlobal('convertion');
+        setConvertion(c);
+    }
 
     function ShowMovements() {
         const props = { iduser: userdata.iduser }
@@ -110,12 +120,12 @@ export const Operations = () => {
         const u = await FindUser(dni);
         if (u.iduser !== undefined) {
             setUser(u);
-            if(userdata.iduser === u.iduser){
+            if (userdata.iduser === u.iduser) {
                 setErrMessage2('No se puede interactuar con uno mismo.');
                 setShowModal(false);
                 return;
             }
-            if(userdata.role > u.role){
+            if (userdata.role > u.role) {
                 setErrMessage2('No se puede interactuar con usuarios de rol superior.');
                 setShowModal(false);
                 return;
@@ -130,7 +140,7 @@ export const Operations = () => {
         else {
             setUser2(u => ({ ...u, ...user }));
             const cre = await GetUserCredits(user.iduser);
-            
+
             setUser2(u => ({ ...u, ...cre }));
         }
         setUser([]);
@@ -212,7 +222,11 @@ export const Operations = () => {
         return false;
     }
 
+    
     async function ConfirmSubmit() {
+        refBtnConfirm.current.disabled = true;
+        if(confirm) return;
+        setConfirm(true);
         var res = 0;
         switch (typeConfirm) {
             case 'assign':
@@ -228,8 +242,6 @@ export const Operations = () => {
                 }
 
                 res = await AssignToUser(user1);
-                if (res === 200)
-                    window.location.reload();
                 break;
 
             case 'transact':
@@ -238,8 +250,6 @@ export const Operations = () => {
                 user2.credits = parseFloat(user2.amount);
                 user2.cash = parseFloat(user2.amount) * convertion;
                 res = await TransactToUser(user2);
-                if (res === 200)
-                    window.location.reload();
                 break;
 
             case 'createcash':
@@ -250,8 +260,6 @@ export const Operations = () => {
                     code: 'CEFEC'
                 }
                 res = await CreateEconomy(data);
-                if (res === 200)
-                    window.location.reload();
                 break;
 
             case 'createcredit':
@@ -262,8 +270,6 @@ export const Operations = () => {
                     code: 'CCRED'
                 }
                 res = await CreateEconomy(data2);
-                if (res === 200)
-                    window.location.reload();
                 break;
 
             case 'deposit':
@@ -274,11 +280,42 @@ export const Operations = () => {
                     code: 'DEFEC'
                 }
                 res = await CreateEconomy(data3);
-                if (res === 200)
-                    window.location.reload();
                 break;
         }
+        if (res === 200)
+            Reset();
     }
+
+    function Reset() {
+        
+        setErrMessage2('');
+        setUserdata({});
+        setShowModal(false)
+        setShowConfirmDialog(false)
+        setShowAsing(false)
+        setAsign(false)
+        setConvertion(0)
+        setTransact(false)
+        setOthers(false)
+        setUser({});
+        setUser1({});
+        setUser2({});
+        setOpType('')
+        setDni(0)
+        setCcash(0)
+        setCcredit(0)
+        setDeposit(0)
+        setConfirm(false)
+        refInputTransact.current.value = 0;
+        refInputAssing.current.value = 0;
+        refCheckTransact1.current.checked = false;
+        refCheckTransact2.current.checked = false;
+        refCheckAssing1.current.checked = false;
+        refCheckAssing2.current.checked = false;
+        refBtnConfirm.current.disabled = false;
+        Starting();
+    }
+
 
     return (
         <div>
@@ -345,14 +382,14 @@ export const Operations = () => {
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="assigntype" id="idcredits" value="credits" onChange={OnChange} required />
+                                    <input ref={refCheckAssing1} className="btn-check" type="radio" name="assigntype" id="idcredits" value="credits" onChange={OnChange} required />
                                     <label className="btn btn-outline-success text-white" htmlFor="idcredits">
                                         Creditos
                                     </label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="assigntype" id="idmoney" value="money" onChange={OnChange} required />
+                                    <input ref={refCheckAssing2} className="btn-check" type="radio" name="assigntype" id="idmoney" value="money" onChange={OnChange} required />
                                     <label className="btn btn-outline-success text-white" htmlFor="idmoney">
                                         Guaranies
                                     </label>
@@ -362,7 +399,7 @@ export const Operations = () => {
                                 <div className="form-group row pt-3">
                                     <label htmlFor="idNombre" className="col-sm-3 col-form-label">Monto</label>
                                     <div className="col-sm-8">
-                                        <input type="number" className="form-control bg-dark border-success text-white" value={user1.amount} name='amount1' min={1} onChange={OnChange} required />
+                                        <input ref={refInputAssing} type="number" className="form-control bg-dark border-success text-white" value={user1.amount} name='amount1' min={1} onChange={OnChange} required />
                                     </div>
                                 </div>
                             </div>
@@ -397,14 +434,14 @@ export const Operations = () => {
 
                             <div className='d-flex justify-content-center p-3'>
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="transacttype" id="idsell" value="sell" onChange={OnChange} required />
+                                    <input ref={refCheckTransact1} className="btn-check" type="radio" name="transacttype" id="idsell" value="sell" onChange={OnChange} required />
                                     <label className="btn btn-outline-success text-white" htmlFor="idsell">
                                         Vender
                                     </label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
-                                    <input className="btn-check" type="radio" name="transacttype" id="idpay" value="buy" onChange={OnChange} required />
+                                    <input ref={refCheckTransact2}  className="btn-check" type="radio" name="transacttype" id="idpay" value="buy" onChange={OnChange} required />
                                     <label className="btn btn-outline-success text-white" htmlFor="idpay">
                                         Comprar
                                     </label>
@@ -417,7 +454,7 @@ export const Operations = () => {
                                         <div className="input-group-prepend ">
                                             <span className="input-group-text bg-success border-success text-white text-white h-100"><RiCoinFill /></span>
                                         </div>
-                                        <input type="number" className="form-control bg-dark border-success text-white" value={user2.amount} min={1} name='amount2' onChange={OnChange} required />
+                                        <input ref={refInputTransact} type="number" className="form-control bg-dark border-success text-white" value={user2.amount} min={1} name='amount2' onChange={OnChange} required />
                                     </div>
                                 </div>
                             </div>
@@ -558,7 +595,7 @@ export const Operations = () => {
                     <p>Esta seguro que desea confirmar la operacion?</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
+                    <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -29,11 +29,11 @@ export const GameItem = props => {
     useEffect(
         () => {
             if (room.iduser) {
-                card.current.classList.add('border-danger');
-                card.current.classList.remove('border-success');
+                card.current.classList.add('bg-danger');
+                card.current.classList.remove('bg-success');
             } else {
-                card.current.classList.remove('border-danger');
-                card.current.classList.add('border-success');
+                card.current.classList.remove('bg-danger');
+                card.current.classList.add('bg-success');
             }
         }
         , [room]);
@@ -48,7 +48,6 @@ export const GameItem = props => {
                 Handler();
                 return;
             }
-
             const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
             if (res === 200) {
                 setRoom({ ...room, iduser: cookie.get('userdata').iduser });
@@ -64,7 +63,7 @@ export const GameItem = props => {
 
     return (
         <div className="col-4 flex-fill">
-            <div ref={card} className="card card-body bg-black mt-2 extra-border">
+            <div ref={card} className="image-container mt-2 bg-success">
                 <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo'/>
                 <ShowDialog show={show} handler={Handler} title={message.title} message={message.body}/>
             </div>

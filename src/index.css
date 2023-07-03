@@ -60,6 +60,7 @@ footer{
 
 .image{
   border-radius: 10px;
+  width: 100%;
 }
 
 .btn-purple{  
@@ -77,4 +78,9 @@ footer{
 
 .link-custom:hover{
   color: rgb(66, 235, 150);
+}
+
+.image-container {
+  padding: 4px; 
+  border-radius: 10px; 
 }

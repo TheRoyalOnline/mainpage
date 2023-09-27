@@ -4,12 +4,14 @@ import King from './imgs/king.png'
 import Cookies from 'universal-cookie'
 import { ShowDialog } from './Dialogs'
 import { ConnectRoom, GetRoom } from './Game'
+import Iframe from './Iframe'
 
 
 export const GameItem = props => {
     const initialMessage = {title: "Sala ocupada.. 😥", body: "Actualmente esta sala se encuentra ocupada por otro usuario, favor intentalo mas tarde."}
     const [room, setRoom] = useState(props.item);
     const [show, setShow] = useState(false);
+    const [showGame, setShowGame] = useState(false);
     const [message, setMessage] = useState(initialMessage)
     
     const Handler = () =>{
@@ -22,8 +24,8 @@ export const GameItem = props => {
     }
 
     const url = {
-        'CRMK':"https://royalonline.cloud/crazy",
-        'KING':"https://royalonline.cloud/king"
+        'CRMK':"https://royalonline.cloud/crazy?token=",
+        'KING':"https://royalonline.cloud/king?token="
     }
 
     useEffect(
@@ -50,8 +52,12 @@ export const GameItem = props => {
             }
             const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
             if (res === 200) {
-                setRoom({ ...room, iduser: cookie.get('userdata').iduser });
-                window.open(url[room.idgame], "_blank");
+                setRoom({ ...room, iduser: cookie.get('userdata').iduser });  
+
+                const fullURL =  url[room.idgame]+cookie.get('userdata').token;
+                props.setURL(fullURL);
+                props.showGame();
+               // window.open(url[room.idgame], "_blank");
             } else if (res === 202) {
                 setMessage({title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar."});
                 Handler();

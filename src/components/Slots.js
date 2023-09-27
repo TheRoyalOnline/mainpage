@@ -5,7 +5,7 @@ import { Iframe } from "./Iframe";
 
 export const MainPage = (props) => {
     const [rooms, setRooms] = useState([]);
-    const [showGame, setShowGame] = useState(true);
+    const [showGame, setShowGame] = useState(false);
     const [url, setUrl] = useState('');
 
     useEffect(() => {

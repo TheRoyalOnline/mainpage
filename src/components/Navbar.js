@@ -44,8 +44,9 @@ export const Navbar = (props) => {
                             ) : (
 
                                 <div>
-                                    <button className="btn btn-success text-white" onClick={Profile}>Mi perfil</button>
-                                    <button className="btn btn-success text-white  mx-2" onClick={Operations}>Operaciones</button>
+                                    <button className="btn btn-outline-success text-white mx-2" onClick={Profile}>Cerrar sesion de slot</button>
+                                    <button className="btn btn-success text-white mx-2" onClick={Profile}>Mi perfil</button>
+                                    <button className="btn btn-success text-white mx-2" onClick={Operations}>Operaciones</button>
                                     <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>
                                 </div>
 

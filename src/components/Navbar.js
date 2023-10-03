@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import logo from './imgs/logo.png';
 import Cookies from "universal-cookie";
 import { Link, useNavigate } from "react-router-dom";
+import { ForceDisconnect } from "./Game";
 
 export const Navbar = (props) => {
 
@@ -27,6 +28,11 @@ export const Navbar = (props) => {
         navigate('/');
     }
 
+    async function ForceQuitRoom() {
+      const res = await ForceDisconnect();
+      navigate('/');
+    }
+
     return (
         <nav className="navbar navbar-expand-lg pb-5">
             <div className="container">
@@ -44,7 +50,7 @@ export const Navbar = (props) => {
                             ) : (
 
                                 <div>
-                                    <button className="btn btn-outline-success text-white mx-2" onClick={Profile}>Cerrar sesion de slot</button>
+                                    <button className="btn btn-outline-success text-white mx-2" onClick={ForceQuitRoom}>Forzar cierre</button>
                                     <button className="btn btn-success text-white mx-2" onClick={Profile}>Mi perfil</button>
                                     <button className="btn btn-success text-white mx-2" onClick={Operations}>Operaciones</button>
                                     <button className="btn btn-outline-success text-white mx-2" onClick={Logout}>Salir</button>

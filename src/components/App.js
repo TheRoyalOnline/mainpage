@@ -5,7 +5,7 @@ import React, { Component, useEffect } from 'react';
 
 import MainPage from './Slots';
 import { SignUp } from './Signup';
-import Navbar from './Navbar';
+import {Menu} from './Navbar';
 import Profile from './Profile';
 import Login from './Login';
 import { Recover } from './Recover';
@@ -22,7 +22,7 @@ export const App = () => {
 
     return (
         <div className='containter-fluid'>
-            <Navbar handler={handleLogin}/>
+            <Menu handler={handleLogin}/>
             <Login show={show} handler={handleLogin}/>
             <Routes>
                 <Route exact path='/' element={<MainPage handler={handleLogin} />} />

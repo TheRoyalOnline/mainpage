@@ -57,15 +57,15 @@ export const Operations = () => {
             navigate('/');
 
         setUserdata(cookie.get('userdata'));
-
         setShowAsing(access[cookie.get('userdata').role][0])
         setAsign(access[cookie.get('userdata').role][1])
         setTransact(access[cookie.get('userdata').role][2])
         setOthers(access[cookie.get('userdata').role][3])
-
+        
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
-
+        console.log(cre);
+        
         const c = await GetGlobal('convertion');
         setConvertion(c);
     }
@@ -363,7 +363,7 @@ export const Operations = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={parseFloat(userdata.credits).toLocaleString()} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={userdata.credits} readOnly />
                                 </div>
                             </div>
                         </div>

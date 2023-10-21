@@ -59,6 +59,7 @@ footer{
 }
 
 .image{
+  cursor: pointer;
   border-radius: 10px;
   width: 100%;
 }

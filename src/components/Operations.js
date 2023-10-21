@@ -61,11 +61,10 @@ export const Operations = () => {
         setAsign(access[cookie.get('userdata').role][1])
         setTransact(access[cookie.get('userdata').role][2])
         setOthers(access[cookie.get('userdata').role][3])
-        
+
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
-        console.log(cre);
-        
+
         const c = await GetGlobal('convertion');
         setConvertion(c);
     }
@@ -73,6 +72,15 @@ export const Operations = () => {
     function ShowMovements() {
         const props = { iduser: userdata.iduser }
         navigate('/Operations/Movements', { state: props })
+    }
+
+    function EditUsers() {
+        navigate('/Operations/Editusers')
+    }
+
+    
+    function EditUsers() {
+        navigate('/Operations/Editgame')
     }
 
     function CallModal(e) {
@@ -222,10 +230,10 @@ export const Operations = () => {
         return false;
     }
 
-    
+
     async function ConfirmSubmit() {
         refBtnConfirm.current.disabled = true;
-        if(confirm) return;
+        if (confirm) return;
         setConfirm(true);
         var res = 0;
         switch (typeConfirm) {
@@ -287,7 +295,7 @@ export const Operations = () => {
     }
 
     function Reset() {
-        
+
         setErrMessage2('');
         setUserdata({});
         setShowModal(false)
@@ -441,7 +449,7 @@ export const Operations = () => {
                                 </div>
 
                                 <div className="form-check form-check-inline">
-                                    <input ref={refCheckTransact2}  className="btn-check" type="radio" name="transacttype" id="idpay" value="buy" onChange={OnChange} required />
+                                    <input ref={refCheckTransact2} className="btn-check" type="radio" name="transacttype" id="idpay" value="buy" onChange={OnChange} required />
                                     <label className="btn btn-outline-success text-white" htmlFor="idpay">
                                         Comprar
                                     </label>
@@ -539,7 +547,23 @@ export const Operations = () => {
 
                 ) : null
             }
-            <div className="d-flex justify-content-center pt-3 pb-5">
+            {
+                userdata.role === 1 ? (
+                    <div>
+
+                        <div className="d-flex justify-content-center pt-3  pb-2">
+                            <button className="btn btn-warning p-3" onClick={EditUsers}>Modificar juegos</button>
+                        </div>
+
+                        <div className="d-flex justify-content-center pb-2">
+                            <button className="btn btn-info p-3" onClick={EditUsers}>Modificar usuarios</button>
+                        </div>
+                    </div>
+
+                )
+                    : null
+            }
+            <div className="d-flex justify-content-center pb-5">
                 <button className="btn btn-success p-3" onClick={ShowMovements}>Ver movimientos</button>
             </div>
             <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal} size="lg" centered={true}>

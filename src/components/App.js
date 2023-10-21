@@ -12,6 +12,8 @@ import { Recover } from './Recover';
 import { Operations } from './Operations';
 import { useState } from 'react';
 import { Movements } from './Movements';
+import {EditUser} from './EditUsers';
+import EditGame from './EditGame';
 
 export const App = () => {
     const [show, setShow] = useState(false);
@@ -31,6 +33,8 @@ export const App = () => {
                 <Route exact path='/Recover' element={<Recover />} />
                 <Route exact path='/Operations' element={<Operations />} />
                 <Route exact path='/Operations/Movements' element={<Movements />} />
+                <Route exact path='/Operations/Editusers' element={<EditUser />} />
+                <Route exact path='/Operations/Editgame' element={<EditGame />} />
             </Routes>
         </div>
     );

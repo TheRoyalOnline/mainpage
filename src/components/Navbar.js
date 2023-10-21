@@ -6,8 +6,6 @@ import { ForceDisconnect } from "./Game";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { FaWindowClose } from "react-icons/fa";
-import {BiExit} from "react-icons/bi"
 
 export const Menu = (props) => {
 
@@ -48,31 +46,28 @@ export const Menu = (props) => {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-                {
-                    !isLogged ?
-                        (
-                            <Navbar.Collapse id="basic-navbar-nav">
-                                <Nav className="mx-auto">
+                <Navbar.Collapse id="basic-navbar-nav">
+                    {
+                        !isLogged ?
+                            (
+                                <Nav className="ms-auto">
 
-                                    <Nav.Link onClick={Signup} className="text-white">Registrarse</Nav.Link>
-                                    <Nav.Link onClick={props.handler} className="text-white">Iniciar sesión</Nav.Link>
+                                    <Nav.Link onClick={Signup}><span className="btn btn-outline-success">Registrarse</span></Nav.Link>
+                                    <Nav.Link onClick={props.handler}><span className="btn btn-success">Iniciar sesión</span></Nav.Link>
                                 </Nav>
+                            ) : (
+                                <Nav className="ms-auto">
 
-                            </Navbar.Collapse>
-                        ) : (
-                            <Navbar.Collapse id="basic-navbar-nav">
-                                <Nav className="mx-auto">
-
-                                    <Nav.Link onClick={ForceQuitRoom} className="text-white"><span className="">Forzar cierre</span></Nav.Link>
-                                    <Nav.Link onClick={Profile} className="text-white">Perfil</Nav.Link>
-                                    <Nav.Link onClick={Operations} className="text-white">Operaciones</Nav.Link>
-                                    <Nav.Link onClick={Logout} className="text-white"><BiExit /></Nav.Link>
+                                    <Nav.Link onClick={ForceQuitRoom} ><span className="btn btn-outline-danger">Forzar cierre</span></Nav.Link>
+                                    <Nav.Link onClick={Profile}><span className="btn btn-outline-success">Perfil</span></Nav.Link>
+                                    <Nav.Link onClick={Operations}><span className="btn btn-outline-success">Operaciones</span></Nav.Link>
+                                    <Nav.Link onClick={Logout}><span className="btn btn-warning">Salir</span></Nav.Link>
 
                                 </Nav>
 
-                            </Navbar.Collapse>
-                        )
-                }
+                            )
+                    }
+                </Navbar.Collapse>
 
             </Container>
         </Navbar>

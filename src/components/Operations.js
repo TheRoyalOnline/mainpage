@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
 import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
 import { GetGlobal } from "./APIExtras";
+import EditGame from "./EditGame";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -79,7 +80,7 @@ export const Operations = () => {
     }
 
     
-    function EditUsers() {
+    function EditGame() {
         navigate('/Operations/Editgame')
     }
 
@@ -552,7 +553,7 @@ export const Operations = () => {
                     <div>
 
                         <div className="d-flex justify-content-center pt-3  pb-2">
-                            <button className="btn btn-warning p-3" onClick={EditUsers}>Modificar juegos</button>
+                            <button className="btn btn-warning p-3" onClick={EditGame}>Modificar juegos</button>
                         </div>
 
                         <div className="d-flex justify-content-center pb-2">

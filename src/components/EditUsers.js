@@ -3,102 +3,101 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
 import { FaArrowAltCircleRight } from "react-icons/fa";
+import { FindUser } from "./API";
+import { SetRole } from "./API";
 
 export const EditUser = () => {
-    const [confirm, setConfirm] = useState(false);
     const [errMessage2, setErrMessage2] = useState('');
-    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-    const [showAsing, setShowAsing] = useState(false);
-    const [assign, setAsign] = useState(false);
-    const [convertion, setConvertion] = useState(0);
-    const [transact, setTransact] = useState(false);
-    const [others, setOthers] = useState(false);
     const [showTable, setShowTable] = useState(true);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [user, setUser] = useState([]);
-    const [user1, setUser1] = useState([]);
-    const [user2, setUser2] = useState([]);
-    const [opType, setOpType] = useState('');
-    const [dni, setDni] = useState(0);
-    const [typeConfirm, setTypeConfirm] = useState('');
-    const [ccash, setCcash] = useState(0);
-    const [ccredit, setCcredit] = useState(0);
-    const [deposit, setDeposit] = useState(0);
+    const [userSearch, setUserSearch] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [userdata, setUserdata] = useState([]);
     const navigate = useNavigate();
+    const [confirm, setConfirm] = useState(false);
 
-
-    const refInputAssing = useRef(null);
-    const refInputTransact = useRef(null);
-    const refCheckAssing1 = useRef(null);
-    const refCheckAssing2 = useRef(null);
-    const refCheckTransact1 = useRef(null);
-    const refCheckTransact2 = useRef(null);
     const refBtnConfirm = useRef(null);
 
+
+    const methods = {
+        role: value => {
+            setUser({ ...user, role: value })
+        },
+        dni: value => {
+            setUserSearch({ ...userSearch, dni: value })
+        }
+
+    }
     useEffect(() => {
         Starting();
     }, []);
 
     async function Starting() {
         const cookie = new Cookies();
-        if (cookie.get("userdata") === undefined)
+        if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
             navigate('/');
 
         setUserdata(cookie.get('userdata'));
+        setUser({ ...user, rolefrom: cookie.get('userdata').role })
     }
 
 
     function OnChange(e) {
-        switch (e.target.name) {
-            case 'dni':
-                setDni(e.target.value)
-                break;
-
-            case 'amount1':
-                setUser1({ ...user1, amount: e.target.value })
-                break;
-
-            case 'amount2':
-                setUser2({ ...user2, amount: e.target.value })
-                break;
-
-            case 'assigntype':
-                setUser1({ ...user1, type: e.target.value })
-                break;
-
-            case 'transacttype':
-                setUser2({ ...user2, type: e.target.value })
-                break;
-
-            case 'ccash':
-                setCcash(e.target.value)
-                break;
-            case 'ccredit':
-                setCcredit(e.target.value)
-                break;
-
-            case 'cdeposit':
-                setDeposit(e.target.value)
-                break;
-        }
+        methods[e.target.name](e.target.value);
     }
 
 
     async function Assign(e) {
+        setUser(u => ( {...u, ...userSearch}));
+        setShowModal(false);
+        setShowTable(true);
     }
 
-    function OnSubmit(form) {
-
+    function OnSubmit(e) {
+        e.preventDefault();
+        setShowConfirmDialog(true);
     }
 
     function CallModal() {
         setShowModal(!showModal);
     }
 
-    function Search() {
-
+    async function ConfirmSubmit() {
+        refBtnConfirm.current.disabled = true;
+        if (confirm) return;
+        setConfirm(true);        
+        
+        var res = 0;
+        res = await SetRole(user);
+        
+        Starting();
+        refBtnConfirm.current.disabled = false;
+        setConfirm(false);
+        setShowConfirmDialog(false);
     }
+
+    async function Search() {
+        setErrMessage2('');
+        const u = await FindUser(userSearch.dni);
+
+        if (u.iduser !== undefined) {
+            if (userdata.iduser === u.iduser) {
+                setErrMessage2('No se puede interactuar con uno mismo.');
+                setShowModal(false);
+                return;
+            }
+            if (userdata.role > u.role) {
+                setErrMessage2('No se puede interactuar con usuarios de rol superior.');
+                setShowModal(false);
+                return;
+            }
+
+            setUserSearch(u);
+            setShowTable(false);
+        }
+    }
+
     return (
         <div>
             <div className='pt-2 text-white container register'>
@@ -109,8 +108,8 @@ export const EditUser = () => {
 
                         <div className='d-flex justify-content-center p-3'>
                             <div className="justify-content-center pt-3">
-                                <label htmlFor="idNacionalidad">Nuevo rol</label>
-                                <select className="form-select bg-dark border-success text-white" id="idNacionalidad" value={user.role} required name='role' onChange={OnChange}>
+                                <label htmlFor="idRol">Nuevo rol</label>
+                                <select className="form-select bg-dark border-success text-white" id="idRol" value={user.role} required name='role' onChange={OnChange}>
                                     <option value={5}>Cliente</option>
                                     <option value={4}>Vendedor</option>
                                     <option value={3}>Operador</option>
@@ -123,7 +122,7 @@ export const EditUser = () => {
                         <div className='d-flex justify-content-center'>
                             <div className="form-inline">
                                 <label htmlFor="label1 ">Usuario:</label>
-                                <label className="p-3" id="label1"><b>{user1.iduser != undefined ? '(' + user1.dni + ') ' + user1.surname + ', ' + user1.name : 'Ninguno'}</b></label>
+                                <label className="p-3" id="label1"><b>{user.iduser != undefined ? '(' + user.dni + ') ' + user.surname + ', ' + user.name : 'Ninguno'}</b></label>
                             </div>
                         </div>
                         <h5 className="card-header border-success text-white pt-4"></h5>
@@ -149,7 +148,7 @@ export const EditUser = () => {
                     <div className="d-flex justify-content-center">
                         <label htmlFor="idNombre" className="col-sm-2 col-form-label">Cedula</label>
                         <div className="col-sm-5">
-                            <input type="number" className="form-control bg-dark border-success text-white" id="dni" value={dni} name='dni' onChange={OnChange} />
+                            <input type="number" className="form-control bg-dark border-success text-white" id="dni" value={userSearch.dni} name='dni' onChange={OnChange} />
                         </div>
                         <div className="col-sm-2">
                             <button className="btn btn-success" type="button" onClick={Search}><FaArrowAltCircleRight /></button>
@@ -163,15 +162,17 @@ export const EditUser = () => {
                                     <th>Apellido</th>
                                     <th>Cedula</th>
                                     <th>Email</th>
+                                    <th>Rol</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{user.name}</td>
-                                    <td>{user.surname}</td>
-                                    <td>{user.dni}</td>
-                                    <td>{user.email}</td>
+                                    <td>{userSearch.name}</td>
+                                    <td>{userSearch.surname}</td>
+                                    <td>{userSearch.dni}</td>
+                                    <td>{userSearch.email}</td>
+                                    <td>{userSearch.rolename}</td>
                                     <td>
                                         <div className="form-group">
                                             <button className="btn btn-success" type="button" onClick={Assign}>Asignar</button>
@@ -183,6 +184,18 @@ export const EditUser = () => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmacion 🤔</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    <p>Esta seguro que desea confirmar la operacion?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
         </div>

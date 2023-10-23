@@ -14,6 +14,7 @@ const URICredits = "https://royalonline.cloud/api/user/credits"
 const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
+const URIRoleUp = "https://royalonline.cloud/api/user/setrole"
 
 export const Logon = async (user, pass) => {
 
@@ -22,7 +23,7 @@ export const Logon = async (user, pass) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
     };
-    
+
     const res = await fetch(URILogin, requestOptions);
     if (res.status === 200) {
         const cookies = new Cookies();
@@ -265,9 +266,9 @@ export const TransactToUser = async (data) => {
 
     if (res.status === 200) {
         if (data.role === 5) {
-            const message = data.type === "buy"?
-             `Venta de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`:
-             `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`;
+            const message = data.type === "buy" ?
+                `Venta de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online` :
+                `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`;
             SendMail("Transaccion realizada", message, data.email, "");
         }
     }
@@ -304,4 +305,27 @@ export const MovementsList = async (iduser) => {
     };
     const res = await fetch(URITransactions, requestOptions);
     return await res.json();
+};
+
+
+export const SetRole = async (data) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            rolefrom: cookie.get('userdata').role,
+            role: data.role,
+            iduser: data.iduser
+        })
+    };
+
+    const res = await fetch(URIRoleUp, requestOptions);
+
+    if (res.status === 200) {
+        return true;
+    }
+
+    return false;
 };

@@ -7,7 +7,9 @@ import { FindUser } from "./API";
 import { SetRole } from "./API";
 
 export const EditUser = () => {
+    const [errMessage1, setErrMessage1] = useState('');
     const [errMessage2, setErrMessage2] = useState('');
+    const [nroCI, setNroCI] = useState(0);
     const [showTable, setShowTable] = useState(true);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [user, setUser] = useState([]);
@@ -18,14 +20,15 @@ export const EditUser = () => {
     const [confirm, setConfirm] = useState(false);
 
     const refBtnConfirm = useRef(null);
+    const refBtnUpdate = useRef(null);
 
 
     const methods = {
         role: value => {
             setUser({ ...user, role: value })
         },
-        dni: value => {
-            setUserSearch({ ...userSearch, dni: value })
+        nroCI: value => {
+            setNroCI(value);
         }
 
     }
@@ -34,6 +37,7 @@ export const EditUser = () => {
     }, []);
 
     async function Starting() {
+        refBtnUpdate.current.disabled = true
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
             navigate('/');
@@ -49,9 +53,10 @@ export const EditUser = () => {
 
 
     async function Assign(e) {
-        setUser(u => ( {...u, ...userSearch}));
+        setUser(u => ({ ...u, ...userSearch }));
         setShowModal(false);
-        setShowTable(true);
+        setShowTable(true);        
+        refBtnUpdate.current.disabled = false
     }
 
     function OnSubmit(e) {
@@ -66,11 +71,11 @@ export const EditUser = () => {
     async function ConfirmSubmit() {
         refBtnConfirm.current.disabled = true;
         if (confirm) return;
-        setConfirm(true);        
-        
+        setConfirm(true);
+
         var res = 0;
         res = await SetRole(user);
-        
+
         Starting();
         refBtnConfirm.current.disabled = false;
         setConfirm(false);
@@ -79,7 +84,10 @@ export const EditUser = () => {
 
     async function Search() {
         setErrMessage2('');
-        const u = await FindUser(userSearch.dni);
+        setErrMessage1('');
+        setShowTable(true);
+        const u = await FindUser(nroCI);
+        refBtnUpdate.current.disabled = true
 
         if (u.iduser !== undefined) {
             if (userdata.iduser === u.iduser) {
@@ -87,14 +95,11 @@ export const EditUser = () => {
                 setShowModal(false);
                 return;
             }
-            if (userdata.role > u.role) {
-                setErrMessage2('No se puede interactuar con usuarios de rol superior.');
-                setShowModal(false);
-                return;
-            }
 
             setUserSearch(u);
             setShowTable(false);
+        } else {
+            setErrMessage1('Usuario inexistente.');
         }
     }
 
@@ -125,6 +130,7 @@ export const EditUser = () => {
                                 <label className="p-3" id="label1"><b>{user.iduser != undefined ? '(' + user.dni + ') ' + user.surname + ', ' + user.name : 'Ninguno'}</b></label>
                             </div>
                         </div>
+                        <label className="text-center text-danger"><b>{errMessage2}</b></label>
                         <h5 className="card-header border-success text-white pt-4"></h5>
                         <div className='text-center mt-3 mb-4'>
                             <div className="form-group ">
@@ -132,7 +138,7 @@ export const EditUser = () => {
                                     <button className="btn btn-purple mt-3 text-white" type="button" onClick={() => CallModal()}>Seleccionar operador</button>
                                 </div>
                                 <div className='d-flex flex-column container w-75'>
-                                    <button className="btn btn-success mt-3" type="submit">Actualizar</button>
+                                    <button ref={refBtnUpdate} className="btn btn-success mt-3" type="submit">Actualizar</button>
                                 </div>
 
                             </div>
@@ -146,9 +152,9 @@ export const EditUser = () => {
                 </Modal.Header>
                 <Modal.Body >
                     <div className="d-flex justify-content-center">
-                        <label htmlFor="idNombre" className="col-sm-2 col-form-label">Cedula</label>
+                        <label htmlFor="nroCI" className="col-sm-2 col-form-label">Cedula</label>
                         <div className="col-sm-5">
-                            <input type="number" className="form-control bg-dark border-success text-white" id="dni" value={userSearch.dni} name='dni' onChange={OnChange} />
+                            <input type="number" className="form-control bg-dark border-success text-white" id="nroCI" value={nroCI} name='nroCI' onChange={OnChange} />
                         </div>
                         <div className="col-sm-2">
                             <button className="btn btn-success" type="button" onClick={Search}><FaArrowAltCircleRight /></button>
@@ -183,7 +189,8 @@ export const EditUser = () => {
                         </table>
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="d-flex justify-content-center">
+                    <label className="text-center text-danger"><b>{errMessage1}</b></label>
                 </Modal.Footer>
             </Modal>
 

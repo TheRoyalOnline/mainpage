@@ -83,18 +83,6 @@ export const EditGame = () => {
         Starting();
     }, [])
 
-
-
-
-    function OnChange(e) {
-        const data = games.find(i => i.idgame === e.target.value);
-        setGame(data);
-    }
-
-
-    async function Assign(e) {
-    }
-
     function OnSubmit(e) {
         e.preventDefault();
         setShowConfirmDialog(true);
@@ -104,9 +92,14 @@ export const EditGame = () => {
         refBtnConfirm.current.disabled = true;
         if (confirm) return;
         setConfirm(true);
-
-        var res = 0;
-        res = await GamesSetup(game);
+        
+        roomDetails.items = allSymbols;
+        roomDetails.RiskPercents = allCards;
+        roomDetails.BPrizes = bonus;
+        roomDetails.SBPrizes = sbonus;
+        
+         var res = 0;
+         res = await GamesSetup(room.id, roomDetails);
 
         Starting();
         refBtnConfirm.current.disabled = false;
@@ -115,7 +108,7 @@ export const EditGame = () => {
     }
 
     function ChangeSetup(e) {
-        setRoomDetails({ ...roomDetails, [e.target.name]: e.target.value });
+        setRoomDetails({ ...roomDetails, [e.target.name]: parseFloat(e.target.value) });
     }
 
     function CallModal() {
@@ -131,7 +124,7 @@ export const EditGame = () => {
                 newvalue = aux.find(c => c.id === id);
 
                 if (newvalue) {
-                    newvalue.percent = value;
+                    newvalue.percent =  parseFloat(value);
                     setAllSymbols(aux);
                 }
                 break;
@@ -140,7 +133,7 @@ export const EditGame = () => {
                 newvalue = aux.find(c => c.value === id);
 
                 if (newvalue) {
-                    newvalue.percent = value;
+                    newvalue.percent = parseFloat(value);
                     setAllCards(aux);
                 }
                 break;
@@ -149,7 +142,7 @@ export const EditGame = () => {
                 newvalue = aux.find(c => c.minPrize === id);
 
                 if (newvalue) {
-                    newvalue.percent = value;
+                    newvalue.percent = parseFloat(value);
                     setBonus(aux);
                 }
                 break;
@@ -158,7 +151,7 @@ export const EditGame = () => {
                 newvalue = aux.find(c => c.prize === id);
 
                 if (newvalue) {
-                    newvalue.percent = value;
+                    newvalue.percent = parseFloat(value);
                     setSBonus(aux);
                 }
                 break;
@@ -239,7 +232,7 @@ export const EditGame = () => {
                                                 allCards ? (
 
                                                     allCards.map((item) => (
-                                                        <tr>
+                                                        <tr  key={item.value}>
                                                             <td>{item.value}</td>
                                                             <td>{cards[item.value]}</td>
                                                             <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.value, e.target.value, "cards")}/></td>
@@ -268,7 +261,7 @@ export const EditGame = () => {
                                                 bonus ? (
 
                                                     bonus.map((item) => (
-                                                        <tr>
+                                                        <tr  key={item.minPrize}>
                                                             <td>{item.minPrize}</td>
                                                             <td>{item.maxPrize}</td>
                                                             <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.minPrize, e.target.value, "bonus")}/></td>
@@ -283,7 +276,7 @@ export const EditGame = () => {
                                 </div>
 
                                 <div className="table-responsive">
-                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios bonus</label>
+                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios super bonus</label>
                                     <table className="table table-dark table-striped text-center">
                                         <thead>
                                             <tr >
@@ -295,7 +288,7 @@ export const EditGame = () => {
                                             {
                                                 sbonus ? (
                                                     sbonus.map((item) => (
-                                                        <tr>
+                                                        <tr key={item.prize}>
                                                             <td>{item.prize}</td>
                                                             <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.prize, e.target.value, "sbonus")} /></td>
 

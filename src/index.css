@@ -85,3 +85,19 @@ footer{
   padding: 4px; 
   border-radius: 10px; 
 }
+
+.relative-position-card {
+  position: relative;
+}
+
+.green-box {
+  border-radius: 100px;
+  position: absolute;
+  color: white;
+  font-size: x-large;
+  font-weight: 1000;
+  bottom: 0;
+  right: 0;
+  padding: 10px 20px; /* Ajusta según tu necesidad */
+  border-radius: 20px; /* Para darle un aspecto redondeado */
+}

@@ -6,6 +6,8 @@ import { ShowDialog } from './Dialogs'
 import { ConnectRoom, GetRoom } from './Game'
 import Iframe from './Iframe'
 import { useNavigate } from 'react-router-dom'
+import {FaEdit, FaSplotch} from 'react-icons/fa'
+import {BiMath} from 'react-icons/bi'
 
 
 export const GameItem = props => {
@@ -31,8 +33,7 @@ export const GameItem = props => {
             navigate("/Operations/Editgame", { state: { idroom: v } });
         },
         'stats': v => {
-            console.log(v)
-
+            navigate("/Operations/Statistics", { state: { idroom: v } });
         }
     }
 
@@ -80,20 +81,20 @@ export const GameItem = props => {
     }
 
     function OnClick(e) {
+        console.log(e.target.name)
         methods[e.target.name](e.target.value);
     }
 
     return (
         <div className="col-4 flex-fill">
-            <div ref={card} className="image-container mt-2 bg-success ">
+            <div ref={card} className="image-container mt-2 bg-success relative-position-card">
                 <div className='d-flex p-2 justify-content-between align-items-center'>
-                    <h5 className="card-title p-2 text-white">Sala: {room.id}</h5>
                     {
                         cookie.get("userdata") !== undefined ? (
                             cookie.get("userdata").role === 1 ? (
                                 <div>
-                                    <button className='btn btn-transparent' value={room.id} title='Editar' name='edit' onClick={OnClick}>✏️</button>
-                                    <button className='btn btn-transparent' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>🧮</button>
+                                    <button className='btn btn-transparent text-white'  value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
+                                    <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
                                 </div>
                             ) : null
 
@@ -102,6 +103,7 @@ export const GameItem = props => {
                 </div>
                 <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
                 <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
+                <div className="green-box bg-success">{room.id}</div> 
             </div>
         </div>
     );

@@ -67,7 +67,7 @@ export const RoomById = async (id) => {
     return await res.json();
 };
 
-export const GamesSetup = async (game) => {
+export const GamesSetup = async (idroom, setup) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -76,8 +76,8 @@ export const GamesSetup = async (game) => {
             token: cookie.get('userdata').token,
             iduser: cookie.get('userdata').iduser,
             role: cookie.get('userdata').role,
-            idgame: game.idgame,
-            setup: game.setup
+            idroom: idroom,
+            setup: JSON.stringify(setup)
         })
     };
     const res = await fetch(URISetup, requestOptions);

@@ -552,9 +552,9 @@ export const Operations = () => {
                 userdata.role === 1 ? (
                     <div>
 
-                        <div className="d-flex justify-content-center pt-3  pb-2">
+                        {/* <div className="d-flex justify-content-center pt-3  pb-2">
                             <button className="btn btn-warning p-3" onClick={EditGame}>Modificar juegos</button>
-                        </div>
+                        </div> */}
 
                         <div className="d-flex justify-content-center pb-2">
                             <button className="btn btn-info p-3" onClick={EditUsers}>Modificar usuarios</button>

@@ -5,10 +5,12 @@ import Cookies from 'universal-cookie'
 import { ShowDialog } from './Dialogs'
 import { ConnectRoom, GetRoom } from './Game'
 import Iframe from './Iframe'
+import { useNavigate } from 'react-router-dom'
 
 
 export const GameItem = props => {
     const cookie = new Cookies();
+    const navigate = useNavigate();
     const initialMessage = { title: "Sala ocupada.. 😥", body: "Actualmente esta sala se encuentra ocupada por otro usuario, favor intentalo mas tarde." }
     const [room, setRoom] = useState(props.item);
     const [show, setShow] = useState(false);
@@ -26,7 +28,7 @@ export const GameItem = props => {
 
     const methods = {
         'edit': v => {
-            console.log(v)
+            navigate("/Operations/Editgame", { state: { idroom: v } });
         },
         'stats': v => {
             console.log(v)

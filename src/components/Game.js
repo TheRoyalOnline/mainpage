@@ -5,6 +5,7 @@ const URIRoom = "https://royalonline.cloud/api/game/room";
 const URIForce = "https://royalonline.cloud/api/game/force"
 const URIRoomByID = "https://royalonline.cloud/api/game/editroom"
 const URISetup = "https://royalonline.cloud/api/game/setup"
+const URIStats = "https://slotpy.info/statistics"
 
 export const ConnectRoom = async (_iduser, _idroom) => {
     const cookie = new Cookies();
@@ -82,4 +83,19 @@ export const GamesSetup = async (idroom, setup) => {
     };
     const res = await fetch(URISetup, requestOptions);
     return await res.status;
+};
+
+export const GetStatistics = async (id) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            idroom: parseInt(id)
+        })
+    };
+    const res = await fetch(URIStats, requestOptions);
+    if(res.status === 200){
+        return await res.json();
+    }
+    
 };

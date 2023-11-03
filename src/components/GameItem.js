@@ -88,7 +88,7 @@ export const GameItem = props => {
     return (
         <div className="col-4 flex-fill">
             <div ref={card} className="image-container mt-2 bg-success relative-position-card">
-                <div className='d-flex p-2 justify-content-between align-items-center'>
+                <div className='d-flex justify-content-between align-items-center'>
                     {
                         cookie.get("userdata") !== undefined ? (
                             cookie.get("userdata").role === 1 ? (

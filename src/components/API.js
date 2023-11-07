@@ -15,6 +15,7 @@ const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
 const URIRoleUp = "https://royalonline.cloud/api/user/setrole"
+const URIRequests = "https://royalonline.cloud/api/user/requests"
 
 export const Logon = async (user, pass) => {
 
@@ -267,7 +268,7 @@ export const TransactToUser = async (data) => {
     if (res.status === 200) {
         if (data.role === 5) {
             const message = data.type === "buy" ?
-                `Venta de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online` :
+                `wa de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online` :
                 `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`;
             SendMail("Transaccion realizada", message, data.email, "");
         }
@@ -328,4 +329,24 @@ export const SetRole = async (data) => {
     }
 
     return false;
+};
+
+
+export const GetRequests = async () => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            rolefrom: cookie.get('userdata').role,
+            iduser: cookie.get('userdata').iduser
+        })
+    };
+
+    const res = await fetch(URIRequests, requestOptions);
+
+    if (res.status === 200) {
+        return await res.json();
+    }
 };

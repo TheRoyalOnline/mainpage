@@ -31,6 +31,7 @@ export const Operations = () => {
     const [ccash, setCcash] = useState(0);
     const [ccredit, setCcredit] = useState(0);
     const [deposit, setDeposit] = useState(0);
+    const [requests, setRequests] = useState([]);
 
     const refInputAssing = useRef(null);
     const refInputTransact = useRef(null);
@@ -79,7 +80,7 @@ export const Operations = () => {
         navigate('/Operations/Editusers')
     }
 
-    
+
     function EditGame() {
         navigate('/Operations/Editgame')
     }
@@ -548,6 +549,50 @@ export const Operations = () => {
 
                 ) : null
             }
+            {
+                requests.length > 0 ? (
+                    <div className='pt-2 text-white container register' name='assign' id="assign" onSubmit={OnSubmit}>
+                        <div className='card border-success text-white bg-transparent mb-5'>
+                            <h5 className="card-header border-success text-white">Solicitudes</h5>
+
+                            <div className="table-responsive">
+                                <table className="table table-dark table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Tipo</th>
+                                            <th>Creditos</th>
+                                            <th>Efectivo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            requests.map(item => (
+                                                <tr key={item.idrequests}>
+                                                <td>{item.userfrom}</td>
+                                                <td>{item.type}</td>
+                                                <td>{item.credits}</td>
+                                                <td>{item.cash}</td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <button className="btn btn-transparent" type="button" onClick={Assign}>✔️</button>
+                                                        <button className="btn btn-transparent" type="button" onClick={Assign}>❌</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            ))
+                                        } 
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                ) : null
+            }
+
             {
                 userdata.role === 1 ? (
                     <div>

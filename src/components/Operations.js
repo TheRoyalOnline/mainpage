@@ -8,6 +8,7 @@ import { Modal } from "react-bootstrap";
 import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
 import { GetGlobal } from "./APIExtras";
 import EditGame from "./EditGame";
+import { GetRequests, Response } from "./API";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -67,6 +68,8 @@ export const Operations = () => {
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
 
+        const list = await GetRequests();
+        setRequests(list);
         const c = await GetGlobal('convertion');
         setConvertion(c);
     }
@@ -142,6 +145,12 @@ export const Operations = () => {
             }
             setShowTable(false);
         }
+    }
+
+    async function ResponseRequests(value, id){
+        const res = await Response(id, value);
+        if(res === 200)
+            navigate('/Operations')
     }
 
     async function Assign(e) {
@@ -571,13 +580,13 @@ export const Operations = () => {
                                             requests.map(item => (
                                                 <tr key={item.idrequests}>
                                                 <td>{item.userfrom}</td>
-                                                <td>{item.type}</td>
+                                                <td>{item.type === "sell" ? "Compra" : "Venta"}</td>
                                                 <td>{item.credits}</td>
                                                 <td>{item.cash}</td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <button className="btn btn-transparent" type="button" onClick={Assign}>✔️</button>
-                                                        <button className="btn btn-transparent" type="button" onClick={Assign}>❌</button>
+                                                        <button className="btn btn-transparent" type="button"  onClick={(e)=>ResponseRequests("AP", item.idrequest)}>✔️</button>
+                                                        <button className="btn btn-transparent" type="button" onClick={(e)=>ResponseRequests("RE", item.idrequest)}>❌</button>
                                                     </div>
                                                 </td>
                                             </tr>

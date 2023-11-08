@@ -16,6 +16,7 @@ const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
 const URIRoleUp = "https://royalonline.cloud/api/user/setrole"
 const URIRequests = "https://royalonline.cloud/api/user/requests"
+const URIResponse = "https://royalonline.cloud/api/user/response"
 
 export const Logon = async (user, pass) => {
 
@@ -349,4 +350,22 @@ export const GetRequests = async () => {
     if (res.status === 200) {
         return await res.json();
     }
+};
+
+
+export const Response = async (id, state) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            idrequest: id,
+            state: state
+        })
+    };
+
+    const res = await fetch(URIResponse, requestOptions);
+
+    return await res.status;
 };

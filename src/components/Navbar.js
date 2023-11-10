@@ -33,7 +33,7 @@ export const Menu = (props) => {
 
     async function ForceQuitRoom() {
         const res = await ForceDisconnect();
-        navigate('/');
+        window.location.reload();
     }
 
     return (

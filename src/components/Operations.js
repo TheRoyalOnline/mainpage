@@ -67,7 +67,6 @@ export const Operations = () => {
 
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
-
         const list = await GetRequests();
         setRequests(list);
         const c = await GetGlobal('convertion');

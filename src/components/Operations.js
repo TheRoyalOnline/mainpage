@@ -41,6 +41,7 @@ export const Operations = () => {
     const refCheckTransact1 = useRef(null);
     const refCheckTransact2 = useRef(null);
     const refBtnConfirm = useRef(null);
+    const refRequests = useRef(null);
 
     const access = {
         '1': [1, 1, 1, 1],
@@ -146,10 +147,11 @@ export const Operations = () => {
         }
     }
 
-    async function ResponseRequests(value, id){
+    async function ResponseRequests(value, id, button){
+        refRequests.current.disabled = true;
         const res = await Response(id, value);
         if(res === 200)
-            navigate('/Operations')
+            window.location.reload();
     }
 
     async function Assign(e) {
@@ -584,8 +586,8 @@ export const Operations = () => {
                                                 <td>{item.cash}</td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <button className="btn btn-transparent" type="button"  onClick={(e)=>ResponseRequests("AP", item.idrequest)}>✔️</button>
-                                                        <button className="btn btn-transparent" type="button" onClick={(e)=>ResponseRequests("RE", item.idrequest)}>❌</button>
+                                                        <button ref={refRequests} className="btn btn-transparent" type="button"  onClick={(e)=>ResponseRequests("AP", item.idrequest)}>✔️</button>
+                                                        <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e)=>ResponseRequests("RE", item.idrequest)}>❌</button>
                                                     </div>
                                                 </td>
                                             </tr>

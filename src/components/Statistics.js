@@ -19,7 +19,7 @@ export const Statistics = () => {
 
     useEffect(() => {
         Starting();
-    }, []);
+    }, 3000);
 
 
     async function Starting(){

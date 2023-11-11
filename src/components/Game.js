@@ -2,10 +2,10 @@ import  Cookies  from "universal-cookie";
 
 const URIConnectRoom = "https://royalonline.cloud/api/game/roomconnect";
 const URIRoom = "https://royalonline.cloud/api/game/room";
-const URIForce = "https://royalonline.cloud/api/game/force"
-const URIRoomByID = "https://royalonline.cloud/api/game/editroom"
-const URISetup = "https://royalonline.cloud/api/game/setup"
-const URIStats = "https://slotpy.info/statistics"
+const URIForce = "https://royalonline.cloud/api/game/force";
+const URIRoomByID = "https://royalonline.cloud/api/game/editroom";
+const URISetup = "https://royalonline.cloud/api/game/setup";
+const URIStats = "https://slotpy.info/statistics";
 
 export const ConnectRoom = async (_iduser, _idroom) => {
     const cookie = new Cookies();

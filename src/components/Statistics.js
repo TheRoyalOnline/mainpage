@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
-import { GetStatistics , RoomById } from "./Game";
+import { GetDetails, GetStatistics, RoomById } from "./Game";
 
 export const Statistics = () => {
     const [alldata, setAlldata] = useState([]);
@@ -15,25 +15,36 @@ export const Statistics = () => {
     const [numberMain, setNumberMain] = useState(0);
     const [numberBonus, setNumberBonus] = useState(0);
     const [numberSBonus, setNumberSBonus] = useState(0);
+    const [details, setDetails] = useState([]);
     const location = useLocation();
 
     useEffect(() => {
         Starting();
-    }, 3000);
+        const intervalId = setInterval(Starting, 3000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
 
-    async function Starting(){
+    async function Starting() {
         const idroom = location.state.idroom;
         const data = await GetStatistics(idroom);
+        const det = await GetDetails(idroom);
         setAlldata(data);
+
+        const results = det.flatMap(item =>
+            item.details.flatMap(detail => detail.result)
+        );
+
+        setDetails(results);
 
         if (data === undefined)
             return;
-    
+
         var cardin = 0, cardout = 0, historyBet = 0, historyPrize = 0, numberBonus = 0;
         var numberPrizesMain = 0, numberSuperBonus = 0, spins = 0, totalMain = 0, totalBonus = 0, totalSBonus = 0;
-    
-        data.map( item => {
+
+        data.map(item => {
             cardin += item.cardIn;
             cardout += item.cardOut;
             historyBet += item.historyBet;
@@ -47,7 +58,7 @@ export const Statistics = () => {
             totalSBonus += item.totalSBonus;
         });
 
-        setCres(cardout-cardin);
+        setCres(cardout - cardin);
         setAllwin(historyPrize + cres);
         setTotalbet(historyBet);
         setTotalMain(totalMain);
@@ -59,21 +70,21 @@ export const Statistics = () => {
         setNumberSBonus(numberSuperBonus);
     }
 
-    return(
+    return (
         <div>
-            <div className='pt-2 text-white container register'>
+            <div className='pt-2 text-white container register pb-5'>
                 <h1 className='text-center'>Estadisticas</h1>
                 <h2 className='text-center'>Sala {location.state.idroom}</h2>
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Generales</h5>
 
-                    <div className='flex-column p-3' >                        
+                    <div className='flex-column p-3' >
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">All total win:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={allwin} readOnly />
                                 </div>
@@ -84,7 +95,7 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={totalbet} readOnly />
                                 </div>
@@ -95,7 +106,7 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiPercentFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiPercentFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={(allwin / totalbet * 100).toFixed(2)} readOnly />
                                 </div>
@@ -106,7 +117,7 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={allwin - totalbet} readOnly />
                                 </div>
@@ -118,16 +129,16 @@ export const Statistics = () => {
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">De juego</h5>
 
-                    <div className='flex-column p-3' >                        
+                    <div className='flex-column p-3' >
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">Main:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={totalMain} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalMain / allwin * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalMain / allwin * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -136,10 +147,10 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={totalBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalBonus / allwin * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalBonus / allwin * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -148,10 +159,10 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={totalSBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalSBonus / allwin * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalSBonus / allwin * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -160,10 +171,10 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={cres} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(cres / allwin * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(cres / allwin * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -174,13 +185,13 @@ export const Statistics = () => {
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">De frecuencia</h5>
 
-                    <div className='flex-column p-3' >                        
+                    <div className='flex-column p-3' >
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">All spins:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={allspins} readOnly />
                                 </div>
@@ -191,10 +202,10 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={numberMain} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberMain / allspins * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberMain / allspins * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -203,10 +214,10 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={numberBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberBonus / allspins * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberBonus / allspins * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -215,12 +226,46 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill/></span>
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
                                     <input type="number" className="form-control bg-dark border-success text-white" value={numberSBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberSBonus / allspins * 100).toFixed(2) + "%" } readOnly />
+                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberSBonus / allspins * 100).toFixed(2) + "%"} readOnly />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className='card border-success text-white bg-transparent mt-5' >
+                    <h5 className="card-header border-success text-white">Log de la sala</h5>
+
+                    <div className='flex-column p-3 '>
+                        <div className="table-responsive">
+                            <table className="table table-dark table-striped text-center">
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Giro</th>
+                                    <th>Lineas</th>
+                                    <th>Apuesta</th>
+                                    <th>Premio</th>
+                                    <th>Combinacion</th>
+                                    <th>Hora</th>
+                                </tr>
+                                {
+                                    details.map(i => (
+                                        <tr>
+                                            <td>{i.resultType}</td>
+                                            <td>{i.spinNumber}</td>
+                                            <td>{i.lines}</td>
+                                            <td>{i.bet}</td>
+                                            <td>{i.earn}</td>
+                                            <td>{i.winCombination}</td>
+                                            <td>{i.hour}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </table>
                         </div>
                     </div>
 

@@ -92,14 +92,14 @@ export const EditGame = () => {
         refBtnConfirm.current.disabled = true;
         if (confirm) return;
         setConfirm(true);
-        
+
         roomDetails.items = allSymbols;
         roomDetails.RiskPercents = allCards;
         roomDetails.BPrizes = bonus;
         roomDetails.SBPrizes = sbonus;
-        
-         var res = 0;
-         res = await GamesSetup(room.id, roomDetails);
+
+        var res = 0;
+        res = await GamesSetup(room.id, roomDetails);
 
         Starting();
         refBtnConfirm.current.disabled = false;
@@ -124,7 +124,7 @@ export const EditGame = () => {
                 newvalue = aux.find(c => c.id === id);
 
                 if (newvalue) {
-                    newvalue.percent =  parseFloat(value);
+                    newvalue.percent = parseFloat(value);
                     setAllSymbols(aux);
                 }
                 break;
@@ -152,6 +152,16 @@ export const EditGame = () => {
 
                 if (newvalue) {
                     newvalue.percent = parseFloat(value);
+                    setSBonus(aux);
+                }
+                break;
+
+            case "sbprize":
+                aux = [...sbonus];
+                newvalue = aux.find(c => c.prize === id);
+
+                if (newvalue) {
+                    newvalue.prize = parseFloat(value);
                     setSBonus(aux);
                 }
                 break;
@@ -232,10 +242,10 @@ export const EditGame = () => {
                                                 allCards ? (
 
                                                     allCards.map((item) => (
-                                                        <tr  key={item.value}>
+                                                        <tr key={item.value}>
                                                             <td>{item.value}</td>
                                                             <td>{cards[item.value]}</td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.value, e.target.value, "cards")}/></td>
+                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.value, e.target.value, "cards")} /></td>
 
                                                         </tr>
 
@@ -261,10 +271,10 @@ export const EditGame = () => {
                                                 bonus ? (
 
                                                     bonus.map((item) => (
-                                                        <tr  key={item.minPrize}>
+                                                        <tr key={item.minPrize}>
                                                             <td>{item.minPrize}</td>
                                                             <td>{item.maxPrize}</td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.minPrize, e.target.value, "bonus")}/></td>
+                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.minPrize, e.target.value, "bonus")} /></td>
 
                                                         </tr>
 
@@ -289,7 +299,7 @@ export const EditGame = () => {
                                                 sbonus ? (
                                                     sbonus.map((item) => (
                                                         <tr key={item.prize}>
-                                                            <td>{item.prize}</td>
+                                                            <td><input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.prize} onChange={e => ChangeTable(item.prize, e.target.value, "sbprize")} /></td>
                                                             <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.prize, e.target.value, "sbonus")} /></td>
 
                                                         </tr>

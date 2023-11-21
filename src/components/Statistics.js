@@ -33,8 +33,8 @@ export const Statistics = () => {
         setAlldata(data);
 
         const results = det.flatMap(item =>
-            item.details.flatMap(detail => detail.result)
-        );
+            item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
+        ).slice(0, 200);
 
         setDetails(results);
 
@@ -237,42 +237,57 @@ export const Statistics = () => {
 
                 </div>
 
+
+
+
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Log de la sala</h5>
 
-                    <div className='flex-column p-3 '>
-                        <div className="table-responsive">
-                            <table className="table table-dark table-striped text-center">
+                    <div className="table-responsive">
+                        <table className="table table-dark table-striped text-center">
+                            <thead>
                                 <tr>
-                                    <th>Tipo</th>
                                     <th>Giro</th>
+                                    <th>Tipo</th>
                                     <th>Lineas</th>
                                     <th>Apuesta</th>
                                     <th>Premio</th>
                                     <th>Combinacion</th>
                                     <th>Hora</th>
                                 </tr>
+
+                            </thead>
+                            <tbody>
                                 {
-                                    details.map(i => (
-                                        <tr>
-                                            <td>{i.resultType}</td>
-                                            <td>{i.spinNumber}</td>
-                                            <td>{i.lines}</td>
-                                            <td>{i.bet}</td>
-                                            <td>{i.earn}</td>
-                                            <td>{i.winCombination}</td>
-                                            <td>{i.hour}</td>
-                                        </tr>
+                                    details.map(item => (
+                                        <React.Fragment>                                            
+                                            <tr>
+                                                <td colSpan={7} className="text-success "><b>{item.date}</b></td>
+                                            </tr>
+                                            {
+                                                item.results.map(i => (
+                                                    <tr>
+                                                        <td>{i.spinNumber}</td>
+                                                        <td>{i.resultType}</td>
+                                                        <td>{i.lines}</td>
+                                                        <td>{i.bet}</td>
+                                                        <td>{i.earn}</td>
+                                                        <td>{i.winCombination}</td>
+                                                        <td>{i.hour}</td>
+                                                    </tr>
+                                                ))
+                                            }
+
+
+                                        </React.Fragment>
                                     ))
                                 }
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
 
+
                 </div>
-
-
-
             </div>
         </div>
 

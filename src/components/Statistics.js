@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
 import { GetDetails, GetStatistics, RoomById } from "./Game";
+import { Modal, ProgressBar } from "react-bootstrap";
 
 export const Statistics = () => {
     const [alldata, setAlldata] = useState([]);
@@ -17,6 +18,7 @@ export const Statistics = () => {
     const [numberSBonus, setNumberSBonus] = useState(0);
     const [details, setDetails] = useState([]);
     const location = useLocation();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         Starting();
@@ -35,6 +37,7 @@ export const Statistics = () => {
         const results = det.flatMap(item =>
             item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
         ).slice(0, 200);
+
 
         setDetails(results);
 
@@ -70,6 +73,9 @@ export const Statistics = () => {
         setNumberMain(numberPrizesMain);
         setNumberBonus(numberBonus);
         setNumberSBonus(numberSuperBonus);
+
+        if (loading)
+            setLoading(false);
     }
 
     return (
@@ -262,7 +268,7 @@ export const Statistics = () => {
                             <tbody>
                                 {
                                     details.map(item => (
-                                        <React.Fragment>                                            
+                                        <React.Fragment>
                                             <tr>
                                                 <td colSpan={7} className="text-success "><b>{item.date}</b></td>
                                             </tr>
@@ -291,6 +297,15 @@ export const Statistics = () => {
 
                 </div>
             </div>
+
+            <Modal show={loading} backdrop="static" keyboard={false} centered={true}>
+                <Modal.Header>
+                    <Modal.Title>CARGANDO.. ⌛</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ProgressBar className="progress-bar progress-bar-striped bg-success progress-bar-animated" />
+                </Modal.Body>
+            </Modal>
         </div>
 
     );

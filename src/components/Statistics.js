@@ -58,8 +58,10 @@ export const Statistics = () => {
             totalSBonus += item.totalSBonus;
         });
 
-        setCres(cardout - cardin);
-        setAllwin(historyPrize + cres);
+        const c = cardout - cardin;
+        const all = historyPrize + c;
+        setCres(c);
+        setAllwin(all);
         setTotalbet(historyBet);
         setTotalMain(totalMain);
         setTotalBonus(totalBonus);

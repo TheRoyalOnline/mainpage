@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
+import { CiCalendarDate } from "react-icons/ci"
 import { GetDetails, GetStatistics, RoomById } from "./Game";
 import { Modal, ProgressBar } from "react-bootstrap";
 
 export const Statistics = () => {
+    const [until, setUntil] = useState();
+    const [since, setSince] = useState();
     const [alldata, setAlldata] = useState([]);
     const [cres, setCres] = useState(0);
     const [allwin, setAllwin] = useState(0);
@@ -19,6 +22,7 @@ export const Statistics = () => {
     const [details, setDetails] = useState([]);
     const location = useLocation();
     const [loading, setLoading] = useState(true);
+    const [idroom, setIdroom] = useState(0);
 
     useEffect(() => {
         Starting();
@@ -29,18 +33,11 @@ export const Statistics = () => {
 
 
     async function Starting() {
-        const idroom = location.state.idroom;
-        const data = await GetStatistics(idroom);
-        const det = await GetDetails(idroom);
+        const idr = location.state.idroom;
+        setIdroom(idr);
+        const data = await GetStatistics(idr);
         setAlldata(data);
-
-        const results = det.flatMap(item =>
-            item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
-        ).slice(0, 200);
-
-
-        setDetails(results);
-
+       
         if (data === undefined)
             return;
 
@@ -74,8 +71,33 @@ export const Statistics = () => {
         setNumberBonus(numberBonus);
         setNumberSBonus(numberSuperBonus);
 
-        if (loading)
+        if (loading) {           
             setLoading(false);
+        }
+
+        if(since === undefined){
+            const today = new Date();
+            setSince(today.toISOString().split('T')[0]);
+            setUntil(today.toISOString().split('T')[0]);
+        }
+    }
+
+    function OnChangeDate(e) {
+        if (e.target.name === "since")
+            setSince(e.target.value);
+        else
+            setUntil(e.target.value);
+    }
+
+    async function FindLog(e){
+        setLoading(true);
+        const det = await GetDetails(idroom);
+        const results = det.flatMap(item =>
+            item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
+        ).slice(0, 200);
+        setDetails(results);
+
+        setLoading(false);
     }
 
     return (
@@ -250,6 +272,33 @@ export const Statistics = () => {
 
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Log de la sala</h5>
+                    <div className='flex-column p-3' >
+                        <div className="form-group justify-content-center row pt-3">
+                            <label className="col-sm-3 col-form-label">Desde:</label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <input type="date" className=" input-group-text bg-dark border-success text-white  h-100 calendar" value={since} name="since" onChange={OnChangeDate}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group justify-content-center row pt-3">
+                            <label className="col-sm-3 col-form-label">Hasta:</label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <input type="date" className="input-group-text bg-dark border-success text-white h-100" value={until} name="until" onChange={OnChangeDate}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group justify-content-center row pt-3">
+                            <label className="col-sm-3 col-form-label"></label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <button className="btn btn-success" onClick={FindLog}>Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                     <div className="table-responsive">
                         <table className="table table-dark table-striped text-center">

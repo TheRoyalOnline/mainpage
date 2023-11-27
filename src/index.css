@@ -101,3 +101,9 @@ footer{
   padding: 10px 20px; /* Ajusta según tu necesidad */
   border-radius: 20px; /* Para darle un aspecto redondeado */
 }
+
+
+input[type=date]::-webkit-calendar-picker-indicator{
+  background-color: #198754;
+  border-radius: 5px;
+}

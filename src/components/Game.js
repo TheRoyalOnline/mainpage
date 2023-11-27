@@ -101,12 +101,14 @@ export const GetStatistics = async (id) => {
     
 };
 
-export const GetDetails = async (id) => {
+export const GetDetails = async (id, since, until) => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            idroom: parseInt(id)
+            idroom: parseInt(id),
+            since: since,
+            until: until
         })
     };
     const res = await fetch(URIDetails, requestOptions);

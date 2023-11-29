@@ -91,12 +91,13 @@ export const Statistics = () => {
 
     async function FindLog(e){
         setLoading(true);
-        const det = await GetDetails(idroom);
+        const s = new Date(since);
+        const u = new Date(until);
+        const det = await GetDetails(idroom,s.toISOString(),u.toISOString());
         const results = det.flatMap(item =>
             item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
-        ).slice(0, 200);
+        );
         setDetails(results);
-
         setLoading(false);
     }
 
@@ -319,7 +320,10 @@ export const Statistics = () => {
                                     details.map(item => (
                                         <React.Fragment>
                                             <tr>
-                                                <td colSpan={7} className="text-success "><b>{item.date}</b></td>
+                                                <td colSpan={7} className="text-success "><b>{item.date.split('T')[0]}</b></td>
+                                            </tr>                                            
+                                            <tr>
+                                                <td colSpan={7} className="text-success "><b>{item.username}</b></td>
                                             </tr>
                                             {
                                                 item.results.map(i => (

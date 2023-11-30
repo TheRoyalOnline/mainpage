@@ -73,13 +73,11 @@ export const Statistics = () => {
 
         if (loading) {           
             setLoading(false);
-        }
-
-        if(since === undefined){
             const today = new Date();
             setSince(today.toISOString().split('T')[0]);
             setUntil(today.toISOString().split('T')[0]);
         }
+
     }
 
     function OnChangeDate(e) {
@@ -93,11 +91,33 @@ export const Statistics = () => {
         setLoading(true);
         const s = new Date(since);
         const u = new Date(until);
+        u.setDate(u.getDate() + 1);
         const det = await GetDetails(idroom,s.toISOString(),u.toISOString());
-        const results = det.flatMap(item =>
-            item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
-        );
-        setDetails(results);
+        // const results = det.details.flatMap(item =>
+        //     item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
+        // );
+
+        // const results = det.flatMap(user => {
+        //     return user.details.flatMap(detail => {
+        //         return detail.result.map(result => ({
+        //             username: user.username,
+        //             date: detail.date,
+        //             results: [
+        //                 {
+        //                     bet: result.bet,
+        //                     earn: result.earn,
+        //                     hour: result.hour,
+        //                     lines: result.lines,
+        //                     resultType: result.resultType,
+        //                     spinNumber: result.spinNumber,
+        //                     winCombination: result.winCombination
+        //                 }
+        //             ]
+        //         }));
+        //     });
+        // });
+        console.log(det)
+        setDetails(det);
         setLoading(false);
     }
 
@@ -318,31 +338,32 @@ export const Statistics = () => {
                             <tbody>
                                 {
                                     details.map(item => (
-                                        <React.Fragment>
+                                        <React.Fragment key={item.username}>
                                             <tr>
-                                                <td colSpan={7} className="text-success "><b>{item.date.split('T')[0]}</b></td>
-                                            </tr>                                            
-                                            <tr>
-                                                <td colSpan={7} className="text-success "><b>{item.username}</b></td>
+                                                <td colSpan={7} className="text-warning "><b>{item.username}</b></td>
                                             </tr>
-                                            {
-                                                item.results.map(i => (
+                                            {item.details.map(i => (
+                                                <React.Fragment key={i.date}>
                                                     <tr>
-                                                        <td>{i.spinNumber}</td>
-                                                        <td>{i.resultType}</td>
-                                                        <td>{i.lines}</td>
-                                                        <td>{i.bet}</td>
-                                                        <td>{i.earn}</td>
-                                                        <td>{i.winCombination}</td>
-                                                        <td>{i.hour}</td>
+                                                        <td colSpan={7} className="text-success "><b>{i.date.split('T')[0]}</b></td>
                                                     </tr>
-                                                ))
-                                            }
-
-
+                                                    {i.result.map(r => (
+                                                        <tr key={r.spinNumber}>
+                                                            <td>{r.spinNumber}</td>
+                                                            <td>{r.resultType}</td>
+                                                            <td>{r.lines}</td>
+                                                            <td>{r.bet}</td>
+                                                            <td>{r.earn}</td>
+                                                            <td>{r.winCombination}</td>
+                                                            <td>{r.hour}</td>
+                                                        </tr>
+                                                    ))}
+                                                </React.Fragment>
+                                            ))}
                                         </React.Fragment>
                                     ))
                                 }
+
                             </tbody>
                         </table>
                     </div>

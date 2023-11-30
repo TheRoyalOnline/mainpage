@@ -330,6 +330,7 @@ export const Statistics = () => {
                                     <th>Lineas</th>
                                     <th>Apuesta</th>
                                     <th>Premio</th>
+                                    <th>Usuario</th>
                                     <th>Combinacion</th>
                                     <th>Hora</th>
                                 </tr>
@@ -339,13 +340,10 @@ export const Statistics = () => {
                                 {
                                     details.map(item => (
                                         <React.Fragment key={item.username}>
-                                            <tr>
-                                                <td colSpan={7} className="text-warning "><b>{item.username}</b></td>
-                                            </tr>
                                             {item.details.map(i => (
                                                 <React.Fragment key={i.date}>
                                                     <tr>
-                                                        <td colSpan={7} className="text-success "><b>{i.date.split('T')[0]}</b></td>
+                                                        <td colSpan={8} className="text-success "><b>{i.date.split('T')[0]}</b></td>
                                                     </tr>
                                                     {i.result.map(r => (
                                                         <tr key={r.spinNumber}>
@@ -354,6 +352,7 @@ export const Statistics = () => {
                                                             <td>{r.lines}</td>
                                                             <td>{r.bet}</td>
                                                             <td>{r.earn}</td>
+                                                            <td>{item.username}</td>
                                                             <td>{r.winCombination}</td>
                                                             <td>{r.hour}</td>
                                                         </tr>

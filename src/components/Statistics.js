@@ -93,30 +93,6 @@ export const Statistics = () => {
         const u = new Date(until);
         u.setDate(u.getDate() + 1);
         const det = await GetDetails(idroom,s.toISOString(),u.toISOString());
-        // const results = det.details.flatMap(item =>
-        //     item.details.flatMap(detail => ({ date: detail.date, results: detail.result }))
-        // );
-
-        // const results = det.flatMap(user => {
-        //     return user.details.flatMap(detail => {
-        //         return detail.result.map(result => ({
-        //             username: user.username,
-        //             date: detail.date,
-        //             results: [
-        //                 {
-        //                     bet: result.bet,
-        //                     earn: result.earn,
-        //                     hour: result.hour,
-        //                     lines: result.lines,
-        //                     resultType: result.resultType,
-        //                     spinNumber: result.spinNumber,
-        //                     winCombination: result.winCombination
-        //                 }
-        //             ]
-        //         }));
-        //     });
-        // });
-        console.log(det)
         setDetails(det);
         setLoading(false);
     }
@@ -341,10 +317,7 @@ export const Statistics = () => {
                                     details.map(item => (
                                         <React.Fragment key={item.username}>
                                             {item.details.map(i => (
-                                                <React.Fragment key={i.date}>
-                                                    <tr>
-                                                        <td colSpan={8} className="text-success "><b>{i.date.split('T')[0]}</b></td>
-                                                    </tr>
+                                                <React.Fragment key={i.date}>                                                   
                                                     {i.result.map(r => (
                                                         <tr key={r.spinNumber}>
                                                             <td>{r.spinNumber}</td>

@@ -3,7 +3,7 @@ import Crazy from './imgs/crazy.png'
 import King from './imgs/king.png'
 import Cookies from 'universal-cookie'
 import { ShowDialog } from './Dialogs'
-import { ConnectRoom, GetRoom } from './Game'
+import { ConnectRoom, GetRoom, ForceDisconnectAdmin } from './Game'
 import Iframe from './Iframe'
 import { useNavigate } from 'react-router-dom'
 import {FaEdit, FaSplotch} from 'react-icons/fa'
@@ -34,6 +34,11 @@ export const GameItem = props => {
         },
         'stats': v => {
             navigate("/Operations/Statistics", { state: { idroom: v } });
+        },
+        'force': async v => {
+            const res = await ForceDisconnectAdmin(v);
+            if(res === 200)
+                window.location.reload();
         }
     }
 
@@ -94,6 +99,10 @@ export const GameItem = props => {
                                 <div>
                                     <button className='btn btn-transparent text-white'  value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
                                     <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
+                                    {
+                                        room.iduser !== 0 ? (<button className='btn btn-transparent  text-white' value={room.id} title='Forzar' name='force' onClick={OnClick}>❎</button>) : null
+                                    }
+                                    
                                 </div>
                             ) : null
 

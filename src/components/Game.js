@@ -4,6 +4,7 @@ const URIConnectRoom = "https://royalonline.cloud/api/game/roomconnect";
 const URIRoom = "https://royalonline.cloud/api/game/room";
 const URIForce = "https://royalonline.cloud/api/game/force";
 const URIRoomByID = "https://royalonline.cloud/api/game/editroom";
+const URIForceAdmin = "https://royalonline.cloud/api/game/forceclose";
 const URISetup = "https://royalonline.cloud/api/game/setup";
 const URIStats = "https://slotpy.info/statistics";
 const URIDetails = "https://slotpy.info/details";
@@ -116,4 +117,20 @@ export const GetDetails = async (id, since, until) => {
         return await res.json();
     }
     
+};
+
+export const ForceDisconnectAdmin = async (id) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            idroom: parseInt(id),
+            role: cookie.get('userdata').role
+        })
+    };
+
+    const res = await fetch(URIForceAdmin, requestOptions);
+    return await res.status;
 };

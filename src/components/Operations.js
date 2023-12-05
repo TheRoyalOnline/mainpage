@@ -148,10 +148,10 @@ export const Operations = () => {
         }
     }
 
-    async function ResponseRequests(value, id, button){
+    async function ResponseRequests(value, id, button) {
         refRequests.current.disabled = true;
         const res = await Response(id, value);
-        if(res === 200)
+        if (res === 200)
             window.location.reload();
     }
 
@@ -343,6 +343,15 @@ export const Operations = () => {
             <div className='pt-2 text-white container register'>
                 <h1 className='text-center'>Operaciones</h1>
                 <h2 className='text-center'>{userdata.surname}, {userdata.name} - {userdata.rolename}</h2>
+                <div className="d-flex justify-content-between pt-4">
+                        <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
+                    {
+                        userdata.role === 1 ? (
+                            <button className="btn btn-info" onClick={EditUsers}>Modificar usuarios</button>
+                        )
+                            : null
+                    }
+                </div>
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Datos operacionales</h5>
 
@@ -581,20 +590,20 @@ export const Operations = () => {
                                         {
                                             requests.map(item => (
                                                 <tr key={item.idrequests}>
-                                                <td>{item.userfrom}</td>
-                                                <td>{item.type === "sell" ? "Compra" : "Venta"}</td>
-                                                <td>{item.credits}</td>
-                                                <td>{item.cash}</td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <button ref={refRequests} className="btn btn-transparent" type="button"  onClick={(e)=>ResponseRequests("AP", item.idrequest)}>✔️</button>
-                                                        <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e)=>ResponseRequests("RE", item.idrequest)}>❌</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    <td>{item.userfrom}</td>
+                                                    <td>{item.type === "sell" ? "Compra" : "Venta"}</td>
+                                                    <td>{item.credits}</td>
+                                                    <td>{item.cash}</td>
+                                                    <td>
+                                                        <div className="form-group">
+                                                            <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e) => ResponseRequests("AP", item.idrequest)}>✔️</button>
+                                                            <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e) => ResponseRequests("RE", item.idrequest)}>❌</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             ))
-                                        } 
-                                        
+                                        }
+
                                     </tbody>
                                 </table>
                             </div>
@@ -604,25 +613,7 @@ export const Operations = () => {
                 ) : null
             }
 
-            {
-                userdata.role === 1 ? (
-                    <div>
 
-                        {/* <div className="d-flex justify-content-center pt-3  pb-2">
-                            <button className="btn btn-warning p-3" onClick={EditGame}>Modificar juegos</button>
-                        </div> */}
-
-                        <div className="d-flex justify-content-center pb-2">
-                            <button className="btn btn-info p-3" onClick={EditUsers}>Modificar usuarios</button>
-                        </div>
-                    </div>
-
-                )
-                    : null
-            }
-            <div className="d-flex justify-content-center pb-5">
-                <button className="btn btn-success p-3" onClick={ShowMovements}>Ver movimientos</button>
-            </div>
             <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal} size="lg" centered={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>Buscar</Modal.Title>

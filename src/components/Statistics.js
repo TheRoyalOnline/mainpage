@@ -4,8 +4,10 @@ import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
 import { CiCalendarDate } from "react-icons/ci"
 import { GetDetails, GetStatistics, RoomById } from "./Game";
 import { Modal, ProgressBar } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom'
 
 export const Statistics = () => {
+    const navigate = useNavigate();
     const [until, setUntil] = useState();
     const [since, setSince] = useState();
     const [alldata, setAlldata] = useState([]);
@@ -88,13 +90,7 @@ export const Statistics = () => {
     }
 
     async function FindLog(e){
-        setLoading(true);
-        const s = new Date(since);
-        const u = new Date(until);
-        u.setDate(u.getDate() + 1);
-        const det = await GetDetails(idroom,s.toISOString(),u.toISOString());
-        setDetails(det);
-        setLoading(false);
+        navigate("/Operations/Details", { state: { idroom: idroom } });
     }
 
     return (
@@ -102,6 +98,9 @@ export const Statistics = () => {
             <div className='pt-2 text-white container register pb-5'>
                 <h1 className='text-center'>Estadisticas</h1>
                 <h2 className='text-center'>Sala {location.state.idroom}</h2>
+                <div className="d-flex justify-content-left pt-4">
+                    <button className="btn btn-success p-2" onClick={FindLog}>Log de la sala</button>
+                </div>
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Generales</h5>
 
@@ -265,83 +264,6 @@ export const Statistics = () => {
                 </div>
 
 
-
-
-                <div className='card border-success text-white bg-transparent mt-5' >
-                    <h5 className="card-header border-success text-white">Log de la sala</h5>
-                    <div className='flex-column p-3' >
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label">Desde:</label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="date" className=" input-group-text bg-dark border-success text-white  h-100 calendar" value={since} name="since" onChange={OnChangeDate}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label">Hasta:</label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="date" className="input-group-text bg-dark border-success text-white h-100" value={until} name="until" onChange={OnChangeDate}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label"></label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <button className="btn btn-success" onClick={FindLog}>Buscar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className="table-responsive">
-                        <table className="table table-dark table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th>Giro</th>
-                                    <th>Tipo</th>
-                                    <th>Lineas</th>
-                                    <th>Apuesta</th>
-                                    <th>Premio</th>
-                                    <th>Usuario</th>
-                                    <th>Combinacion</th>
-                                    <th>Hora</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {
-                                    details.map(item => (
-                                        <React.Fragment key={item.username}>
-                                            {item.details.map(i => (
-                                                <React.Fragment key={i.date}>                                                   
-                                                    {i.result.map(r => (
-                                                        <tr key={r.spinNumber}>
-                                                            <td>{r.spinNumber}</td>
-                                                            <td>{r.resultType}</td>
-                                                            <td>{r.lines}</td>
-                                                            <td>{r.bet}</td>
-                                                            <td>{r.earn}</td>
-                                                            <td>{item.username}</td>
-                                                            <td>{r.winCombination}</td>
-                                                            <td>{r.hour}</td>
-                                                        </tr>
-                                                    ))}
-                                                </React.Fragment>
-                                            ))}
-                                        </React.Fragment>
-                                    ))
-                                }
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                </div>
             </div>
 
             <Modal show={loading} backdrop="static" keyboard={false} centered={true}>

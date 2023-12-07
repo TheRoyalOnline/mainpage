@@ -145,6 +145,7 @@ export const StatisticsDetails = () => {
                                     <th>Premio</th>
                                     <th>Usuario</th>
                                     <th>Combinacion</th>
+                                    <th>Fecha</th>
                                     <th>Hora</th>
                                 </tr>
 
@@ -164,6 +165,7 @@ export const StatisticsDetails = () => {
                                                             <td>{r.earn}</td>
                                                             <td>{item.username}</td>
                                                             <td>{r.winCombination}</td>
+                                                            <td>{item.date.split('T')[0]}</td>
                                                             <td>{r.hour}</td>
                                                         </tr>
                                                     ))}

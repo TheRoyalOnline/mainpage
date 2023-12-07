@@ -165,7 +165,7 @@ export const StatisticsDetails = () => {
                                                             <td>{r.earn}</td>
                                                             <td>{item.username}</td>
                                                             <td>{r.winCombination}</td>
-                                                            <td>{item.date.split('T')[0]}</td>
+                                                            <td>{i.date.split('T')[0]}</td>
                                                             <td>{r.hour}</td>
                                                         </tr>
                                                     ))}

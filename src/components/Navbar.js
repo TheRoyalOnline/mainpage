@@ -41,7 +41,7 @@ export const Menu = (props) => {
             <Container>
                 <Navbar.Brand >
                     <div className="p-4 text-white navbar-brand">
-                        <Link to="/"><img src={logo} width="100px" alt="logo" /></Link>
+                        <Link to="/"><img src={logo} width="200px" alt="logo" /></Link>
                     </div>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -58,7 +58,7 @@ export const Menu = (props) => {
                             ) : (
                                 <Nav className="ms-auto">
 
-                                    <Nav.Link onClick={ForceQuitRoom} ><span className="btn btn-outline-danger">Forzar cierre</span></Nav.Link>
+                                    <Nav.Link onClick={ForceQuitRoom} ><span className="btn btn-outline-danger">Cerrar sesión</span></Nav.Link>
                                     <Nav.Link onClick={Profile}><span className="btn btn-outline-success">Perfil</span></Nav.Link>
                                     <Nav.Link onClick={Operations}><span className="btn btn-outline-success">Operaciones</span></Nav.Link>
                                     <Nav.Link onClick={Logout}><span className="btn btn-warning">Salir</span></Nav.Link>

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import * as API from './API';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import logo from './imgs/logo.png';
 
 export const Login = (props) => {
   const navigate = useNavigate();
@@ -51,22 +52,22 @@ export const Login = (props) => {
   }
 
   return (
-    <Modal className="container-fluid" backdrop="static" show={props.show} onHide={props.handler} centered={true}>
-      <Modal.Header closeButton>
+    <Modal className="container-fluid blur" backdrop="static" show={props.show} onHide={props.handler} centered={true}>
+      <Modal.Header closeButton className='bg-success'>
         <Modal.Title></Modal.Title>
       </Modal.Header>
-      <Modal.Body >
+      <Modal.Body className='bg-purple'>
         <main className='form-signin w-100 m-auto text-center'>
           <form onSubmit={OnSubmit}>
-            <img className="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" />
-            <h1 className="h3 mb-3 fw-normal">Iniciar sesión</h1>
+            <img className="mb-4" src={logo} alt="" width="200px" />
+            <h1 className="h3 mb-3 fw-normal text-white">Iniciar sesión</h1>
 
-            <div className="form-floating">
-              <input ref={userRef} type="text" className="form-control" id="floatingInput" placeholder="User name" name='username' value={user.username} onChange={InputChangeEvent} required />
+            <div className="form-floating  text-white">
+              <input ref={userRef} type="text" className="form-control bg-dark border-success  text-white" id="floatingInput" placeholder="User name" name='username' value={user.username} onChange={InputChangeEvent} required />
               <label htmlFor="floatingInput">Nombre de usuario</label>
             </div>
-            <div className="form-floating">
-              <input ref={passRef} type="password" className="form-control" id="floatingPassword" placeholder="Password" name='password' value={user.password} onChange={InputChangeEvent} required />
+            <div className="form-floating text-white mt-1">
+              <input ref={passRef} type="password" className="form-control bg-dark border-success  text-white" id="floatingPassword" placeholder="Password" name='password' value={user.password} onChange={InputChangeEvent} required />
               <label htmlFor="floatingPassword">Contraseña</label>
               <div className="invalid-feedback" id="userfeedback">
                 Usuario o contraseña invalidos.
@@ -80,11 +81,11 @@ export const Login = (props) => {
               <button className="w-100 btn btn-sm btn-dark text-white" type="button" onClick={GoToRecover}>¿Olvidaste tu contraseña?</button>
 
             </div>
-            <p className="mt-5 mb-3 text-body-secondary ">Mantenida por <a className='link-custom' target='_blank'  rel='noreferrer' href='https://tupapo.games'><b>Tupapõ Games</b></a></p>
+            <p className="mt-5 mb-3 text-white ">Mantenida por <a className='link-custom' target='_blank'  rel='noreferrer' href='https://tupapo.games'><b>Tupapõ Games</b></a></p>
           </form>
         </main>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className='bg-success'>
       </Modal.Footer>
     </Modal>
 

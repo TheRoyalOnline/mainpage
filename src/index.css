@@ -63,7 +63,14 @@ footer{
   border-radius: 10px;
   width: 100%;
 }
-
+.bg-purple{  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(103,9,121,1);
+  background-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(103,9,121,1) 100%);
+  background-repeat: no-repeat;
+  background-size:cover;
+}
 .btn-purple{  
   background-color: #b700ff;
 }
@@ -106,4 +113,8 @@ footer{
 input[type=date]::-webkit-calendar-picker-indicator{
   background-color: #198754;
   border-radius: 5px;
+}
+
+body.modal-open .container{
+  -webkit-filter: blur(5px);
 }

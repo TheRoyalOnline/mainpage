@@ -9,7 +9,8 @@ export const Iframe = (props) => {
             <iframe
                 src={props.url}
                 width="100%"
-                height="100%">
+                height="100%"
+                allow="autoplay">
             </iframe>
         </Modal>
     );

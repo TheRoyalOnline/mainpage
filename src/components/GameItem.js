@@ -6,8 +6,8 @@ import { ShowDialog } from './Dialogs'
 import { ConnectRoom, GetRoom, ForceDisconnectAdmin } from './Game'
 import Iframe from './Iframe'
 import { useNavigate } from 'react-router-dom'
-import {FaEdit, FaSplotch} from 'react-icons/fa'
-import {BiMath} from 'react-icons/bi'
+import { FaEdit, FaSplotch } from 'react-icons/fa'
+import { BiMath } from 'react-icons/bi'
 import { ForceDisconnect } from "./Game";
 
 
@@ -39,7 +39,7 @@ export const GameItem = props => {
         },
         'force': async v => {
             const res = await ForceDisconnectAdmin(v);
-            if(res === 200)
+            if (res === 200)
                 window.location.reload();
         }
     }
@@ -73,7 +73,7 @@ export const GameItem = props => {
             const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
             if (res === 200) {
                 setRoom({ ...room, iduser: cookie.get('userdata').iduser });
-
+                AudioContext();
                 const fullURL = url[room.idgame] + cookie.get('userdata').token;
                 setFullURL(fullURL);
                 setShowGame(true);
@@ -92,11 +92,12 @@ export const GameItem = props => {
         }
     }
 
-    async function ExitGame(){
+    async function ExitGame() {
         const res = await ForceDisconnect();
-        if(res === 200){
+        if (res === 200) {
             setRoom({ ...room, iduser: 0 });
             setShowGame(false);
+            setFullURL('');
         }
     }
 
@@ -104,6 +105,21 @@ export const GameItem = props => {
         methods[e.target.name](e.target.value);
     }
 
+    let audioContext = null;
+
+    function AudioContext() {
+        // Verificar si ya hay un contexto de audio creado
+        if (!audioContext) {
+            // Crear un nuevo contexto de audio
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            // Tu lógica adicional para la manipulación del contexto de audio
+        }
+
+        // Intentar reanudar el contexto de audio (esto es necesario en algunos navegadores)
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+    }
     return (
         <div className="col-4 flex-fill">
             <div ref={card} className="image-container mt-2 bg-success relative-position-card">
@@ -112,12 +128,12 @@ export const GameItem = props => {
                         cookie.get("userdata") !== undefined ? (
                             cookie.get("userdata").role === 1 ? (
                                 <div>
-                                    <button className='btn btn-transparent text-white'  value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
+                                    <button className='btn btn-transparent text-white' value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
                                     <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
                                     {
                                         room.iduser !== 0 ? (<button className='btn btn-transparent  text-white' value={room.id} title='Forzar' name='force' onClick={OnClick}>❎</button>) : null
                                     }
-                                    
+
                                 </div>
                             ) : null
 
@@ -126,8 +142,8 @@ export const GameItem = props => {
                 </div>
                 <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
                 <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
-                <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"}/>
-                <div className="green-box bg-success">{room.id}</div> 
+                <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
+                <div className="green-box bg-success">{room.id}</div>
             </div>
         </div>
     );

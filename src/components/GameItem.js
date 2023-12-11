@@ -75,7 +75,9 @@ export const GameItem = props => {
                 const fullURL = url[room.idgame] + cookie.get('userdata').token;
                 //props.setURL(fullURL);
                 //props.showGame();
-                window.open(fullURL, "_blank");
+                setTimeout(() => {
+                    window.open(fullURL, "_blank");
+                })
             } else if (res === 202) {
                 setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
                 Handler();

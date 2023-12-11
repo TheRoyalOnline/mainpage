@@ -4,11 +4,10 @@ import { Modal, ModalHeader } from "react-bootstrap";
 export const Iframe = (props) => {
 
     return (
-        <Modal className="bg-dark" backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
-            <ModalHeader closeButton></ModalHeader>
+        <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
+            <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
                 src={props.url}
-                title="Contenido externo"
                 width="100%"
                 height="100%">
             </iframe>

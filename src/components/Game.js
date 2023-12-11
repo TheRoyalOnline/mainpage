@@ -52,7 +52,7 @@ export const ForceDisconnect = async () => {
     };
 
     const res = await fetch(URIForce, requestOptions);
-    return await res.json();
+    return await res.status;
 };
 
 export const RoomById = async (id) => {

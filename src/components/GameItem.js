@@ -8,6 +8,7 @@ import Iframe from './Iframe'
 import { useNavigate } from 'react-router-dom'
 import {FaEdit, FaSplotch} from 'react-icons/fa'
 import {BiMath} from 'react-icons/bi'
+import { ForceDisconnect } from "./Game";
 
 
 export const GameItem = props => {
@@ -17,7 +18,8 @@ export const GameItem = props => {
     const [room, setRoom] = useState(props.item);
     const [show, setShow] = useState(false);
     const [showGame, setShowGame] = useState(false);
-    const [message, setMessage] = useState(initialMessage)
+    const [message, setMessage] = useState(initialMessage);
+    const [fullURL, setFullURL] = useState('');
 
     const Handler = () => {
         setShow(!show);
@@ -73,17 +75,28 @@ export const GameItem = props => {
                 setRoom({ ...room, iduser: cookie.get('userdata').iduser });
 
                 const fullURL = url[room.idgame] + cookie.get('userdata').token;
-                //props.setURL(fullURL);
-                //props.showGame();
-                setTimeout(() => {
-                    window.open(fullURL, "_blank");
-                })
+                setFullURL(fullURL);
+                setShowGame(true);
+                // props.setURL(fullURL);
+                // props.showGame();
+
+                // setTimeout(() => {
+                //     window.open(fullURL, "_blank");
+                // })
             } else if (res === 202) {
                 setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
                 Handler();
             }
         } else {
             props.handler();
+        }
+    }
+
+    async function ExitGame(){
+        const res = await ForceDisconnect();
+        if(res === 200){
+            setRoom({ ...room, iduser: 0 });
+            setShowGame(false);
         }
     }
 
@@ -113,6 +126,7 @@ export const GameItem = props => {
                 </div>
                 <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
                 <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
+                <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"}/>
                 <div className="green-box bg-success">{room.id}</div> 
             </div>
         </div>

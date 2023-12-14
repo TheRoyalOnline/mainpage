@@ -69,22 +69,22 @@ export const GameItem = props => {
             if (r.iduser !== 0) {
                 Handler();
                 return;
-            }
-            const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
-            if (res === 200) {
-                setRoom({ ...room, iduser: cookie.get('userdata').iduser });
-                AudioContext();
-                const fullURL = url[room.idgame] + cookie.get('userdata').token;
-                setFullURL(fullURL);
-                setShowGame(true);
-                // props.setURL(fullURL);
-                // props.showGame();
+            } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
+                const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
+                if (res === 200) {
+                    setRoom({ ...room, iduser: cookie.get('userdata').iduser });
+                    AudioContext();
+                    const fullURL = url[room.idgame] + cookie.get('userdata').token;
+                    setFullURL(fullURL);
+                    setShowGame(true);
 
-                // setTimeout(() => {
-                //     window.open(fullURL, "_blank");
-                // })
-            } else if (res === 202) {
-                setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
+                } else if (res === 202) {
+                    setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
+                    Handler();
+                }
+
+            } else {
+                setMessage({ title: "Acceso restringido 🔒", body: "Tu rol no posee permisos para acceder a los slots." });
                 Handler();
             }
         } else {

@@ -24,6 +24,8 @@ export const Menu = (props) => {
     },[]);
 
     async function GetCredits(){
+        if(!isLogged) return;
+        
         setUserdata(cookie.get('userdata').username);
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setCredits(cre);

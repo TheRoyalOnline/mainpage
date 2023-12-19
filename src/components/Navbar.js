@@ -16,16 +16,16 @@ export const Menu = (props) => {
     const [credits, setCredits] = useState([]);
     const [userdata, setUserdata] = useState("");
 
-    useEffect(()=>{
+    useEffect(() => {
         GetCredits();
         const intervalId = setInterval(GetCredits, 10000);
 
         return () => clearInterval(intervalId);
-    },[]);
+    }, []);
 
-    async function GetCredits(){
-        if(!isLogged) return;
-        
+    async function GetCredits() {
+        if (!isLogged) return;
+
         setUserdata(cookie.get('userdata').username);
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setCredits(cre);
@@ -58,8 +58,12 @@ export const Menu = (props) => {
         <Navbar expand="lg" className="bg-body-tertiary navbar-dark">
             <Container>
                 <Navbar.Brand >
-                    <div className="p-4 text-white navbar-brand">
+                    <div className="p-4 text-white navbar-brand d-flex">
                         <Link to="/"><img src={logo} width="200px" alt="logo" /></Link>
+                        {
+                            isLogged ? (<div className="text-white align-self-center"><b>{userdata}</b> | Créditos: <b>{credits.credits}</b></div>) : null
+                        }
+
                     </div>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -75,14 +79,11 @@ export const Menu = (props) => {
                                 </Nav>
                             ) : (
                                 <Nav className="ms-auto">
-                                    <Nav.Item className="text-white p-3"><b>{userdata}</b> | Créditos: <b>{credits.credits}</b></Nav.Item>
                                     <Nav.Link onClick={ForceQuitRoom} ><span className="btn btn-outline-danger">Cerrar sesión</span></Nav.Link>
                                     <Nav.Link onClick={Profile}><span className="btn btn-outline-success">Perfil</span></Nav.Link>
                                     <Nav.Link onClick={Operations}><span className="btn btn-outline-success">Operaciones</span></Nav.Link>
                                     <Nav.Link onClick={Logout}><span className="btn btn-warning">Salir</span></Nav.Link>
-
                                 </Nav>
-
                             )
                     }
                 </Navbar.Collapse>

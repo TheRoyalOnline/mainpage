@@ -98,15 +98,15 @@ footer{
 }
 
 .green-box {
-  border-radius: 100px;
+  border-radius: 300px;
   position: absolute;
   color: white;
   font-size: x-large;
   font-weight: 1000;
   bottom: 0;
   right: 0;
-  padding: 10px 20px; /* Ajusta según tu necesidad */
-  border-radius: 20px; /* Para darle un aspecto redondeado */
+  padding: 2.5px 10px; /* Ajusta según tu necesidad */
+  border-radius: 50px; /* Para darle un aspecto redondeado */
 }
 
 

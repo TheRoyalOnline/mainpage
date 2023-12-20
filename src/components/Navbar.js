@@ -73,7 +73,6 @@ export const Menu = (props) => {
                         !isLogged ?
                             (
                                 <Nav className="ms-auto">
-
                                     <Nav.Link onClick={Signup}><span className="btn btn-outline-success">Registrarse</span></Nav.Link>
                                     <Nav.Link onClick={props.handler}><span className="btn btn-success">Iniciar sesión</span></Nav.Link>
                                 </Nav>

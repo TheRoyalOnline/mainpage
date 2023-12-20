@@ -148,7 +148,7 @@ export const SignUp = () => {
 
   function ValidateImage(event) {
     const selectedFile = event.target.files[0];
-    if (selectedFile && selectedFile.size > 2 * 1024 * 1024) {
+    if (selectedFile && selectedFile.size > 5 * 1024 * 1024) {
       event.target.classList.add("is-invalid");
       event.target.classList.remove("is-valid");
       event.target.classList.remove("border-success");
@@ -293,9 +293,9 @@ export const SignUp = () => {
           <div className="justify-content-center  pt-3">
             <label htmlFor="foto">Cédula</label>
             <input type="file" className="form-control bg-dark border-success text-white" id="foto" name='imgDNI' accept=".jpg,.jpeg,.png" aria-describedby="inputGroupPrepend3" onChange={ValidateImage} required />
-            <label>* Foto de la cedula ambas caras. Máx. 2mb</label>
+            <label>* Foto de la cedula. Máx. 5mb</label>
             <div className="invalid-feedback">
-              La imagen seleccionada supera los 2mb.
+              La imagen seleccionada supera los 5mb.
             </div>
           </div>
         </div>

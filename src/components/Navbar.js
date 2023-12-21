@@ -61,7 +61,7 @@ export const Menu = (props) => {
                     <div className="p-4 text-white navbar-brand d-flex">
                         <Link to="/"><img src={logo} width="200px" alt="logo" /></Link>
                         {
-                            isLogged ? (<div className="text-white align-self-center"><b>{userdata}</b> | Créditos: <b>{credits.credits}</b></div>) : null
+                            isLogged ? (<div className="text-white align-self-center"><b>{userdata}</b><br></br>Créditos: <b>{credits.credits}</b></div>) : null
                         }
 
                     </div>

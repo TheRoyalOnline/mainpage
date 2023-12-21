@@ -20,6 +20,7 @@ export const GameItem = props => {
     const [showGame, setShowGame] = useState(false);
     const [message, setMessage] = useState(initialMessage);
     const [fullURL, setFullURL] = useState('');
+    const numberRef = useRef(null);
 
     const Handler = () => {
         setShow(!show);
@@ -54,9 +55,13 @@ export const GameItem = props => {
             if (room.iduser) {
                 card.current.classList.add('bg-danger');
                 card.current.classList.remove('bg-success');
+                numberRef.current.classList.add('bg-danger');
+                numberRef.current.classList.remove('bg-success');
             } else {
                 card.current.classList.remove('bg-danger');
                 card.current.classList.add('bg-success');
+                numberRef.current.classList.remove('bg-danger');
+                numberRef.current.classList.add('bg-success');
             }
         }
         , [room]);
@@ -143,7 +148,7 @@ export const GameItem = props => {
                 <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
                 <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
                 <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
-                <div className="green-box bg-success">{room.id}</div>
+                <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
             </div>
         </div>
     );

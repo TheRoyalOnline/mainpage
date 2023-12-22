@@ -32,7 +32,6 @@ export const MainPage = (props) => {
                     ))
                 }
             </div>
-            <Iframe url={url} show={showGame} showGame={ShowGame}/>
         </div>
 
     );

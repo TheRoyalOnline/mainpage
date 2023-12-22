@@ -40,6 +40,7 @@ export const App = () => {
                 <Route exact path='/Operations/Statistics' element={<Statistics />} />
                 <Route exact path='/Operations/Details' element={<StatisticsDetails />} />
             </Routes>
+            
         </div>
     );
 

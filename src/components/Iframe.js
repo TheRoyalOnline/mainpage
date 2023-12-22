@@ -7,10 +7,12 @@ export const Iframe = (props) => {
         <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
+                title="Slot frame"
                 src={props.url}
                 width="100%"
                 height="100%"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms">
+                allow="autoplay"
+                sandbox="allow-scripts">
             </iframe>
         </Modal>
     );

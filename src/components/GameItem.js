@@ -126,30 +126,33 @@ export const GameItem = props => {
         }
     }
     return (
-        <div className="col-4 flex-fill">
-            <div ref={card} className="image-container mt-2 bg-success relative-position-card">
-                <div className='d-flex justify-content-between align-items-center'>
-                    {
-                        cookie.get("userdata") !== undefined ? (
-                            cookie.get("userdata").role === 1 ? (
-                                <div>
-                                    <button className='btn btn-transparent text-white' value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
-                                    <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
-                                    {
-                                        room.iduser !== 0 ? (<button className='btn btn-transparent  text-white' value={room.id} title='Forzar' name='force' onClick={OnClick}>❎</button>) : null
-                                    }
+        <>
+            <div className="col-4 flex-fill">
+                <div ref={card} className="image-container mt-2 bg-success relative-position-card">
+                    <div className='d-flex justify-content-between align-items-center'>
+                        {
+                            cookie.get("userdata") !== undefined ? (
+                                cookie.get("userdata").role === 1 ? (
+                                    <div>
+                                        <button className='btn btn-transparent text-white' value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
+                                        <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
+                                        {
+                                            room.iduser !== 0 ? (<button className='btn btn-transparent  text-white' value={room.id} title='Forzar' name='force' onClick={OnClick}>❎</button>) : null
+                                        }
 
-                                </div>
+                                    </div>
+                                ) : null
+
                             ) : null
-
-                        ) : null
-                    }
+                        }
+                    </div>
+                    <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
+                    <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
                 </div>
-                <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
-                <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
-                <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
-                <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
             </div>
-        </div>
+
+            <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
+            <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
+        </>
     );
 }

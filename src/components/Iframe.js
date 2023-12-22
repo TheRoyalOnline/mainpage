@@ -8,7 +8,7 @@ export const Iframe = (props) => {
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
                 // src={props.url}
-                src="https://tupapo.games/"
+                src="https://infinityslots.net/invasion/?user=test"
                 width="100%"
                 height="100%"
                 allow="autoplay">

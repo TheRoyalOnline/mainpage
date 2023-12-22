@@ -10,7 +10,7 @@ export const Iframe = (props) => {
                 src={props.url}
                 width="100%"
                 height="100%"
-                allow="autoplay">
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms">
             </iframe>
         </Modal>
     );

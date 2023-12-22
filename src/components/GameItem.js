@@ -75,13 +75,13 @@ export const GameItem = props => {
                 Handler();
                 return;
             } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
+                setShowGame(true);
                 const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
                 if (res === 200) {
                     setRoom({ ...room, iduser: cookie.get('userdata').iduser });
                     AudioContext();
                     const fullURL = url[room.idgame] + cookie.get('userdata').token;
                     setFullURL(fullURL);
-                    setShowGame(true);
 
                 } else if (res === 202) {
                     setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });

@@ -7,7 +7,8 @@ export const Iframe = (props) => {
         <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
-                src={props.url}
+                // src={props.url}
+                src="https://www.google.com/"
                 width="100%"
                 height="100%"
                 allow="autoplay">

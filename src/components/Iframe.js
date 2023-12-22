@@ -7,8 +7,7 @@ export const Iframe = (props) => {
         <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
-                // src={props.url}
-                src="https://infinityslots.net/invasion/?user=test"
+                src={props.url}
                 width="100%"
                 height="100%"
                 allow="autoplay">

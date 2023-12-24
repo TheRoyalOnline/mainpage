@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GameItem } from "./GameItem";
 import { GetRooms } from "./APIExtras";
 import { Iframe } from "./Iframe";
@@ -7,6 +7,7 @@ export const MainPage = (props) => {
     const [rooms, setRooms] = useState([]);
     const [showGame, setShowGame] = useState(false);
     const [url, setUrl] = useState('');
+    const refIframe = useRef(null);
 
     useEffect(() => {
 
@@ -19,20 +20,23 @@ export const MainPage = (props) => {
 
 
     const ShowGame = () => {
-        setShowGame(!showGame);
+        console.log("ejecutado")
+        refIframe.current.Show();
     }
 
     return (
-
-        <div className="container">
-            <div className="row d-flex">
-                {
-                    rooms.map(room => (
-                        <GameItem item={room} key={room.id} handler={props.handler} showGame={ShowGame} setURL={ u => setUrl(u)}/>
-                    ))
-                }
+        <>
+            <div className="container">
+                <div className="row d-flex">
+                    {
+                        rooms.map(room => (
+                            <GameItem item={room} key={room.id} handler={props.handler} showGame={ShowGame} setURL={u => setUrl(u)} />
+                        ))
+                    }
+                </div>
             </div>
-        </div>
+            <Iframe url={url} show={ShowGame} ref={refIframe}/>
+        </>
 
     );
 };

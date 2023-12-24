@@ -81,8 +81,9 @@ export const GameItem = props => {
                     setRoom({ ...room, iduser: cookie.get('userdata').iduser });
                     AudioContext();
                     const fullURL = url[room.idgame] + cookie.get('userdata').token;
-                    setFullURL(fullURL);
-
+                    //setFullURL(fullURL);
+                    props.setURL(fullURL);
+                    props.showGame();
                 } else if (res === 202) {
                     setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
                     Handler();
@@ -152,7 +153,7 @@ export const GameItem = props => {
             </div>
 
             <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
-            <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
+            {/* <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} /> */}
         </>
     );
 }

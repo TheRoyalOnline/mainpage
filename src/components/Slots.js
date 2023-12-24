@@ -20,7 +20,6 @@ export const MainPage = (props) => {
 
 
     const ShowGame = () => {
-        console.log("ejecutado")
         refIframe.current.Show();
     }
 
@@ -35,7 +34,7 @@ export const MainPage = (props) => {
                     }
                 </div>
             </div>
-            <Iframe url={url} show={ShowGame} ref={refIframe}/>
+            {/* <Iframe url={url} show={ShowGame} ref={refIframe}/> */}
         </>
 
     );

@@ -24,18 +24,7 @@ export const Iframe = forwardRef((props, ref) => {
     }
 
     return (
-        <div className="hide" ref={gameframe}>
-            <iframe
-                title="Slot frame"
-                src={props.url}
-                width="100%"
-                height="100%"
-                allow="autoplay">
-            </iframe>
-            <button onClick={Hide} className="btn btn-danger close"><b>SALIR</b></button>
-        </div>
-        // <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
-        //     <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
+        // <div className="hide" ref={gameframe}>
         //     <iframe
         //         title="Slot frame"
         //         src={props.url}
@@ -43,7 +32,18 @@ export const Iframe = forwardRef((props, ref) => {
         //         height="100%"
         //         allow="autoplay">
         //     </iframe>
-        // </Modal>
+        //     <button onClick={Hide} className="btn btn-danger close"><b>SALIR</b></button>
+        // </div>
+        <Modal backdrop="static" show={props.show} onHide={props.showGame} fullscreen={true}>
+            <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
+            <iframe
+                title="Slot frame"
+                src={props.url}
+                width="100%"
+                height="100%"
+                allow="autoplay">
+            </iframe>
+        </Modal>
     );
 });
 

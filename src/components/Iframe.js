@@ -38,7 +38,7 @@ export const Iframe = forwardRef((props, ref) => {
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
                 title="Slot frame"
-                src={props.url}
+                src="https://infinityslots.net/invasion/?user=test"//{props.url}
                 width="100%"
                 height="100%"
                 allow="autoplay">

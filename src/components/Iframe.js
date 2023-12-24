@@ -38,7 +38,7 @@ export const Iframe = forwardRef((props, ref) => {
             <ModalHeader className="bg-success text-white" closeButton>{props.title}</ModalHeader>
             <iframe
                 title="Slot frame"
-                src="https://tupapo.games"//{props.url}
+                src={props.url}
                 width="100%"
                 height="100%"
                 allow="autoplay">

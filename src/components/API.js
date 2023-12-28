@@ -191,7 +191,7 @@ export const RecoverPassword = async (user, mail) => {
         const message = "Hemos recibido tu peticion de reseteo de contraseña. Si no lo solicitaste favor comunicar esta informacion por este mismo canal.<br><hr><br>" +
             "<b>Usuario: </b>" + user +
             "<b><br>Contraseña: </b>" + newPass +
-            "<br><br>No olvide cambiar su contraseña una vez accedido nuevamente a la aplicacion.<br><hr><br>" + "Gracias,<br>Equipo Casino Royal Online";
+            "<br><br>No olvide cambiar su contraseña una vez accedido nuevamente a la aplicacion.<br><hr><br>" + "Gracias,<br>Equipo Tio Mono";
         SendMail("Cambio de contraseña", message, mail, "");
     }
 
@@ -269,8 +269,8 @@ export const TransactToUser = async (data) => {
     if (res.status === 200) {
         if (data.role === 5) {
             const message = data.type === "buy" ?
-                `wa de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online` :
-                `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Casino Royal Online`;
+                `Venta de creditos registrada correctamente.<br>Creditos vendidos: ${data.credits}<br><hr><br>Gracias,<br>Equipo Tio Mono` :
+                `Has recibido creditos.<br>Creditos comprados: ${data.credits}<br><hr><br>Gracias,<br>Equipo Tio Mono`;
             SendMail("Transaccion realizada", message, data.email, "");
         }
     }

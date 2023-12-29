@@ -75,9 +75,9 @@ export const GameItem = props => {
                 Handler();
                 return;
             } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
-                setShowGame(true);
                 const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
                 if (res === 200) {
+                    setShowGame(true);
                     setRoom({ ...room, iduser: cookie.get('userdata').iduser });
                     AudioContext();
                     const fullURL = url[room.idgame] + cookie.get('userdata').token;

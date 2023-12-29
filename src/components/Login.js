@@ -81,7 +81,7 @@ export const Login = (props) => {
               <button className="w-100 btn btn-sm btn-dark text-white" type="button" onClick={GoToRecover}>¿Olvidaste tu contraseña?</button>
 
             </div>
-            <p className="mt-5 mb-3 text-white ">Mantenida por <a className='link-custom' target='_blank'  rel='noreferrer' href='https://tupapo.games'><b>Tupapõ Games</b></a></p>
+            {/* <p className="mt-5 mb-3 text-white ">Mantenida por <a className='link-custom' target='_blank'  rel='noreferrer' href='https://tupapo.games'><b>Tupapõ Games</b></a></p> */}
           </form>
         </main>
       </Modal.Body>

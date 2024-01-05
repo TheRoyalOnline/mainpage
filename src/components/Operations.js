@@ -53,6 +53,9 @@ export const Operations = () => {
 
     useEffect(() => {
         Starting();
+        const intervalId = setInterval(GetCredits, 5000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     async function Starting() {
@@ -67,12 +70,17 @@ export const Operations = () => {
         setTransact(access[cookie.get('userdata').role][2])
         setOthers(access[cookie.get('userdata').role][3])
 
-        const cre = await GetUserCredits(cookie.get('userdata').iduser);
-        setUserdata(u => ({ ...u, ...cre }));
+        GetCredits();
         const list = await GetRequests();
         setRequests(list);
         const c = await GetGlobal('convertion');
         setConvertion(c);
+    }
+
+    async function GetCredits(){
+        const cookie = new Cookies();
+        const cre = await GetUserCredits(cookie.get('userdata').iduser);
+        setUserdata(u => ({ ...u, ...cre }));
     }
 
     function ShowMovements() {
@@ -596,8 +604,8 @@ export const Operations = () => {
                                                     <td>{item.cash}</td>
                                                     <td>
                                                         <div className="form-group">
-                                                            <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e) => ResponseRequests("AP", item.idrequest)}>✔️</button>
-                                                            <button ref={refRequests} className="btn btn-transparent" type="button" onClick={(e) => ResponseRequests("RE", item.idrequest)}>❌</button>
+                                                            <button ref={refRequests} className="btn btn-success" type="button" onClick={(e) => ResponseRequests("AP", item.idrequest)}>Aceptar</button>
+                                                            <button ref={refRequests} className="btn btn-danger" type="button" onClick={(e) => ResponseRequests("RE", item.idrequest)}>Rechazar</button>
                                                         </div>
                                                     </td>
                                                 </tr>

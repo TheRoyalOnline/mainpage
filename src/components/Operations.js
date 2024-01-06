@@ -27,11 +27,11 @@ export const Operations = () => {
     const [user1, setUser1] = useState([]);
     const [user2, setUser2] = useState([]);
     const [opType, setOpType] = useState('');
-    const [dni, setDni] = useState(0);
+    const [dni, setDni] = useState();
     const [typeConfirm, setTypeConfirm] = useState('');
-    const [ccash, setCcash] = useState(0);
-    const [ccredit, setCcredit] = useState(0);
-    const [deposit, setDeposit] = useState(0);
+    const [ccash, setCcash] = useState();
+    const [ccredit, setCcredit] = useState();
+    const [deposit, setDeposit] = useState();
     const [requests, setRequests] = useState([]);
 
     const refInputAssing = useRef(null);
@@ -71,16 +71,17 @@ export const Operations = () => {
         setOthers(access[cookie.get('userdata').role][3])
 
         GetCredits();
-        const list = await GetRequests();
-        setRequests(list);
+        
         const c = await GetGlobal('convertion');
         setConvertion(c);
     }
 
-    async function GetCredits(){
+    async function GetCredits() {
         const cookie = new Cookies();
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
+        const list = await GetRequests();
+        setRequests(list);
     }
 
     function ShowMovements() {
@@ -159,8 +160,9 @@ export const Operations = () => {
     async function ResponseRequests(value, id, button) {
         refRequests.current.disabled = true;
         const res = await Response(id, value);
-        if (res === 200)
-            window.location.reload();
+        if (res === 200) {
+            GetCredits();
+        }
     }
 
     async function Assign(e) {
@@ -330,10 +332,10 @@ export const Operations = () => {
         setUser1({});
         setUser2({});
         setOpType('')
-        setDni(0)
-        setCcash(0)
-        setCcredit(0)
-        setDeposit(0)
+        setDni()
+        setCcash()
+        setCcredit()
+        setDeposit()
         setConfirm(false)
         refInputTransact.current.value = 0;
         refInputAssing.current.value = 0;
@@ -352,7 +354,7 @@ export const Operations = () => {
                 <h1 className='text-center'>Operaciones</h1>
                 <h2 className='text-center'>{userdata.surname}, {userdata.name} - {userdata.rolename}</h2>
                 <div className="d-flex justify-content-between pt-4">
-                        <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
+                    <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
                     {
                         userdata.role === 1 ? (
                             <button className="btn btn-info" onClick={EditUsers}>Modificar usuarios</button>

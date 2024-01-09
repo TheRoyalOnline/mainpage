@@ -155,3 +155,9 @@ body.modal-open .container {
   height: '100%';
   border: 'none';
 } */
+
+.text-border {
+  font-size: 20px; /* Tamaño de fuente */
+  color: white;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}

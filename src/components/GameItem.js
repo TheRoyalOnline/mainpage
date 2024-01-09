@@ -7,8 +7,9 @@ import { ConnectRoom, GetRoom, ForceDisconnectAdmin } from './Game'
 import Iframe from './Iframe'
 import { useNavigate } from 'react-router-dom'
 import { FaEdit, FaSplotch } from 'react-icons/fa'
-import { BiMath } from 'react-icons/bi'
+import { BiMath, BiEdit, BiXCircle } from 'react-icons/bi'
 import { ForceDisconnect } from "./Game";
+import {  GetUserCredits } from './API'
 
 
 export const GameItem = props => {
@@ -21,6 +22,7 @@ export const GameItem = props => {
     const [message, setMessage] = useState(initialMessage);
     const [fullURL, setFullURL] = useState('');
     const numberRef = useRef(null);
+    const [credits, setCredits] = useState([]);
 
     const Handler = () => {
         setShow(!show);
@@ -57,6 +59,7 @@ export const GameItem = props => {
                 card.current.classList.remove('bg-success');
                 numberRef.current.classList.add('bg-danger');
                 numberRef.current.classList.remove('bg-success');
+                GetDetails();
             } else {
                 card.current.classList.remove('bg-danger');
                 card.current.classList.add('bg-success');
@@ -66,11 +69,17 @@ export const GameItem = props => {
         }
         , [room]);
 
+    async function GetDetails(){
+        const cre = await GetUserCredits(room.iduser);
+        setCredits(cre);
+    }
+
     async function Selectgame() {
         setMessage(initialMessage);
         if (cookie.get('userdata') !== undefined) {
             const r = await GetRoom(room.id);
             setRoom(r);
+            
             if (r.iduser !== 0) {
                 Handler();
                 return;
@@ -82,8 +91,8 @@ export const GameItem = props => {
                     AudioContext();
                     const fullURL = url[room.idgame] + cookie.get('userdata').token;
                     setFullURL(fullURL);
-                    // props.setURL(fullURL);
-                    // props.showGame();
+
+
                 } else if (res === 202) {
                     setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
                     Handler();
@@ -108,6 +117,7 @@ export const GameItem = props => {
     }
 
     function OnClick(e) {
+        console.log(e.target.name)
         methods[e.target.name](e.target.value);
     }
 
@@ -135,10 +145,13 @@ export const GameItem = props => {
                             cookie.get("userdata") !== undefined ? (
                                 cookie.get("userdata").role === 1 ? (
                                     <div>
-                                        <button className='btn btn-transparent text-white' value={room.id} title='Editar' name='edit' onClick={OnClick}>Editar</button>
-                                        <button className='btn btn-transparent  text-white' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>Estadisticas</button>
+                                        <button className='btn btn-transparent text-border' value={room.id} title='Editar' name='edit' onClick={OnClick} >✏️</button>
+                                        <button className='btn btn-transparent text-border' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>💰</button>                                        
                                         {
-                                            room.iduser !== 0 ? (<button className='btn btn-transparent  text-white' value={room.id} title='Forzar' name='force' onClick={OnClick}>❎</button>) : null
+                                            room.iduser !== 0 ? (<React.Fragment>
+                                                <button className='btn btn-transparent text-border' value={room.id} title='Forzar' name='force' onClick={OnClick}>❌</button>
+                                                <label className='text-border'><b>{room.username} - {credits.credits}c </b></label>
+                                            </React.Fragment>) : null
                                         }
 
                                     </div>

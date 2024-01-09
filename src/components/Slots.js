@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { GameItem } from "./GameItem";
 import { GetRooms } from "./APIExtras";
 import { Iframe } from "./Iframe";
+import { GetUserCredits, GetUserDetails } from "./API";
 
 export const MainPage = (props) => {
     const [rooms, setRooms] = useState([]);
@@ -29,6 +30,7 @@ export const MainPage = (props) => {
                 <div className="row d-flex">
                     {
                         rooms.map(room => (
+                            
                             <GameItem item={room} key={room.id} handler={props.handler} showGame={ShowGame} setURL={u => setUrl(u)} />
                         ))
                     }

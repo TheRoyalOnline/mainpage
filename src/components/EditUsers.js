@@ -7,6 +7,7 @@ import { GetUserDetails } from "./API";
 import { SetRole } from "./API";
 
 export const EditUser = () => {
+    
     const pass ={
         password:"",
         replypassword:""

@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UsersList } from "./API";
+import Cookies from "universal-cookie";
 
 export const UserList = () => {
+    const rol = {
+        1: "Administrador",
+        2: "Caja",
+        3: "Operador",
+        4: "Vendedor",
+        5: "Cliente"
+    }
+
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     
-    useEffect(() => {      
+    useEffect(() => {  
         
         Start();
     }, []);
     
     async function Start() {
+        const cookie = new Cookies();
+        if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
+            navigate('/');
         const data = await UsersList();
         setUsers(data);
     }
@@ -31,25 +43,29 @@ export const UserList = () => {
                     <div className="table-responsive">
                         <table className="table table-dark table-striped text-center">
                             <thead>
-                                <tr >
+                                <tr>
+                                    <th>#</th>
                                     <th>Usuario</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Email</th>
                                     <th>CI</th>
+                                    <th>Rol</th>
                                     <th>Activo</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    users.map((item) => (
+                                    users.map((item, index) => (
                                         <tr key={item.iduser}>
+                                            <td><b>{index+1}</b></td>
                                             <td>{item.username}</td>
                                             <td>{item.firstname}</td>
                                             <td>{item.surname}</td>
                                             <td>{item.email}</td>
                                             <td>{item.dni}</td>
+                                            <td>{rol[item.role]}</td>
                                             <td>{item.active === 1? "Si":"No"}</td>
                                             <td><button className="btn btn-transparent" onClick={e => Edit(item)}>✏️</button></td>
                                         </tr>

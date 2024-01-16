@@ -133,9 +133,9 @@ export const SignUp = () => {
     setFinish(true);
     // const message = 'Favor ingrese al siguiente <a href="https://royalonline.cloud/api/confirmation/'+res+'">link</a> para confirmar su usuario.<br>Contara con 24hs a partir de ahora para confirmar este correo de lo contrario quedara invalidado.'+
     // '<br><hr><br>Si usted no solicito esta inscripcion, favor dar aviso al mismo correo.'+
-    // '<br><br>Gracias,<br><b>Equipo Casino Royal Online.</b>'
-    const message = 'Bienvenido al Casino Royal Online.<br>Ante cualquier duda contactese al servicio de administracion directamente a traves de este correo o el telefono'+
-    '<br><br>Gracias,<br><b>Equipo Casino Royal Online.</b>'
+    // '<br><br>Gracias,<br><b>Equipo Casino Tio Mono.</b>'
+    const message = 'Bienvenido al Casino Tio Mono.<br>Ante cualquier duda contactese al servicio de administracion directamente a traves de este correo o el telefono'+
+    '<br><br>Gracias,<br><b>Equipo Casino Tio Mono.</b>'
     
 
     SendMail("Bienvenida", message, formData.get('email'), res);

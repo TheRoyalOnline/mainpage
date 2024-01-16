@@ -146,7 +146,6 @@ export const Profile = () => {
 
             if(!res)
             {
-                console.log("contraseña incorrecta");
                 txtPassword.current.classList.add("is-invalid");
                 return;
             }

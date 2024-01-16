@@ -90,7 +90,7 @@ export const Operations = () => {
     }
 
     function EditUsers() {
-        navigate('/Operations/Editusers')
+        navigate('/Operations/List')
     }
 
 

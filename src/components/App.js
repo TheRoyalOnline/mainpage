@@ -16,6 +16,7 @@ import {EditUser} from './EditUsers';
 import EditGame from './EditGame';
 import Statistics from './Statistics';
 import StatisticsDetails from './StatisticsDetails';
+import UserList from './UserList';
 
 export const App = () => {
     const [show, setShow] = useState(false);
@@ -36,7 +37,7 @@ export const App = () => {
                 <Route exact path='/Operations' element={<Operations />} />
                 <Route exact path='/Operations/Movements' element={<Movements />} />
                 <Route exact path='/Operations/Editusers' element={<EditUser />} />
-                <Route exact path='/Operations/Editgame' element={<EditGame />} />
+                <Route exact path='/Operations/List' element={<UserList />} />
                 <Route exact path='/Operations/Statistics' element={<Statistics />} />
                 <Route exact path='/Operations/Details' element={<StatisticsDetails />} />
             </Routes>

@@ -173,8 +173,8 @@ export const StatisticsDetails = () => {
                                             ))}
                                         </React.Fragment>
                                     ))
-                                }
 
+                                }
                             </tbody>
                         </table>
                     </div>

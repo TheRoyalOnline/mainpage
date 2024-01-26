@@ -61,7 +61,6 @@ export const EditGame = () => {
         try {
             const setup = await RoomById(location.state.idroom)
             setRoom(setup);
-
             const roomDetailsData = JSON.parse(setup.setup);
             setRoomDetails(roomDetailsData);
 

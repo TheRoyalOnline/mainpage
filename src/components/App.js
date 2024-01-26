@@ -40,6 +40,7 @@ export const App = () => {
                 <Route exact path='/Operations/List' element={<UserList />} />
                 <Route exact path='/Operations/Statistics' element={<Statistics />} />
                 <Route exact path='/Operations/Details' element={<StatisticsDetails />} />
+                <Route exact path='/Operations/Editgame' element={<EditGame />} />
             </Routes>
             
         </div>

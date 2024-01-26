@@ -117,7 +117,6 @@ export const GameItem = props => {
     }
 
     function OnClick(e) {
-        console.log(e.target.name)
         methods[e.target.name](e.target.value);
     }
 

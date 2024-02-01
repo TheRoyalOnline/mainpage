@@ -35,7 +35,7 @@ export const UserList = () => {
     return (
 
         <div className='pt-2 text-white container' >
-            <h1 className='text-center '>Lista de movimientos</h1>
+            <h1 className='text-center '>Lista de usuarios</h1>
             <div className='card border-success text-white bg-transparent mt-5'>
 
                 <h5 className="card-header border-success text-white pt-4">Todos</h5>
@@ -48,6 +48,8 @@ export const UserList = () => {
                                     <th>Usuario</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
+                                    <th>Creditos</th>
+                                    <th>Efectivo</th>
                                     <th>Email</th>
                                     <th>CI</th>
                                     <th>Rol</th>
@@ -63,6 +65,8 @@ export const UserList = () => {
                                             <td>{item.username}</td>
                                             <td>{item.firstname}</td>
                                             <td>{item.surname}</td>
+                                            <td>{item.credits}</td>
+                                            <td>{item.cash}</td>
                                             <td>{item.email}</td>
                                             <td>{item.dni}</td>
                                             <td>{rol[item.role]}</td>

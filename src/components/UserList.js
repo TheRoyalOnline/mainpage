@@ -31,6 +31,11 @@ export const UserList = () => {
     function Edit(item){
         navigate('/Operations/Editusers', { state: { user: item } })
     }
+    
+    function Commissions(item){
+        navigate('/Operations/Commissions', { state: { username: item.username, iduser: item.iduser } })
+        
+    }
 
     return (
 
@@ -71,7 +76,11 @@ export const UserList = () => {
                                             <td>{item.dni}</td>
                                             <td>{rol[item.role]}</td>
                                             <td>{item.active === 1? "Si":"No"}</td>
-                                            <td><button className="btn btn-transparent" onClick={e => Edit(item)}>✏️</button></td>
+                                            <td><div className="d-flex flex-row">
+                                                <button className="btn btn-transparent" onClick={e => Edit(item)} title="Editar">✏️</button>
+                                                <button className="btn btn-transparent" onClick={e => Commissions(item)} title="Comisiones">💵</button>
+                                                </div>
+                                                </td>
                                         </tr>
 
                                     ))

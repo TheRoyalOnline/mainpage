@@ -102,8 +102,6 @@ export const StatisticsDetails = () => {
                 <h1 className='text-center'>Resumen de jugadas</h1>
                 <h2 className='text-center'>Sala {location.state.idroom}</h2>
 
-
-
                 <div className='card border-success text-white bg-transparent mt-5' >
                     <h5 className="card-header border-success text-white">Log de la sala</h5>
                     <div className='flex-column p-3' >

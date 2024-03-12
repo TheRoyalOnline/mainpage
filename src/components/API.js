@@ -18,6 +18,7 @@ const URIRoleUp = "https://royalonline.cloud/api/user/setrole"
 const URIList = "https://royalonline.cloud/api/user/list"
 const URIRequests = "https://royalonline.cloud/api/user/requests"
 const URIResponse = "https://royalonline.cloud/api/user/response"
+const URICommission = "https://royalonline.cloud/api/user/commissions"
 
 export const Logon = async (user, pass) => {
 
@@ -384,5 +385,22 @@ export const UsersList = async () => {
     };
 
     const res = await fetch(URIList, requestOptions);
+    return await res.json();
+};
+
+export const UserCommission = async (iduser, since, until) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            idseller: iduser,
+            since: since,
+            until: until
+        })
+    };
+
+    const res = await fetch(URICommission, requestOptions);
     return await res.json();
 };

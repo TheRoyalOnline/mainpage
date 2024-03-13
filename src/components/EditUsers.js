@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { GetUserDetails } from "./API";
-import { SetRole } from "./API";
+import { UpdateByAdmin } from "./API";
 
 export const EditUser = () => {
     
@@ -34,7 +34,7 @@ export const EditUser = () => {
         
         const u = location.state.user;
         u.active = u.active === 1? true:false;
-        setUser(u);     
+        setUser(u);   
     }
 
 
@@ -65,14 +65,18 @@ export const EditUser = () => {
         setShowModal(!showModal);
     }
 
-    async function ConfirmSubmit() {
-        return
+    async function ConfirmSubmit() {       
         refBtnConfirm.current.disabled = true;
         if (confirm) return;
-
         setConfirm(true);
-        var res = 0;
-        res = await SetRole(user);
+
+        const up = await UpdateByAdmin(user, password.password);
+
+        if (up) {
+            setConfirm(false);
+            setShowConfirmDialog(false);
+            refBtnUpdate.current.disabled = false
+        }
     }
 
     return (
@@ -170,6 +174,7 @@ export const EditUser = () => {
                     <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
+
         </div>
 
     );

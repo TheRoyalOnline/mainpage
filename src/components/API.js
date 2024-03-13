@@ -14,7 +14,7 @@ const URICredits = "https://royalonline.cloud/api/user/credits"
 const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
-const URIRoleUp = "https://royalonline.cloud/api/user/setrole"
+const URIUpdateAdmin = "https://royalonline.cloud/api/user/adminupdate"
 const URIList = "https://royalonline.cloud/api/user/list"
 const URIRequests = "https://royalonline.cloud/api/user/requests"
 const URIResponse = "https://royalonline.cloud/api/user/response"
@@ -312,7 +312,7 @@ export const MovementsList = async (iduser) => {
 };
 
 
-export const SetRole = async (data) => {
+export const UpdateByAdmin = async (user, password) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -320,12 +320,18 @@ export const SetRole = async (data) => {
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             rolefrom: cookie.get('userdata').role,
-            role: data.role,
-            iduser: data.iduser
+            iduser: user.iduser,
+            firstname: user.firstname,
+            surname: user.surname,
+            dni: user.dni,
+            active: user.active,
+            password: password,
+            email: user.email,
+            idrole: user.role
         })
     };
 
-    const res = await fetch(URIRoleUp, requestOptions);
+    const res = await fetch(URIUpdateAdmin, requestOptions);
 
     if (res.status === 200) {
         return true;

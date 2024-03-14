@@ -59,6 +59,8 @@ export const UserList = () => {
                                     <th>CI</th>
                                     <th>Rol</th>
                                     <th>Activo</th>
+                                    <th>C. Positivo</th>
+                                    <th>C. Negativo</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -76,6 +78,8 @@ export const UserList = () => {
                                             <td>{item.dni}</td>
                                             <td>{rol[item.role]}</td>
                                             <td>{item.active === 1? "Si":"No"}</td>
+                                            <td>{item.commission_earn}%</td>
+                                            <td>{item.commission_lose}%</td>
                                             <td><div className="d-flex flex-row">
                                                 <button className="btn btn-transparent" onClick={e => Edit(item)} title="Editar">✏️</button>
                                                 <button className="btn btn-transparent" onClick={e => Commissions(item)} title="Comisiones">💵</button>

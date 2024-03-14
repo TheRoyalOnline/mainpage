@@ -327,7 +327,9 @@ export const UpdateByAdmin = async (user, password) => {
             active: user.active,
             password: password,
             email: user.email,
-            idrole: user.role
+            idrole: user.role,
+            commission_earn: user.commission_earn,
+            commission_lose: user.commission_lose
         })
     };
 

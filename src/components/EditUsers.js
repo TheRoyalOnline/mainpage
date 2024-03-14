@@ -7,10 +7,10 @@ import { GetUserDetails } from "./API";
 import { UpdateByAdmin } from "./API";
 
 export const EditUser = () => {
-    
-    const pass ={
-        password:"",
-        replypassword:""
+
+    const pass = {
+        password: "",
+        replypassword: ""
     }
     const location = useLocation();
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -22,33 +22,33 @@ export const EditUser = () => {
 
     const refBtnConfirm = useRef(null);
     const refBtnUpdate = useRef(null);
-    
+
     useEffect(() => {
         Starting();
     }, []);
 
-   function Starting() {
+    function Starting() {
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
             navigate('/');
-        
+
         const u = location.state.user;
-        u.active = u.active === 1? true:false;
-        setUser(u);   
+        u.active = u.active === 1 ? true : false;
+        setUser(u);
     }
 
 
     function OnChange(e) {
-        if(e.target.type === "checkbox"){
-            setUser({ ...user, active: e.target.checked});
+        if (e.target.type === "checkbox") {
+            setUser({ ...user, active: e.target.checked });
         }
-        else    
+        else
             setUser({ ...user, [e.target.name]: e.target.value });
     }
 
-    
+
     function OnChangePassword(e) {
-        setPassword({...password, [e.target.name]:e.target.value});
+        setPassword({ ...password, [e.target.name]: e.target.value });
     }
 
     async function Assign(e) {
@@ -59,16 +59,18 @@ export const EditUser = () => {
     function OnSubmit(e) {
         e.preventDefault();
         setShowConfirmDialog(true);
+        
     }
 
     function CallModal() {
         setShowModal(!showModal);
     }
 
-    async function ConfirmSubmit() {       
+    async function ConfirmSubmit() {
         refBtnConfirm.current.disabled = true;
         if (confirm) return;
         setConfirm(true);
+
 
         const up = await UpdateByAdmin(user, password.password);
 
@@ -90,28 +92,28 @@ export const EditUser = () => {
                         <div className='flex-column justify-content-center pt-3'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Nombre</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.firstname} name="name" onChange={OnChange} required/>
+                                <input id="user" className="form-control bg-dark border-success text-white" value={user.firstname} name="name" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Apellido</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.surname} name="surname" onChange={OnChange} required/>
+                                <input id="user" className="form-control bg-dark border-success text-white" value={user.surname} name="surname" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Nro. CI</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.dni} type="number" name="dni" onChange={OnChange} required/>
+                                <input id="user" className="form-control bg-dark border-success text-white" value={user.dni} type="number" name="dni" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Email</label>
-                                <input id="mail" className="form-control bg-dark border-success text-white" value={user.email} type="email" onChange={OnChange} required/>
+                                <input id="mail" className="form-control bg-dark border-success text-white" value={user.email} type="email" onChange={OnChange} required />
                             </div>
                         </div>
 
@@ -133,7 +135,30 @@ export const EditUser = () => {
                             <div className="justify-content-center p-3">
                                 <label htmlFor="check">Activo</label>
                                 <div className="form-check form-switch">
-                                    <input id="check" className="form-check-input" checked={user.active} type="checkbox" name="active" onChange={OnChange}/>
+                                    <input id="check" className="form-check-input" checked={user.active} type="checkbox" name="active" onChange={OnChange} />
+                                </div>
+                            </div>
+                        </div>
+                        <h5 className="card-header border-success"></h5>
+                        <div className="form-group justify-content-center row pt-3">
+                            <label htmlFor="monto" className="col-sm-4 col-form-label">Comision positiva</label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <div className="input-group-prepend ">
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100">%</span>
+                                    </div>
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={user.commission_earn} min={0} max={100} name='commission_earn' onChange={OnChange}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group justify-content-center row pt-3">
+                            <label htmlFor="monto" className="col-sm-4 col-form-label">Comision negativa</label>
+                            <div className="col-sm-5">
+                                <div className="input-group">
+                                    <div className="input-group-prepend ">
+                                        <span className="input-group-text bg-success border-success text-white text-white h-100">%</span>
+                                    </div>
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={user.commission_lose} min={0} max={100} name='commission_lose' onChange={OnChange}/>
                                 </div>
                             </div>
                         </div>
@@ -141,13 +166,13 @@ export const EditUser = () => {
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Cambiar contraseña</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" name="password" value={password.password} type="password"  onChange={OnChangePassword}/>
+                                <input id="user" className="form-control bg-dark border-success text-white" name="password" value={password.password} type="password" onChange={OnChangePassword} />
                             </div>
                         </div>
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="user">Repetir contraseña</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" name="replypassword" value={password.replypassword} type="password"  onChange={OnChangePassword}/>
+                                <input id="user" className="form-control bg-dark border-success text-white" name="replypassword" value={password.replypassword} type="password" onChange={OnChangePassword} />
                             </div>
                         </div>
                         <h5 className="card-header border-success text-white pt-4"></h5>

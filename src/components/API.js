@@ -19,6 +19,7 @@ const URIList = "https://royalonline.cloud/api/user/list"
 const URIRequests = "https://royalonline.cloud/api/user/requests"
 const URIResponse = "https://royalonline.cloud/api/user/response"
 const URICommission = "https://royalonline.cloud/api/user/commissions"
+const URICommissionAud = "https://royalonline.cloud/api/user/commissions_aud"
 
 export const Logon = async (user, pass) => {
 
@@ -411,4 +412,23 @@ export const UserCommission = async (iduser, since, until) => {
 
     const res = await fetch(URICommission, requestOptions);
     return await res.json();
+};
+
+
+export const UserCommissionAud = async (iduser, since, until, amount) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            iduser: iduser,
+            createdby: cookie.get('userdata').iduser,
+            date_since: since,
+            date_until: until+' 23:59',
+            amount: amount
+        })
+    };
+    const res = await fetch(URICommissionAud, requestOptions);
+    return await res.status;
 };

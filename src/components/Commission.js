@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { UserCommission } from "./API";
+import React, { useEffect, useRef, useState } from "react";
+import { UserCommission, UserCommissionAud } from "./API";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { Modal, ProgressBar } from "react-bootstrap";
 
 const Commission = () => {
     const navigate = useNavigate();    
     const today = new Date();
+    const refBtnConfirm = useRef(null);
+    const [confirm, setConfirm] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [commission, setCommission] = useState([]);
     const [until, setUntil] = useState(today.toISOString().split('T')[0]);
     const [since, setSince] = useState(today.toISOString().split('T')[0]);
     const [total, setTotal] =useState(0.0);
     const location = useLocation();
+
+    const [loading, setLoading] = useState(false);
+
     useState(()=>{
         Start();
     }, []);
@@ -25,6 +33,7 @@ const Commission = () => {
     }
 
     async function GetCommissions() {
+        setLoading(true);
         setTotal(0.0);
         const com = await UserCommission(location.state.iduser, since, until);
         setCommission(com);
@@ -34,6 +43,19 @@ const Commission = () => {
         });
 
         setTotal(sum);
+
+        setLoading(false);
+    }
+
+    async function CommissionAud(){
+        const res = await UserCommissionAud(location.state.iduser, since,until,total);
+        if(res === 200)
+        {            
+            setConfirm(false);
+            refBtnConfirm.current.disabled = false;
+            setShowConfirmDialog(false);
+            GetCommissions();
+        }
     }
 
     function OnChangeDate(event){
@@ -41,6 +63,14 @@ const Commission = () => {
             setSince(event.target.value);
         else
             setUntil(event.target.value);
+    }
+
+    
+    function ConfirmSubmit() {
+        refBtnConfirm.current.disabled = true;
+        if (confirm) return;
+        setConfirm(true);
+        CommissionAud();
     }
 
     return (
@@ -72,7 +102,10 @@ const Commission = () => {
                             <label className="col-sm-3 col-form-label"></label>
                             <div className="col-sm-5">
                                 <div className="input-group">
-                                    <button className="btn btn-success" onClick={(e) => GetCommissions()}>Buscar</button>
+                                    <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>
+                                </div>
+                                <div className="input-group mt-2">
+                                    <button className="btn btn-success" onClick={(e) => setShowConfirmDialog(true)}>Cobrar</button>
                                 </div>
                             </div>
                         </div>
@@ -86,6 +119,7 @@ const Commission = () => {
                                         <th>Usuario</th>
                                         <th>Comision</th>
                                         <th>Fecha</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,6 +127,7 @@ const Commission = () => {
                                         <td></td>
                                         <td><b>TOTAL:</b></td>
                                         <td><b>{total.toFixed(2)}</b></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                     {
@@ -102,6 +137,7 @@ const Commission = () => {
                                                 <td>{item.username}</td>
                                                 <td>{item.commission}</td>
                                                 <td>{item.createdat}</td>
+                                                <td>{item.status}</td>
                                             </tr>
                                         ))
                                     }
@@ -114,6 +150,26 @@ const Commission = () => {
 
 
             </div>
+            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmacion 🤔</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    <p>Esta seguro que desea confirmar la operacion?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={loading} backdrop="static" keyboard={false} centered={true}>
+                <Modal.Header>
+                    <Modal.Title>CARGANDO.. ⌛</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ProgressBar className="progress-bar progress-bar-striped bg-success progress-bar-animated" />
+                </Modal.Body>
+            </Modal>
         </>
     );
 };

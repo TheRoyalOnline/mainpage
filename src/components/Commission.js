@@ -3,6 +3,7 @@ import { UserCommission, UserCommissionAud } from "./API";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { Modal, ProgressBar } from "react-bootstrap";
+import { ShowDialog } from "./Dialogs";
 
 const Commission = () => {
     const navigate = useNavigate();    
@@ -73,6 +74,15 @@ const Commission = () => {
         CommissionAud();
     }
 
+    function Cobrar(e){
+
+        if(total > 0)
+            setShowConfirmDialog(true);
+        else
+            setShowModal(true);
+
+    }
+
     return (
         <>
             <div className='pt-2 text-white container' >
@@ -105,7 +115,7 @@ const Commission = () => {
                                     <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>
                                 </div>
                                 <div className="input-group mt-2">
-                                    <button className="btn btn-success" onClick={(e) => setShowConfirmDialog(true)}>Cobrar</button>
+                                    <button className="btn btn-success" onClick={Cobrar}>Cobrar</button>
                                 </div>
                             </div>
                         </div>
@@ -170,6 +180,8 @@ const Commission = () => {
                     <ProgressBar className="progress-bar progress-bar-striped bg-success progress-bar-animated" />
                 </Modal.Body>
             </Modal>
+
+            <ShowDialog  title={"Informacion"} message={"❌ No se puede generar comisiones negativas."} show={showModal} handler={()=>setShowModal(false)}/>
         </>
     );
 };

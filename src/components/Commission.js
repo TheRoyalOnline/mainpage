@@ -87,43 +87,43 @@ const Commission = () => {
     return (
         <>
             <div className='pt-2 text-white container' >
-                <h1 className='text-center '>Lista de comisiones</h1>
+                <h1 className='text-center '>Lista de comisiones pendientes</h1>
                 <div className='card border-success text-white bg-transparent mt-5'>
 
-                    <h5 className="card-header border-success text-white pt-4">Vendedor: {location.state.username}</h5>
+                    <h5 className="card-header border-success text-white pt-4">Vendedor: <span className="text-info">{location.state.username.toUpperCase()}</span></h5>
 
                     <div className='flex-column p-3' >
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label">Desde:</label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="date" className=" input-group-text bg-dark border-success text-white  h-100 calendar" value={since} name="since" onChange={OnChangeDate} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label">Hasta:</label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <input type="date" className="input-group-text bg-dark border-success text-white h-100" value={until} name="until" onChange={OnChangeDate} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group justify-content-center row pt-3">
-                            <label className="col-sm-3 col-form-label"></label>
-                            <div className="col-sm-5">
-                                <div className="input-group">
-                                    <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>
-                                </div>
+                    {/*    <div className="form-group justify-content-center row pt-3">*/}
+                    {/*        <label className="col-sm-3 col-form-label">Desde:</label>*/}
+                    {/*        <div className="col-sm-5">*/}
+                    {/*            <div className="input-group">*/}
+                    {/*                <input type="date" className=" input-group-text bg-dark border-success text-white  h-100 calendar" value={since} name="since" onChange={OnChangeDate} />*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="form-group justify-content-center row pt-3">*/}
+                    {/*        <label className="col-sm-3 col-form-label">Hasta:</label>*/}
+                    {/*        <div className="col-sm-5">*/}
+                    {/*            <div className="input-group">*/}
+                    {/*                <input type="date" className="input-group-text bg-dark border-success text-white h-100" value={until} name="until" onChange={OnChangeDate} />*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                        <div className="form-group row pt-3">
+
+                                {/*<div className="input-group">*/}
+                                {/*    <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>*/}
+                                {/*</div>*/}
                                 {
                                     role === 1 ?(
-                                        <div className="input-group mt-2">
-                                            <button className="btn btn-success" onClick={Cobrar}>Cobrar</button>
+                                        <div className="col-sm-5">
+                                            <div className="input-group">
+                                                <button className="btn btn-success" onClick={Cobrar} disabled={total <= 0}>{`Cobrar ${total.toFixed(2)} CRE`}</button>
+                                            </div>
                                         </div>
-                                    ):null
+                                    ) : null
                                 }
 
-                            </div>
                         </div>
                     </div>
                     <div className='flex-column justify-content-center p-3'>

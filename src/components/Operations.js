@@ -9,6 +9,7 @@ import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy }
 import { GetGlobal } from "./APIExtras";
 import EditGame from "./EditGame";
 import { GetRequests, Response } from "./API";
+import Commission from "./Commission";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -347,6 +348,10 @@ export const Operations = () => {
         Starting();
     }
 
+    function OpenCommissions(e){
+        const cookie = new Cookies();
+        navigate('/Operations/Commissions', { state: { username: cookie.get("userdata").username, iduser: cookie.get("userdata").iduser } });
+    }
 
     return (
         <div>
@@ -359,6 +364,12 @@ export const Operations = () => {
                         userdata.role === 1 ? (
                             <button className="btn btn-info" onClick={EditUsers}>Modificar usuarios</button>
                         )
+                            : null
+                    }
+                    {
+                        [2, 3, 4].includes(userdata.role) ? (
+                                <button className="btn btn-primary" onClick={OpenCommissions}>Ver comisiones</button>
+                            )
                             : null
                     }
                 </div>

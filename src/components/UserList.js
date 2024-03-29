@@ -33,8 +33,7 @@ export const UserList = () => {
     }
     
     function Commissions(item){
-        navigate('/Operations/Commissions', { state: { username: item.username, iduser: item.iduser } })
-        
+        navigate('/Operations/Commissions', { state: { username: item.username, iduser: item.iduser } });
     }
 
     return (

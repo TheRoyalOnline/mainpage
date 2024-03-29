@@ -9,7 +9,6 @@ export const Movements = () => {
     const [movements, setMovements] = useState([]);
 
     useEffect(() => {
-        console.log(props)
         if (props === null){
             navigate('/');
             return;

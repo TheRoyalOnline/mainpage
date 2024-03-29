@@ -6,7 +6,8 @@ import { Modal, ProgressBar } from "react-bootstrap";
 import { ShowDialog } from "./Dialogs";
 
 const Commission = () => {
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
+    const [role, setRole] = useState(0);
     const today = new Date();
     const refBtnConfirm = useRef(null);
     const [confirm, setConfirm] = useState(false);
@@ -27,9 +28,9 @@ const Commission = () => {
 
     function Start() {
         const cookie = new Cookies();
-        if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
+        if (cookie.get("userdata") === undefined)
             navigate('/');
-
+        setRole(cookie.get("userdata").role );
         GetCommissions();
     }
 
@@ -114,9 +115,14 @@ const Commission = () => {
                                 <div className="input-group">
                                     <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>
                                 </div>
-                                <div className="input-group mt-2">
-                                    <button className="btn btn-success" onClick={Cobrar}>Cobrar</button>
-                                </div>
+                                {
+                                    role === 1 ?(
+                                        <div className="input-group mt-2">
+                                            <button className="btn btn-success" onClick={Cobrar}>Cobrar</button>
+                                        </div>
+                                    ):null
+                                }
+
                             </div>
                         </div>
                     </div>

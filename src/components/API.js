@@ -95,7 +95,6 @@ export const UpdateUserDetails = async user => {
                 password: user.password,
                 name: user.name,
                 surname: user.surname,
-                email: user.email,
                 phonecode: user.phonecode,
                 phonenumber: user.phonenumber,
                 email: user.email,
@@ -425,7 +424,7 @@ export const UserCommissionAud = async (iduser, since, until, amount) => {
             iduser: iduser,
             createdby: cookie.get('userdata').iduser,
             date_since: since,
-            date_until: until+' 23:59',
+            date_until: until,
             amount: amount
         })
     };

@@ -43,8 +43,13 @@ const Commission = () => {
         com.forEach(item=>{
             sum += parseFloat(item.commission);
         });
-
         setTotal(sum);
+
+        if(com.length > 0){
+            const lastdate = new Date(com[com.length - 1].createdat)
+            const unt = lastdate.toISOString().split('T')[0] + ' ' + lastdate.toISOString().split('T')[1].substring(0, 8);
+            setUntil(unt);
+        }
 
         setLoading(false);
     }

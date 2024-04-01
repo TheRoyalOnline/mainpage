@@ -56,6 +56,7 @@ export const UserList = () => {
                                     <th>Efectivo</th>
                                     <th>Email</th>
                                     <th>CI</th>
+                                    <th>Telefono</th>
                                     <th>Rol</th>
                                     <th>Activo</th>
                                     <th>C. Positivo</th>
@@ -75,13 +76,14 @@ export const UserList = () => {
                                             <td>{item.cash}</td>
                                             <td>{item.email}</td>
                                             <td>{item.dni}</td>
+                                            <td><a href={"https://wa.me/"+item.cellphone.substring(1)} target={"_blank"} className="link-light link-underline link-underline-opacity-0">{item.cellphone}</a></td>
                                             <td>{rol[item.role]}</td>
                                             <td>{item.active === 1? "Si":"No"}</td>
                                             <td>{item.commission_earn}%</td>
                                             <td>{item.commission_lose}%</td>
                                             <td><div className="d-flex flex-row">
-                                                <button className="btn btn-transparent" onClick={e => Edit(item)} title="Editar">✏️</button>
-                                                <button className="btn btn-transparent" onClick={e => Commissions(item)} title="Comisiones">💵</button>
+                                                <button className="btn btn-transparent" onClick={() => Edit(item)} title="Editar">✏️</button>
+                                                <button className="btn btn-transparent" onClick={() => Commissions(item)} title="Comisiones">💵</button>
                                                 </div>
                                                 </td>
                                         </tr>

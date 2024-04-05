@@ -9,7 +9,7 @@ export const ShowDialog = (props) => {
                 <Modal.Title>{props.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body >
-                <p>{props.message}</p>
+                <p dangerouslySetInnerHTML={{ __html: props.message }}></p>
             </Modal.Body>
             <Modal.Footer>
             </Modal.Footer>

@@ -63,7 +63,7 @@ export const SetNewUser = async (formData) => {
     };
 
     const res = await fetch(URISetNewUser, requestOptions);
-    return res.text();
+    return { "token": res.text(), "status": res.status};
 };
 
 export const GetUserDetails = async (username) => {

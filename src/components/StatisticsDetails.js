@@ -159,8 +159,8 @@ export const StatisticsDetails = () => {
                                                             <td>{r.spinNumber}</td>
                                                             <td>{r.resultType}</td>
                                                             <td>{r.lines}</td>
-                                                            <td>{r.bet}</td>
-                                                            <td>{r.earn}</td>
+                                                            <td>{parseFloat(r.bet).toFixed(2)}</td>
+                                                            <td>{parseFloat(r.earn).toFixed(2)}</td>
                                                             <td>{item.username}</td>
                                                             <td>{r.winCombination}</td>
                                                             <td>{i.date.split('T')[0]}</td>

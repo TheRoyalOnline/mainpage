@@ -17,7 +17,6 @@ const Requests = (props) => {
 
     async function getRequests() {
         const list = await GetRequests(dni);
-        console.log(list);
         setRequests(list);
     }
 

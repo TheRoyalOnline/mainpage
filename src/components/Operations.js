@@ -8,8 +8,8 @@ import { Modal } from "react-bootstrap";
 import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
 import { GetGlobal } from "./APIExtras";
 import EditGame from "./EditGame";
-import { GetRequests, Response } from "./API";
 import Commission from "./Commission";
+import CashingRequest from "./CashingRequest";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -33,7 +33,6 @@ export const Operations = () => {
     const [ccash, setCcash] = useState();
     const [ccredit, setCcredit] = useState();
     const [deposit, setDeposit] = useState();
-    const [requests, setRequests] = useState([]);
 
     const refInputAssing = useRef(null);
     const refInputTransact = useRef(null);
@@ -42,7 +41,6 @@ export const Operations = () => {
     const refCheckTransact1 = useRef(null);
     const refCheckTransact2 = useRef(null);
     const refBtnConfirm = useRef(null);
-    const refRequests = useRef(null);
 
     const access = {
         '1': [1, 1, 1, 1],
@@ -54,25 +52,26 @@ export const Operations = () => {
 
     useEffect(() => {
         Starting();
+        GetUserdata();
         const intervalId = setInterval(GetCredits, 5000);
 
         return () => clearInterval(intervalId);
     }, []);
 
-    async function Starting() {
+    function GetUserdata(){
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined)
             navigate('/');
-
 
         setUserdata(cookie.get('userdata'));
         setShowAsing(access[cookie.get('userdata').role][0])
         setAsign(access[cookie.get('userdata').role][1])
         setTransact(access[cookie.get('userdata').role][2])
         setOthers(access[cookie.get('userdata').role][3])
+    }
 
+    async function Starting() {
         GetCredits();
-        
         const c = await GetGlobal('convertion');
         setConvertion(c);
     }
@@ -81,8 +80,6 @@ export const Operations = () => {
         const cookie = new Cookies();
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setUserdata(u => ({ ...u, ...cre }));
-        const list = await GetRequests();
-        setRequests(list);
     }
 
     function ShowMovements() {
@@ -158,14 +155,6 @@ export const Operations = () => {
         }
     }
 
-    async function ResponseRequests(value, id, button) {
-        refRequests.current.disabled = true;
-        const res = await Response(id, value);
-        if (res === 200) {
-            GetCredits();
-        }
-    }
-
     async function Assign(e) {
         if (opType === 'op1')
             setUser1(u => ({ ...u, ...user }));
@@ -211,10 +200,11 @@ export const Operations = () => {
                         setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
                         return;
                     }
-                } else if (parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
-                    setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
-                    return;
                 }
+                // else if (parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
+                //     setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
+                //     return;
+                // }
 
                 setTypeConfirm('transact');
                 setShowConfirmDialog(true);
@@ -354,7 +344,7 @@ export const Operations = () => {
     }
 
     return (
-        <div>
+        <>
             <div className='pt-2 text-white container register'>
                 <h1 className='text-center'>Operaciones</h1>
                 <h2 className='text-center'>{userdata.surname}, {userdata.name} - {userdata.rolename}</h2>
@@ -590,49 +580,7 @@ export const Operations = () => {
 
                 ) : null
             }
-            {
-                requests.length > 0 ? (
-                    <div className='pt-2 text-white container register' name='assign' id="assign" onSubmit={OnSubmit}>
-                        <div className='card border-success text-white bg-transparent mb-5'>
-                            <h5 className="card-header border-success text-white">Solicitudes</h5>
 
-                            <div className="table-responsive">
-                                <table className="table table-dark table-striped text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Usuario</th>
-                                            <th>Tipo</th>
-                                            <th>Creditos</th>
-                                            <th>Efectivo</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            requests.map(item => (
-                                                <tr key={item.idrequests}>
-                                                    <td>{item.userfrom}</td>
-                                                    <td>{item.type === "sell" ? "Compra" : "Venta"}</td>
-                                                    <td>{item.credits}</td>
-                                                    <td>{item.cash}</td>
-                                                    <td>
-                                                        <div className="form-group">
-                                                            <button ref={refRequests} className="btn btn-success" type="button" onClick={(e) => ResponseRequests("AP", item.idrequest)}>Aceptar</button>
-                                                            <button ref={refRequests} className="btn btn-danger" type="button" onClick={(e) => ResponseRequests("RE", item.idrequest)}>Rechazar</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                ) : null
-            }
 
 
             <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal} size="lg" centered={true}>
@@ -691,7 +639,11 @@ export const Operations = () => {
                     <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
-        </div>
+
+            {
+                userdata ? <CashingRequest canAccess={userdata.role === 5}  convertion={convertion} iduser={userdata.iduser} credits={userdata.credits}/>:null
+            }
+        </>
 
 
     );

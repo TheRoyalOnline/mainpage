@@ -350,7 +350,7 @@ export const GetRequests = async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             token: cookie.get('userdata').token,
-            rolefrom: cookie.get('userdata').role,
+            role: cookie.get('userdata').role,
             iduser: cookie.get('userdata').iduser
         })
     };
@@ -363,7 +363,7 @@ export const GetRequests = async () => {
 };
 
 
-export const Response = async (id, state) => {
+export const Response = async (id, state, iduser) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -371,7 +371,8 @@ export const Response = async (id, state) => {
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             idrequest: id,
-            state: state
+            state: state,
+            iduser: iduser
         })
     };
 

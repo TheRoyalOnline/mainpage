@@ -343,7 +343,7 @@ export const UpdateByAdmin = async (user, password) => {
 };
 
 
-export const GetRequests = async () => {
+export const GetRequests = async (dni) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -351,7 +351,8 @@ export const GetRequests = async () => {
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             role: cookie.get('userdata').role,
-            iduser: cookie.get('userdata').iduser
+            iduser: cookie.get('userdata').iduser,
+            dni: dni
         })
     };
 

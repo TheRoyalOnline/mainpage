@@ -27,7 +27,7 @@ const CashingRequest = (props) => {
         e.preventDefault();
         setUser(prevUser => ({
             ...prevUser,
-            from: props.iduser,
+            from: 0,
             for: props.iduser,
             cash: parseFloat(prevUser.credits) * props.convertion
         }));
@@ -93,7 +93,7 @@ const CashingRequest = (props) => {
 
             ) : null
             }
-            <Requests iduser={props.iduser} />
+            <Requests iduser={props.iduser} canFind={props.role !== 1}/>
 
             <Modal className="container-fluid" backdrop="static" show={showDialog} onHide={() => setShowDialog(false)}
                    centered={true}>

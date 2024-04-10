@@ -639,10 +639,8 @@ export const Operations = () => {
                     <button ref={refBtnConfirm} className="btn btn-success" onClick={ConfirmSubmit}>Confirmar</button>
                 </Modal.Footer>
             </Modal>
+            <CashingRequest canAccess={userdata.role === 5}  convertion={convertion} iduser={userdata.iduser} credits={userdata.credits}/>
 
-            {
-                userdata ? <CashingRequest canAccess={userdata.role === 5}  convertion={convertion} iduser={userdata.iduser} credits={userdata.credits}/>:null
-            }
         </>
 
 

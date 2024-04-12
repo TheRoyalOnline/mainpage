@@ -304,21 +304,21 @@ export const Operations = () => {
                 res = await CreateEconomy(data3);
                 break;
         }
-        if (res === 200)
-            Reset();
+         if (res === 200)
+             Reset();
     }
 
     function Reset() {
 
         setErrMessage2('');
-        setUserdata({});
+       // setUserdata({});
         setShowModal(false)
         setShowConfirmDialog(false)
-        setShowAsing(false)
-        setAsign(false)
+        //setShowAsing(false)
+        //setAsign(false)
         setConvertion(0)
-        setTransact(false)
-        setOthers(false)
+        //setTransact(false)
+        //setOthers(false)
         setUser({});
         setUser1({});
         setUser2({});

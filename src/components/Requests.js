@@ -75,7 +75,7 @@ const Requests = (props) => {
                                             <td>
                                                 <div className="form-group">
                                                     {
-                                                        props.iduser === item.iduserTarget ? (
+                                                        props.iduser === item.iduserTarget && item.iduserOrigin === 0 ? (
                                                             <button ref={refRequests} className="btn btn-danger"
                                                                     type="button"
                                                                     onClick={(e) => ResponseRequests("RE", item.idrequest, props.iduser)}>Cancelar

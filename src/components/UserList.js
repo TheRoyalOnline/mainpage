@@ -19,7 +19,11 @@ export const UserList = () => {
         
         Start();
     }, []);
-    
+
+    function ShowMovements(iduser) {
+        const props = { iduser: iduser }
+        navigate('/Operations/Movements', { state: props })
+    }
     async function Start() {
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
@@ -84,6 +88,7 @@ export const UserList = () => {
                                             <td><div className="d-flex flex-row">
                                                 <button className="btn btn-transparent" onClick={() => Edit(item)} title="Editar">✏️</button>
                                                 <button className="btn btn-transparent" onClick={() => Commissions(item)} title="Comisiones">💵</button>
+                                                <button className="btn btn-transparent" onClick={() => ShowMovements(item.iduser)} title="Movimientos">🧮</button>
                                                 </div>
                                                 </td>
                                         </tr>

@@ -201,10 +201,10 @@ export const Operations = () => {
                         return;
                     }
                 }
-                // else if (parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
-                //     setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
-                //     return;
-                // }
+                else if ( user2.type === "sell" && parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
+                    setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
+                    return;
+                }
 
                 setTypeConfirm('transact');
                 setShowConfirmDialog(true);

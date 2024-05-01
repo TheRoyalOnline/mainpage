@@ -18,6 +18,7 @@ import EditGame from './EditGame';
 import Statistics from './Statistics';
 import StatisticsDetails from './StatisticsDetails';
 import UserList from './UserList';
+import Ranking from "./Ranking";
 
 export const App = () => {
     const [show, setShow] = useState(false);
@@ -30,6 +31,7 @@ export const App = () => {
         <div className='containter-fluid'>
             <Menu handler={handleLogin}/>
             <Login show={show} handler={handleLogin}/>
+            <Ranking />
             <Routes>
                 <Route exact path='/' element={<MainPage handler={handleLogin} />} />
                 <Route exact path='/Singup' element={<SignUp />} />

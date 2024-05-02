@@ -78,6 +78,10 @@ footer {
   background-size: cover;
 }
 
+.text-purple{
+  color: #d258ff;
+}
+
 .btn-purple {
   background-color: #b700ff;
 }

@@ -1,40 +1,36 @@
 import {React, useEffect, useState} from "react";
 import {GetRanking} from "./Game";
-import {Collapse, Button} from 'react-bootstrap';
-import banana from "../components/imgs/icons/banana.png"
-import mariposa from "../components/imgs/icons/mariposa.png"
-import leon from "../components/imgs/icons/leon.png"
-import mono from "../components/imgs/icons/mono.png"
+import {Collapse} from 'react-bootstrap';
 import Cookies from "universal-cookie";
 
 const Ranking = () => {
     const symbols = {
-        "mariposa": "🦋",
-        "banana": "🍌",
-        "serpiente": "🐍",
-        "ancla": "⚓",
-        "piña": "🍍",
-        "leon": "🦁",
-        "joker": "💀",
-        "crazy": "⭐",
-        "mono": "🐒🐒🐒"
+        "mariposa": require("../components/imgs/icons/mariposa.png"),
+        "banana": require("../components/imgs/icons/banana.png"),
+        "serpiente": require("../components/imgs/icons/serpiente.png"),
+        "ancla": require("../components/imgs/icons/yunke.png"),
+        "piña": require("../components/imgs/icons/piña.png"),
+        "leon": require("../components/imgs/icons/leon.png"),
+        "joker": require("../components/imgs/icons/joker.png"),
+        "crazy": require("../components/imgs/icons/crazy.png"),
+        "mono": require("../components/imgs/icons/mono.png")
     }
 
     const cards = {
-        "2": "2",
-        "3": "3",
-        "4": "4",
-        "5": "5",
-        "6": "6",
-        "7": "7",
-        "8": "8",
-        "9": "9",
-        "10": "10",
-        "11": "J",
-        "12": "Q",
-        "13": "K",
-        "14": "A",
-        "15": "🃏"
+        "2": require("../components/imgs/cards/2.png"),
+        "3": require("../components/imgs/cards/3.png"),
+        "4": require("../components/imgs/cards/4.png"),
+        "5": require("../components/imgs/cards/5.png"),
+        "6": require("../components/imgs/cards/6.png"),
+        "7": require("../components/imgs/cards/7.png"),
+        "8": require("../components/imgs/cards/8.png"),
+        "9": require("../components/imgs/cards/9.png"),
+        "10":require("../components/imgs/cards/10.png"),
+        "11":require("../components/imgs/cards/11.png"),
+        "12":require("../components/imgs/cards/12.png"),
+        "13":require("../components/imgs/cards/13.png"),
+        "14":require("../components/imgs/cards/14.png"),
+        "15":require("../components/imgs/cards/15.png")
     }
 
     const [list, setList] = useState([]);
@@ -49,10 +45,9 @@ const Ranking = () => {
 
     async function GetData() {
         const cookie = new Cookies();
-        if(cookie.get("userdata") !== undefined){
+        if (cookie.get("userdata") !== undefined) {
             setShow(true);
-        }
-        else
+        } else
             return;
 
         const rank = await GetRanking();
@@ -60,32 +55,32 @@ const Ranking = () => {
     }
 
     function SetCombinations(winCombinations, card, bonus, sbonus) {
-        let comb = ""
+        let comb = []
         winCombinations.forEach((element, index) => {
             const amount = element.split(" ")[0];
             const sym = element.split(" ")[1];
-            for (let i = 0; i < amount; i++) {
-                comb += symbols[sym];
-            }
+            for (let i = 0; i < amount; i++)
+                comb.push(<img src={symbols[sym]} width='25'/>);
 
-            comb += index !== winCombinations.length - 1 ? " + " : "";
         })
-        const b = bonus > 0 ? `${symbols['mono']} B. ${bonus}` : "";
+
+        const monkeys = [<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>];
+        const b = bonus > 0 ? `+ B. ${bonus}` : "";
         const sb = sbonus > 0 ? ` | S. ${sbonus} +` : "";
-
-        let c = ""
+        let c = []
         card.forEach((element, index) => {
-            c += index === 0 ? " + " : "";
-            c += `${cards[element.dealer]} ${cards[element.pick]}`
-            c += index === card.length - 1 && card.length > 1 ? " + " : "";
+            c.push(<img src={cards[element.dealer]} width='15'/>);
         })
-
-        return b + sb + comb + c;
+        return(
+            <>
+                <div>{bonus > 0 ? monkeys : null} {b + sb}{comb}<span>{c.length > 0 ? "+ ":""}{c}</span></div>
+            </>
+        );
     }
 
-    function OnOpen(e){
+    function OnOpen(e) {
         setOpen(!open);
-        setExpand(open ? '⬇️ Ranking':'⬆️')
+        setExpand(open ? '⬇️ Ranking' : '⬆️')
     }
 
     return (
@@ -115,11 +110,11 @@ const Ranking = () => {
                                         {
                                             list.map((item, index) => (
                                                 <tr>
-                                                    <td className={index === 0 ? "text-success fw-bold" : ""}>{index + 1}</td>
-                                                    <td className={index === 0 ? "text-success fw-bold" : ""}>{item.username}</td>
-                                                    <td className={index === 0 ? "text-success fw-bold" : ""}>{item.details.result.bet}</td>
-                                                    <td className={index === 0 ? "text-success fw-bold" : ""}>{SetCombinations(item.details.result.winCombination, item.details.result.cards, item.details.result.bonusEarn, item.details.result.sbonusEarn)}</td>
-                                                    <td className={index === 0 ? "text-success fw-bold" : ""}>{parseInt(item.total * 1000).toLocaleString()} Gs</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{index + 1}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{item.username}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{item.details.result.bet}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(item.details.result.winCombination, item.details.result.cards, item.details.result.bonusEarn, item.details.result.sbonusEarn)}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(item.total * 1000).toLocaleString()}</td>
                                                 </tr>
                                             ))
                                         }

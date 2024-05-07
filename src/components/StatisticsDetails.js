@@ -98,7 +98,7 @@ export const StatisticsDetails = () => {
 
     return (
         <div>
-            <div className='pt-2 text-white container register pb-5'>
+            <div className='text-white container pt-3'>
                 <h1 className='text-center'>Resumen de jugadas</h1>
                 <h2 className='text-center'>Sala {location.state.idroom}</h2>
 
@@ -137,10 +137,11 @@ export const StatisticsDetails = () => {
                             <thead>
                                 <tr>
                                     <th>Giro</th>
-                                    <th>Tipo</th>
                                     <th>Lineas</th>
                                     <th>Apuesta</th>
-                                    <th>Premio</th>
+                                    <th>Premio main</th>
+                                    <th>Bonus</th>
+                                    <th>S. Bonus</th>
                                     <th>Usuario</th>
                                     <th>Combinacion</th>
                                     <th>Fecha</th>
@@ -157,10 +158,11 @@ export const StatisticsDetails = () => {
                                                     {i.result.map(r => (
                                                         <tr key={r.spinNumber}>
                                                             <td>{r.spinNumber}</td>
-                                                            <td>{r.resultType}</td>
                                                             <td>{r.lines}</td>
                                                             <td>{parseFloat(r.bet).toFixed(2)}</td>
                                                             <td>{parseFloat(r.earn).toFixed(2)}</td>
+                                                            <td>{parseFloat(r.bonusEarn).toFixed(2)}</td>
+                                                            <td>{parseFloat(r.sbonusEarn).toFixed(2)}</td>
                                                             <td>{item.username}</td>
                                                             <td>{r.winCombination}</td>
                                                             <td>{i.date.split('T')[0]}</td>

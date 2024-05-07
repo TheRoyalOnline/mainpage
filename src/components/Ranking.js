@@ -13,7 +13,8 @@ const Ranking = () => {
         "leon": require("../components/imgs/icons/leon.png"),
         "joker": require("../components/imgs/icons/joker.png"),
         "crazy": require("../components/imgs/icons/crazy.png"),
-        "mono": require("../components/imgs/icons/mono.png")
+        "mono": require("../components/imgs/icons/mono.png"),
+        "box": require("../components/imgs/icons/box.png")
     }
 
     const cards = {
@@ -65,15 +66,16 @@ const Ranking = () => {
         })
 
         const monkeys = [<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>];
-        const b = bonus > 0 ? `+ B. ${bonus}` : "";
-        const sb = sbonus > 0 ? ` | S. ${sbonus} +` : "";
+        const b = bonus > 0 ? ` ${bonus} ` : "";
+        const sb = sbonus > 0 ? ` ${sbonus} ` : "";
         let c = []
         card.forEach((element, index) => {
             c.push(<img src={cards[element.dealer]} width='15'/>);
         })
         return(
             <>
-                <div>{bonus > 0 ? monkeys : null} {b + sb}{comb}<span>{c.length > 0 ? "+ ":""}{c}</span></div>
+                <div>{bonus > 0 ? monkeys : null} {b}{sbonus > 0 ?
+                    <>| <img src={symbols['box']} width='23'/></> : null}{sb}{comb}<span>{c.length > 0 ? "+ " : ""}{c}</span></div>
             </>
         );
     }

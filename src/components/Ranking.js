@@ -2,6 +2,7 @@ import {React, useEffect, useState} from "react";
 import {GetRanking} from "./Game";
 import {Collapse} from 'react-bootstrap';
 import Cookies from "universal-cookie";
+import Timer from "./Timer";
 
 const Ranking = () => {
     const symbols = {
@@ -38,7 +39,7 @@ const Ranking = () => {
     const [expand, setExpand] = useState('⬇️ Ranking');
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(false);
-
+    const targetDate = new Date('December 31, 2024 23:59:59');
 
     useEffect(() => {
         GetData();
@@ -95,6 +96,7 @@ const Ranking = () => {
                         <div className='card border-success bg-purple'>
 
                             <h5 className="card-header border-success text-white bg-purple-2">Ranking</h5>
+                            <p className="card-header text-white bg-purple-2"><Timer targetDate={targetDate}/></p>
 
                             <div className='flex-column justify-content-center'>
                                 <div className="table-responsive">
@@ -105,7 +107,8 @@ const Ranking = () => {
                                             <th>Usuario</th>
                                             <th>Apuesta</th>
                                             <th></th>
-                                            <th>Premio</th>
+                                            <th>Monto</th>
+                                            <th className={"text-warning fw-bold"}>Premio</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -117,6 +120,7 @@ const Ranking = () => {
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{item.details.result.bet}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(item.details.result.winCombination, item.details.result.cards, item.details.result.bonusEarn, item.details.result.sbonusEarn)}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(item.total * 1000).toLocaleString()}</td>
+                                                    <td className={"text-warning fw-bold"}>Gs 0</td>
                                                 </tr>
                                             ))
                                         }

@@ -140,6 +140,8 @@ export const StatisticsDetails = () => {
                                     <th>Lineas</th>
                                     <th>Apuesta</th>
                                     <th>Premio main</th>
+                                    <th>Carta In</th>
+                                    <th>Carta Out</th>
                                     <th>Bonus</th>
                                     <th>S. Bonus</th>
                                     <th>Usuario</th>
@@ -161,6 +163,8 @@ export const StatisticsDetails = () => {
                                                             <td>{r.lines}</td>
                                                             <td>{parseFloat(r.bet).toFixed(2)}</td>
                                                             <td>{parseFloat(r.earn).toFixed(2)}</td>
+                                                            <td>-{parseFloat(r.cardIn).toFixed(2)}</td>
+                                                            <td>{parseFloat(r.cardOut).toFixed(2)}</td>
                                                             <td>{parseFloat(r.bonusEarn).toFixed(2)}</td>
                                                             <td>{parseFloat(r.sbonusEarn).toFixed(2)}</td>
                                                             <td>{item.username}</td>

@@ -41,7 +41,7 @@ export const Movements = () => {
                                     <th>Creditos</th>
                                     <th>Saldo</th>
                                     <th>Efectivo</th>
-                                    <th>Saldo</th>
+                                    <th hidden={props.role === 5}>Saldo</th>
                                     <th>Origen</th>
                                     <th>Destino</th>
                                     <th>Modulo</th>
@@ -56,7 +56,7 @@ export const Movements = () => {
                                             <td>{parseInt(item.credits).toLocaleString()}</td>
                                             <td>{parseInt(item.balancecre).toLocaleString()}</td>
                                             <td>₲ {parseInt(item.cash).toLocaleString()}</td>
-                                            <td>₲ {parseInt(item.balancecash).toLocaleString()}</td>
+                                            <td hidden={props.role === 5}>₲ {parseInt(item.balancecash).toLocaleString()}</td>
                                             <td>{item.origin}</td>
                                             <td>{item.destine}</td>
                                             <td>{item.module}</td>

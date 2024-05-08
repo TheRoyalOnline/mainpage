@@ -83,7 +83,7 @@ export const Operations = () => {
     }
 
     function ShowMovements() {
-        const props = { iduser: userdata.iduser }
+        const props = { iduser: userdata.iduser, role: userdata.role};
         navigate('/Operations/Movements', { state: props })
     }
 

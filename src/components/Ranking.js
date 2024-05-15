@@ -3,6 +3,7 @@ import {GetRanking} from "./Game";
 import {Collapse} from 'react-bootstrap';
 import Cookies from "universal-cookie";
 import Timer from "./Timer";
+import {GetGlobal} from "./APIExtras";
 
 const Ranking = () => {
     const symbols = {
@@ -39,7 +40,7 @@ const Ranking = () => {
     const [expand, setExpand] = useState('⬇️ Ranking');
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(false);
-    const targetDate = new Date('December 31, 2024 23:59:59');
+    const [rankingDate, setRankingDate] = useState(new Date());
 
     useEffect(() => {
         GetData();
@@ -53,6 +54,10 @@ const Ranking = () => {
             return;
 
         const rank = await GetRanking();
+        const d = await GetGlobal('ranking_date');
+
+
+        setRankingDate(new Date(d));
         setList(rank);
     }
 
@@ -96,7 +101,7 @@ const Ranking = () => {
                         <div className='card border-success bg-purple'>
 
                             <h5 className="card-header border-success text-white bg-purple-2">Ranking</h5>
-                            <p className="card-header text-white bg-purple-2"><Timer targetDate={targetDate}/></p>
+                            <p className="card-header text-white bg-purple-2"><Timer targetDate={rankingDate}/></p>
 
                             <div className='flex-column justify-content-center'>
                                 <div className="table-responsive">
@@ -113,14 +118,14 @@ const Ranking = () => {
                                         </thead>
                                         <tbody>
                                         {
-                                            list.map((item, index) => (
+                                            list.map((data, index) => (
                                                 <tr>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{index + 1}</td>
-                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{item.username}</td>
-                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{item.details.result.bet}</td>
-                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(item.details.result.winCombination, item.details.result.cards, item.details.result.bonusEarn, item.details.result.sbonusEarn)}</td>
-                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(item.total * 1000).toLocaleString()}</td>
-                                                    <td className={"text-warning fw-bold"}>Gs 0</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.username}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.details.result.bet}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(data.item.details.result.winCombination, data.item.details.result.cards, data.item.details.result.bonusEarn, data.item.details.result.sbonusEarn)}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(data.item.total * 1000).toLocaleString()}</td>
+                                                    <td className={"text-warning fw-bold"}>Gs {parseInt(data.prize * 1000).toLocaleString()}</td>
                                                 </tr>
                                             ))
                                         }

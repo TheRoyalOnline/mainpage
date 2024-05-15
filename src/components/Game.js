@@ -8,7 +8,7 @@ const URIForceAdmin = "https://royalonline.cloud/api/game/forceclose";
 const URISetup = "https://royalonline.cloud/api/game/setup";
 const URIStats = "https://slotpy.info/statistics";
 const URIDetails = "https://slotpy.info/details";
-const URIRanking = "https://slotpy.info/ranking";
+const URIRanking = "https://royalonline.cloud/api/ranking/prizes";
 
 export const ConnectRoom = async (_iduser, _idroom) => {
     const cookie = new Cookies();
@@ -138,14 +138,13 @@ export const ForceDisconnectAdmin = async (id) => {
 
 
 export const GetRanking = async () => {
+    const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify({
-        //     idroom: parseInt(id),
-        //     since: since,+
-        //     until: until
-        // })
+        body: JSON.stringify({
+            token: cookie.get('userdata').token
+        })
     };
     const res = await fetch(URIRanking, requestOptions);
     if(res.status === 200){

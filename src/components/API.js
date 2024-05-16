@@ -459,7 +459,6 @@ export const GetPositions = async () => {
 export const SetRankingPosition = async (position, prize) => {
     const cookie = new Cookies();
     const uri = "https://royalonline.cloud/api/ranking/positions"
-    console.log(position, prize)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

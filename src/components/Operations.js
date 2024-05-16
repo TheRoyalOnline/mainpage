@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaArrowAltCircleRight } from "react-icons/fa";
-import { RiCoinFill, RiCoinLine } from "react-icons/ri";
-import { GiCreditsCurrency } from "react-icons/gi";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {FaArrowAltCircleRight} from "react-icons/fa";
+import {RiCoinFill, RiCoinLine} from "react-icons/ri";
+import {GiCreditsCurrency} from "react-icons/gi";
+import {useNavigate} from "react-router-dom";
 import Cookies from "universal-cookie";
-import { Modal } from "react-bootstrap";
-import { FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy } from "./API";
-import { GetGlobal } from "./APIExtras";
+import {Modal} from "react-bootstrap";
+import {FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy, GetPositions, SetRankingPosition, SetRankingTimer} from "./API";
+import {GetGlobal} from "./APIExtras";
 import EditGame from "./EditGame";
 import Commission from "./Commission";
 import CashingRequest from "./CashingRequest";
+import data from "bootstrap/js/src/dom/data";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ export const Operations = () => {
     const [ccash, setCcash] = useState();
     const [ccredit, setCcredit] = useState();
     const [deposit, setDeposit] = useState();
+    const [positions, setPositions] = useState([]);
 
     const refInputAssing = useRef(null);
     const refInputTransact = useRef(null);
@@ -59,7 +61,7 @@ export const Operations = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    function GetUserdata(){
+    function GetUserdata() {
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined)
             navigate('/');
@@ -75,6 +77,8 @@ export const Operations = () => {
         GetCredits();
         const c = await GetGlobal('convertion');
         const d = await GetGlobal('ranking_date');
+        const list = await GetPositions();
+        setPositions(list);
         setRankingDate(d);
         setConvertion(c);
     }
@@ -82,12 +86,12 @@ export const Operations = () => {
     async function GetCredits() {
         const cookie = new Cookies();
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
-        setUserdata(u => ({ ...u, ...cre }));
+        setUserdata(u => ({...u, ...cre}));
     }
 
     function ShowMovements() {
-        const props = { iduser: userdata.iduser, role: userdata.role};
-        navigate('/Operations/Movements', { state: props })
+        const props = {iduser: userdata.iduser, role: userdata.role};
+        navigate('/Operations/Movements', {state: props})
     }
 
     function EditUsers() {
@@ -111,19 +115,19 @@ export const Operations = () => {
                 break;
 
             case 'amount1':
-                setUser1({ ...user1, amount: e.target.value })
+                setUser1({...user1, amount: e.target.value})
                 break;
 
             case 'amount2':
-                setUser2({ ...user2, amount: e.target.value })
+                setUser2({...user2, amount: e.target.value})
                 break;
 
             case 'assigntype':
-                setUser1({ ...user1, type: e.target.value })
+                setUser1({...user1, type: e.target.value})
                 break;
 
             case 'transacttype':
-                setUser2({ ...user2, type: e.target.value })
+                setUser2({...user2, type: e.target.value})
                 break;
 
             case 'ccash':
@@ -160,12 +164,12 @@ export const Operations = () => {
 
     async function Assign(e) {
         if (opType === 'op1')
-            setUser1(u => ({ ...u, ...user }));
+            setUser1(u => ({...u, ...user}));
         else {
-            setUser2(u => ({ ...u, ...user }));
+            setUser2(u => ({...u, ...user}));
             const cre = await GetUserCredits(user.iduser);
 
-            setUser2(u => ({ ...u, ...cre }));
+            setUser2(u => ({...u, ...cre}));
         }
         setUser([]);
         setShowModal(false);
@@ -203,8 +207,7 @@ export const Operations = () => {
                         setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
                         return;
                     }
-                }
-                else if ( user2.type === "sell" && parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
+                } else if (user2.type === "sell" && parseFloat(userdata.credits) < (parseFloat(user2.amount))) {
                     setErrMessage2('Monto debe ser inferior o igual al credito poseido por el operador.');
                     return;
                 }
@@ -307,14 +310,14 @@ export const Operations = () => {
                 res = await CreateEconomy(data3);
                 break;
         }
-         if (res === 200)
-             Reset();
+        if (res === 200)
+            Reset();
     }
 
     function Reset() {
 
         setErrMessage2('');
-       // setUserdata({});
+        // setUserdata({});
         setShowModal(false)
         setShowConfirmDialog(false)
         //setShowAsing(false)
@@ -341,9 +344,37 @@ export const Operations = () => {
         Starting();
     }
 
-    function OpenCommissions(e){
+    function OpenCommissions(e) {
         const cookie = new Cookies();
-        navigate('/Operations/Commissions', { state: { username: cookie.get("userdata").username, iduser: cookie.get("userdata").iduser } });
+        navigate('/Operations/Commissions', {
+            state: {
+                username: cookie.get("userdata").username,
+                iduser: cookie.get("userdata").iduser
+            }
+        });
+    }
+
+    function SetPositions(index, value){
+        const data = [...positions];
+        data[index] = {...data[index], prize: value, modified:true};
+        setPositions(data);
+    }
+
+    async function UpdateDate(e){
+        e.target.disabled = true;
+        const update = await SetRankingTimer(rankingDate);
+        if(update === 200)
+            e.target.disabled = false;
+    }
+
+    async function UpdatePrizes(e){
+        e.target.disabled = true;
+        for(const item of positions){
+            if(item.modified)
+                await SetRankingPosition(item.position, item.prize);
+        }
+
+        e.target.disabled = false;
     }
 
     return (
@@ -442,11 +473,38 @@ export const Operations = () => {
                                         <div className="input-group">
                                             <input type="date"
                                                    className="input-group-text bg-dark border-success text-white h-100"
-                                                   name="until" value={rankingDate}/>
+                                                   value={rankingDate} onChange={e=> setRankingDate(e.target.value)}/>
                                         </div>
                                     </div>
                                     <div className='d-flex flex-column container w-75'>
-                                        <button className="btn btn-success mt-3" type="submit">Actualizar</button>
+                                        <button className="btn btn-success mt-3" type="button" onClick={UpdateDate}>Actualizar fecha</button>
+                                    </div>
+                                    <div className="table-responsive pt-4">
+                                        <table className="table table-dark table-striped text-center">
+                                            <thead>
+                                            <tr>
+                                                <th>Posicion</th>
+                                                <th>Premio</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                positions.map((item, index) => (
+                                                    <tr>
+                                                        <td key={item.id}>{item.position}</td>
+                                                        <td className='text-center'><input type="number"
+                                                                   className="input-group-text  bg-dark border-success text-white h-100 w-100"
+                                                                   value={item.prize} min={0}
+                                                                   onChange={(e) => SetPositions(index, e.target.value)}/>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className='d-flex flex-column container w-75'>
+                                        <button className="btn btn-success mt-3" type="button" onClick={UpdatePrizes}>Actualizar premios</button>
                                     </div>
                                 </div>
 

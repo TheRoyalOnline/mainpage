@@ -20,6 +20,7 @@ const URIRequests = "https://royalonline.cloud/api/user/requests"
 const URIResponse = "https://royalonline.cloud/api/user/response"
 const URICommission = "https://royalonline.cloud/api/user/commissions"
 const URICommissionAud = "https://royalonline.cloud/api/user/commissions_aud"
+const URISetRankingDate = "https://royalonline.cloud/api/ranking/timer"
 
 export const Logon = async (user, pass) => {
 
@@ -431,5 +432,43 @@ export const UserCommissionAud = async (iduser, since, until, amount) => {
         })
     };
     const res = await fetch(URICommissionAud, requestOptions);
-    return await res.status;
+    return res.status;
+};
+
+
+export const SetRankingTimer = async (date) => {
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            date: date,
+        })
+    };
+    const res = await fetch(URISetRankingDate, requestOptions);
+    return res.status;
+};
+
+export const GetPositions = async () => {
+    const uri = "https://royalonline.cloud/api/ranking/positions"
+    const res = await fetch(uri);
+    return res.json();
+};
+
+export const SetRankingPosition = async (position, prize) => {
+    const cookie = new Cookies();
+    const uri = "https://royalonline.cloud/api/ranking/positions"
+    console.log(position, prize)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            position: position,
+            prize: prize
+        })
+    };
+    const res = await fetch(uri, requestOptions);
+    return res.status;
 };

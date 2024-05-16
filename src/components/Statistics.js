@@ -112,7 +112,7 @@ export const Statistics = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={allwin} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={allwin.toFixed(2)} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ export const Statistics = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalbet} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalbet.toFixed(2)} readOnly />
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,7 @@ export const Statistics = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={allwin - totalbet} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={(allwin - totalbet).toFixed(2)} readOnly />
                                 </div>
                             </div>
                         </div>

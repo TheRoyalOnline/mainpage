@@ -24,6 +24,11 @@ export const UserList = () => {
         const props = { iduser: iduser }
         navigate('/Operations/Movements', { state: props })
     }
+
+    function ShowStatistics(iduser, username) {
+        const props = { iduser: iduser, username: username }
+        navigate('/Operations/Statisticsuser', { state: props })
+    }
     async function Start() {
         const cookie = new Cookies();
         if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
@@ -89,6 +94,7 @@ export const UserList = () => {
                                                 <button className="btn btn-transparent" onClick={() => Edit(item)} title="Editar">✏️</button>
                                                 <button className="btn btn-transparent" onClick={() => Commissions(item)} title="Comisiones">💵</button>
                                                 <button className="btn btn-transparent" onClick={() => ShowMovements(item.iduser)} title="Movimientos">🧮</button>
+                                                <button className="btn btn-transparent" onClick={() => ShowStatistics(item.iduser, item.username)} title="Estadisticas">📈</button>
                                                 </div>
                                                 </td>
                                         </tr>

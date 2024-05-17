@@ -152,3 +152,20 @@ export const GetRanking = async () => {
     }
 
 };
+
+
+export const GetDetailsByUser = async (iduser) => {
+    const url = "https://slotpy.info/detailsbyuser";
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            iduser: parseInt(iduser),
+        })
+    };
+    const res = await fetch(url, requestOptions);
+    if(res.status === 200){
+        return await res.json();
+    }
+
+};

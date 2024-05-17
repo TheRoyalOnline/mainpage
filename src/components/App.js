@@ -13,6 +13,7 @@ import { Operations } from './Operations';
 import { useState } from 'react';
 import { Movements } from './Movements';
 import {EditUser} from './EditUsers';
+import StatisticsUser from "./StatisticsUser";
 import Commission from './Commission';
 import EditGame from './EditGame';
 import Statistics from './Statistics';
@@ -45,6 +46,7 @@ export const App = () => {
                 <Route exact path='/Operations/Details' element={<StatisticsDetails />} />
                 <Route exact path='/Operations/Editgame' element={<EditGame />} />
                 <Route exact path='/Operations/Commissions' element={<Commission />} />
+                <Route exact path='/Operations/Statisticsuser' element={<StatisticsUser />} />
             </Routes>
             
         </div>

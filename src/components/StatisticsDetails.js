@@ -2,81 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
 import { CiCalendarDate } from "react-icons/ci"
-import { GetDetails, GetStatistics, RoomById } from "./Game";
+import { GetDetails } from "./Game";
 import { Modal, ProgressBar } from "react-bootstrap";
 
 export const StatisticsDetails = () => {
     const [until, setUntil] = useState();
     const [since, setSince] = useState();
-    const [alldata, setAlldata] = useState([]);
-    const [cres, setCres] = useState(0);
-    const [allwin, setAllwin] = useState(0);
-    const [totalbet, setTotalbet] = useState(0);
-    const [totalMain, setTotalMain] = useState(0);
-    const [totalBonus, setTotalBonus] = useState(0);
-    const [totalSBonus, setTotalSBonus] = useState(0);
-    const [allspins, setAllspins] = useState(0);
-    const [numberMain, setNumberMain] = useState(0);
-    const [numberBonus, setNumberBonus] = useState(0);
-    const [numberSBonus, setNumberSBonus] = useState(0);
     const [details, setDetails] = useState([]);
     const location = useLocation();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [idroom, setIdroom] = useState(0);
 
     useEffect(() => {
         Starting();
-        const intervalId = setInterval(Starting, 3000);
-
-        return () => clearInterval(intervalId);
     }, []);
 
 
-    async function Starting() {
+    function Starting() {
         const idr = location.state.idroom;
         setIdroom(idr);
-        const data = await GetStatistics(idr);
-
-        if (data === undefined)
-            return;
-
-        var cardin = 0, cardout = 0, historyBet = 0, historyPrize = 0, numberBonus = 0;
-        var numberPrizesMain = 0, numberSuperBonus = 0, spins = 0, totalMain = 0, totalBonus = 0, totalSBonus = 0;
-
-        data.map(item => {
-            cardin += item.cardIn;
-            cardout += item.cardOut;
-            historyBet += item.historyBet;
-            historyPrize += item.historyPrize;
-            numberBonus += item.numberBonus;
-            numberPrizesMain += item.numberPrizesMain;
-            numberSuperBonus += item.numberSuperBonus;
-            spins += item.spins;
-            totalMain += item.totalMain;
-            totalBonus += item.totalBonus;
-            totalSBonus += item.totalSBonus;
-        });
-
-        const c = cardout - cardin;
-        const all = historyPrize + c;
-        setCres(c);
-        setAllwin(all);
-        setTotalbet(historyBet);
-        setTotalMain(totalMain);
-        setTotalBonus(totalBonus);
-        setTotalSBonus(totalSBonus);
-        setAllspins(spins);
-        setNumberMain(numberPrizesMain);
-        setNumberBonus(numberBonus);
-        setNumberSBonus(numberSuperBonus);
-
-        if (loading) {
-            setLoading(false);
-            const today = new Date();
-            setSince(today.toISOString().split('T')[0]);
-            setUntil(today.toISOString().split('T')[0]);
-        }
-
+        const today = new Date();
+        setSince(today.toISOString().split('T')[0]);
+        setUntil(today.toISOString().split('T')[0]);
     }
 
     function OnChangeDate(e) {

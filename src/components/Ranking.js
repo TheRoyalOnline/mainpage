@@ -69,6 +69,8 @@ const Ranking = () => {
             for (let i = 0; i < amount; i++)
                 comb.push(<img src={symbols[sym]} width='25'/>);
 
+            if(index < winCombinations.length - 1)
+                comb.push(<>+</>)
         })
 
         const monkeys = [<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>,<img src={symbols['mono']} width='25'/>];
@@ -111,7 +113,7 @@ const Ranking = () => {
                                             <th>#</th>
                                             <th>Usuario</th>
                                             <th>Apuesta</th>
-                                            <th></th>
+                                            <th style={{ minWidth: '200px' }}></th>
                                             <th>Monto</th>
                                             <th className={"text-warning fw-bold"}>Premio</th>
                                         </tr>

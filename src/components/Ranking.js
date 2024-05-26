@@ -102,7 +102,7 @@ const Ranking = () => {
                     <div className='text-white container pt-2'>
                         <div className='card border-success bg-purple'>
 
-                            <h5 className="card-header border-success text-white bg-purple-2">Ranking</h5>
+                            <h5 className="card-header border-success text-white bg-purple-2">Jackpot Ranking</h5>
                             <p className="card-header text-white bg-purple-2"><Timer targetDate={rankingDate}/></p>
 
                             <div className='flex-column justify-content-center'>

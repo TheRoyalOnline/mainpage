@@ -53,13 +53,16 @@ export const GameItem = props => {
     }
 
     useEffect(
-        () => {
+        () =>{
+
             if (room.iduser) {
                 card.current.classList.add('bg-danger');
                 card.current.classList.remove('bg-success');
                 numberRef.current.classList.add('bg-danger');
                 numberRef.current.classList.remove('bg-success');
-                GetDetails();
+                const cookies = new Cookies();
+                if(cookie.get('userdata') !== undefined)
+                    GetDetails();
             } else {
                 card.current.classList.remove('bg-danger');
                 card.current.classList.add('bg-success');

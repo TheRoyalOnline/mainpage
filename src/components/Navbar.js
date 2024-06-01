@@ -12,12 +12,17 @@ export const Menu = (props) => {
 
     const navigate = useNavigate();
     const cookie = new Cookies();
-    var isLogged = cookie.get('userdata') !== undefined;
-    const [credits, setCredits] = useState([]);
+    const [isLogged, setisLogged] =  useState(cookie.get('userdata') !== undefined);
+    const init = {
+        credits: 0,
+        cash: 0
+    }
+    const [credits, setCredits] = useState(init);
     const [userdata, setUserdata] = useState("");
 
     useEffect(() => {
         GetCredits();
+
         const intervalId = setInterval(GetCredits, 10000);
 
         return () => clearInterval(intervalId);
@@ -29,6 +34,9 @@ export const Menu = (props) => {
         setUserdata(cookie.get('userdata').username);
         const cre = await GetUserCredits(cookie.get('userdata').iduser);
         setCredits(cre);
+
+        if(cre === undefined)
+            setisLogged(false);
     }
 
     function Signup() {
@@ -45,7 +53,7 @@ export const Menu = (props) => {
 
     function Logout() {
         cookie.remove('userdata');
-        isLogged = false;
+        setisLogged(false);
         navigate('/');
     }
 

@@ -10,7 +10,6 @@ const URImail = "https://royalonline.cloud/api/sendmail"
 const URIrecover = "https://royalonline.cloud/api/recover"
 const URIFind = "https://royalonline.cloud/api/user/find"
 const URIAssign = "https://royalonline.cloud/api/user/assign"
-const URICredits = "https://royalonline.cloud/api/user/credits"
 const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URITransactions = "https://royalonline.cloud/api/user/transactions"
@@ -219,17 +218,18 @@ export const FindUser = async (_dni) => {
 
 export const GetUserCredits = async (_iduser) => {
     const cookie = new Cookies();
-    const body = {
-        token: cookie.get('userdata').token,
-        iduser: _iduser
-    }
-    const res = await axios.post(URICredits, body, {
-        headers: {
-            "Content-Type": "application/json"
-        },
-    });
-
-    return res.data;
+    const URICredits = "https://royalonline.cloud/api/user/credits"
+    console.log(cookie.get('userdata'))
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+            iduser: _iduser
+        })
+    };
+    const res = await fetch(URICredits, requestOptions);
+    return res.json();
 
 };
 

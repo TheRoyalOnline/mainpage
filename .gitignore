@@ -8,6 +8,7 @@
 # testing
 /coverage
 
+/src/components/Test.http
 # production
 /build
 

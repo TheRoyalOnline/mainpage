@@ -218,8 +218,7 @@ export const FindUser = async (_dni) => {
 
 export const GetUserCredits = async (_iduser) => {
     const cookie = new Cookies();
-    const URICredits = "https://royalonline.cloud/api/user/credits"
-    console.log(cookie.get('userdata'))
+    const URICredits = "https://royalonline.cloud/api/user/credits";
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

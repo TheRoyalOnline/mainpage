@@ -10,9 +10,10 @@ import { GetUserCredits } from "./API";
 
 export const Menu = (props) => {
 
-    const navigate = useNavigate();
     const cookie = new Cookies();
-    const [isLogged, setisLogged] =  useState(cookie.get('userdata') !== undefined);
+    const navigate = useNavigate();
+
+    const [isLogged, setisLogged] =  useState(false);
     const init = {
         credits: 0,
         cash: 0
@@ -21,14 +22,18 @@ export const Menu = (props) => {
     const [userdata, setUserdata] = useState("");
 
     useEffect(() => {
+
         GetCredits();
 
-        const intervalId = setInterval(GetCredits, 10000);
+        if(isLogged){
+            const intervalId = setInterval(GetCredits, 10000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+            return () => clearInterval(intervalId);
+        }
+    }, [isLogged]);
 
     async function GetCredits() {
+        setisLogged(cookie.get("userdata") !== undefined);
         if (!isLogged) return;
 
         setUserdata(cookie.get('userdata').username);

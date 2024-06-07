@@ -124,7 +124,7 @@ const Ranking = () => {
                                                 <tr>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{index + 1}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.username}</td>
-                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.details.result.bet}</td>
+                                                    <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.details.result.bet.toFixed(2)}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(data.item.details.result.winCombination, data.item.details.result.cards, data.item.details.result.bonusEarn, data.item.details.result.sbonusEarn)}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(data.item.total * 1000).toLocaleString()}</td>
                                                     <td className={"text-warning fw-bold"}>Gs {parseInt(data.prize * 1000).toLocaleString()}</td>

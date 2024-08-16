@@ -14,7 +14,9 @@ export const StatisticsDetailsUser = () => {
     const [iduser, setIdUser] = useState(0);
 
     useEffect(() => {
-        FindLog();
+        const today = new Date();
+        setSince(today.toISOString().split('T')[0]);
+        setUntil(today.toISOString().split('T')[0]);
     }, []);
 
     function OnChangeDate(e) {
@@ -31,7 +33,7 @@ export const StatisticsDetailsUser = () => {
         const s = new Date(since);
         const u = new Date(until);
         u.setDate(u.getDate() + 1);
-        const det = await GetDetailsByUser(id);
+        const det = await GetDetailsByUser(id, s.toISOString(), u.toISOString());
         setDetails(det);
         setLoading(false);
     }
@@ -41,7 +43,32 @@ export const StatisticsDetailsUser = () => {
             <div className='text-white container pt-3'>
                 <h1 className='text-center'>Resumen de jugadas</h1>
                 <h2 className='text-center'>Jugador <span className="text-warning">{location.state.username}</span></h2>
-
+                <div className='flex-column p-3' >
+                    <div className="form-group justify-content-center row pt-3">
+                        <label className="col-sm-3 col-form-label">Desde:</label>
+                        <div className="col-sm-5">
+                            <div className="input-group">
+                                <input type="date" className=" input-group-text bg-dark border-success text-white  h-100 calendar" value={since} name="since" onChange={OnChangeDate} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group justify-content-center row pt-3">
+                        <label className="col-sm-3 col-form-label">Hasta:</label>
+                        <div className="col-sm-5">
+                            <div className="input-group">
+                                <input type="date" className="input-group-text bg-dark border-success text-white h-100" value={until} name="until" onChange={OnChangeDate} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group justify-content-center row pt-3">
+                        <label className="col-sm-3 col-form-label"></label>
+                        <div className="col-sm-5">
+                            <div className="input-group">
+                                <button className="btn btn-success" onClick={FindLog}>Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className='card border-success text-white bg-transparent mt-5'>
                     <h5 className="card-header border-success text-white">Log del jugador</h5>
                     <div className='flex-column p-3' hidden={true}>
@@ -80,6 +107,7 @@ export const StatisticsDetailsUser = () => {
                         <table className="table table-dark table-striped text-center">
                             <thead>
                             <tr>
+                                <th>Sala</th>
                                 <th>Giro</th>
                                 <th>Lineas</th>
                                 <th>Apuesta</th>
@@ -103,6 +131,7 @@ export const StatisticsDetailsUser = () => {
                                             <React.Fragment key={i.date}>
                                                 {i.result.map(r => (
                                                     <tr key={r.spinNumber}>
+                                                        <td>{item.idroom}</td>
                                                         <td>{r.spinNumber}</td>
                                                         <td>{r.lines}</td>
                                                         <td>{parseFloat(r.bet).toFixed(2)}</td>

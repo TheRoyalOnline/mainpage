@@ -121,7 +121,7 @@ const Ranking = () => {
                                         <tbody>
                                         {
                                             list.map((data, index) => (
-                                                <tr>
+                                                <tr key={index}>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{index + 1}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.username}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.details.result.bet.toFixed(2)}</td>

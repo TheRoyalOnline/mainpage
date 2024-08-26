@@ -11,7 +11,7 @@ const Ranking = () => {
         "banana": require("../components/imgs/icons/banana.png"),
         "serpiente": require("../components/imgs/icons/serpiente.png"),
         "ancla": require("../components/imgs/icons/yunke.png"),
-        "piña": require("../components/imgs/icons/piña.png"),
+        "pina": require("../components/imgs/icons/piña.png"),
         "leon": require("../components/imgs/icons/leon.png"),
         "joker": require("../components/imgs/icons/joker.png"),
         "crazy": require("../components/imgs/icons/crazy.png"),

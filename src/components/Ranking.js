@@ -54,11 +54,13 @@ const Ranking = () => {
             return;
 
         const rank = await GetRanking();
-        const d = await GetGlobal('ranking_date');
 
-
-        setRankingDate(new Date(d));
-        setList(rank);
+        if(rank){
+            const d = await GetGlobal('ranking_date');
+            setRankingDate(new Date(d));
+            setList(rank);
+        }else
+            setShow(false);
     }
 
     function SetCombinations(winCombinations, card, bonus, sbonus) {

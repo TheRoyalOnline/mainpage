@@ -37,6 +37,7 @@ const Ranking = () => {
     }
 
     const [list, setList] = useState([]);
+    const [sellerPhone, setSellerPhone] = useState();
     const [expand, setExpand] = useState('⬇️ Ranking');
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(false);
@@ -49,6 +50,7 @@ const Ranking = () => {
     async function GetData() {
         const cookie = new Cookies();
         if (cookie.get("userdata") !== undefined) {
+            setSellerPhone(cookie.get("userdata").seller_number);
             setShow(true);
         } else
             return;
@@ -100,23 +102,11 @@ const Ranking = () => {
     return (
 
         show ? (
-            <div className="p-5">
-                <div className="position-relative container">
-                    <div className="position-absolute top-50 start-50 translate-middle">
-                        <button className="btn btn-purple text-white" onClick={OnOpen}>
-                            {expand}
-                        </button>
-                    </div>
-                    <div className="position-absolute top-50 end-0 translate-middle-y">
-                        <a
-                            href="https://wa.me/595986919942"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="btn btn-warning"
-                        >
-                            Comprar créditos
-                        </a>
-                    </div>
+            <>
+                <div className="text-center">
+                    <button className="btn btn-purple text-white" onClick={OnOpen}>
+                        {expand}
+                    </button>
 
                 </div>
 
@@ -125,12 +115,12 @@ const Ranking = () => {
                     <div className='text-center text-white container pt-4'>
                         <div className='card border-success bg-purple'>
 
-                        <h5 className="card-header border-success text-white bg-purple-2">Jackpot Ranking</h5>
+                            <h5 className="card-header border-success text-white bg-purple-2">Jackpot Ranking</h5>
                             <p className="card-header text-white bg-purple-2"><Timer targetDate={rankingDate}/></p>
 
                             <div className='flex-column justify-content-center'>
                                 <div className="table-responsive">
-                                <table className="table table-dark table-striped text-center">
+                                    <table className="table table-dark table-striped text-center">
                                         <thead>
                                         <tr>
                                             <th>#</th>
@@ -150,7 +140,8 @@ const Ranking = () => {
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{data.item.details.result.bet.toFixed(2)}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>{SetCombinations(data.item.details.result.winCombination, data.item.details.result.cards, data.item.details.result.bonusEarn, data.item.details.result.sbonusEarn)}</td>
                                                     <td className={index === 0 ? "text-warning fw-bold" : ""}>Gs {parseInt(data.item.total * 1000).toLocaleString()}</td>
-                                                    <td className={"text-warning fw-bold"}>+ Gs {parseInt(data.prize * 1000).toLocaleString()}</td>
+                                                    <td className={"text-warning fw-bold"}>+
+                                                        Gs {parseInt(data.prize * 1000).toLocaleString()}</td>
                                                 </tr>
                                             ))
                                         }
@@ -162,7 +153,7 @@ const Ranking = () => {
 
                     </div>
                 </Collapse>
-            </div>
+            </>
 
         ) : null
 

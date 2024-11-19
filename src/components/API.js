@@ -40,13 +40,14 @@ export const Logon = async (user, pass) => {
         const data = await GetUserDetails(user.trim());
 
         userdata = {
-            iduser: data.id,
+            iduser: data.iduser,
             username: data.username,
             name: data.name,
             surname: data.surname,
             email: data.email,
             role: data.role,
             rolename: data.rolename,
+            seller_number: data.seller_number,
             token: token
         }
         cookies.set('userdata', userdata);
@@ -189,7 +190,7 @@ export const RecoverPassword = async (user, mail) => {
     const res = await fetch(URIrecover, requestOptions);
 
     const data = await res.json();
-    if (data['iduser'] != 0) {
+    if (data['iduser'] !== 0) {
         const message = "Hemos recibido tu peticion de reseteo de contraseña. Si no lo solicitaste favor comunicar esta informacion por este mismo canal.<br><hr><br>" +
             "<b>Usuario: </b>" + user +
             "<b><br>Contraseña: </b>" + newPass +

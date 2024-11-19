@@ -70,7 +70,7 @@ export const Menu = (props) => {
     }
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary navbar-dark">
+        <Navbar expand="xl" className="bg-body-tertiary navbar-dark">
             <Container>
                 <Navbar.Brand>
                     <div className="p-4 text-white navbar-brand d-flex">
@@ -104,7 +104,9 @@ export const Menu = (props) => {
                                         className="btn btn-outline-success">Operaciones</span></Nav.Link>
                                     <Nav.Link href="https://wa.me/595986919942" target="_blank"><span
                                         className="btn btn-outline-info">Reclamos y sugerencias</span></Nav.Link>
-                                    <Nav.Link onClick={Logout}><span className="btn btn-warning">Salir</span></Nav.Link>
+                                    <Nav.Link href={`https://wa.me/${cookie.get('userdata').seller_number}`} target="_blank"><span
+                                        className="btn btn-warning">Comprar creditos</span></Nav.Link>
+                                    <Nav.Link onClick={Logout}><span className="btn btn-danger">Salir</span></Nav.Link>
                                 </Nav>
                             )
                     }

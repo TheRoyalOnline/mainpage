@@ -5,7 +5,16 @@ import {GiCreditsCurrency} from "react-icons/gi";
 import {useNavigate} from "react-router-dom";
 import Cookies from "universal-cookie";
 import {Modal} from "react-bootstrap";
-import {FindUser, GetUserCredits, AssignToUser, TransactToUser, CreateEconomy, GetPositions, SetRankingPosition, SetRankingTimer} from "./API";
+import {
+    FindUser,
+    GetUserCredits,
+    AssignToUser,
+    TransactToUser,
+    CreateEconomy,
+    GetPositions,
+    SetRankingPosition,
+    SetRankingTimer
+} from "./API";
 import {GetGlobal} from "./APIExtras";
 import EditGame from "./EditGame";
 import Commission from "./Commission";
@@ -354,23 +363,23 @@ export const Operations = () => {
         });
     }
 
-    function SetPositions(index, value){
+    function SetPositions(index, value) {
         const data = [...positions];
-        data[index] = {...data[index], prize: value, modified:true};
+        data[index] = {...data[index], prize: value, modified: true};
         setPositions(data);
     }
 
-    async function UpdateDate(e){
+    async function UpdateDate(e) {
         e.target.disabled = true;
         const update = await SetRankingTimer(rankingDate);
-        if(update === 200)
+        if (update === 200)
             e.target.disabled = false;
     }
 
-    async function UpdatePrizes(e){
+    async function UpdatePrizes(e) {
         e.target.disabled = true;
-        for(const item of positions){
-            if(item.modified)
+        for (const item of positions) {
+            if (item.modified)
                 await SetRankingPosition(item.position, item.prize);
         }
 
@@ -473,11 +482,13 @@ export const Operations = () => {
                                         <div className="input-group">
                                             <input type="date"
                                                    className="input-group-text bg-dark border-success text-white h-100"
-                                                   value={rankingDate} onChange={e=> setRankingDate(e.target.value)}/>
+                                                   value={rankingDate} onChange={e => setRankingDate(e.target.value)}/>
                                         </div>
                                     </div>
                                     <div className='d-flex flex-column container w-75'>
-                                        <button className="btn btn-success mt-3" type="button" onClick={UpdateDate}>Actualizar fecha</button>
+                                        <button className="btn btn-success mt-3" type="button"
+                                                onClick={UpdateDate}>Actualizar fecha
+                                        </button>
                                     </div>
                                     <div className="table-responsive pt-4">
                                         <table className="table table-dark table-striped text-center">
@@ -493,9 +504,9 @@ export const Operations = () => {
                                                     <tr>
                                                         <td key={item.id}>{item.position}</td>
                                                         <td className='text-center'><input type="number"
-                                                                   className="input-group-text  bg-dark border-success text-white h-100 w-100"
-                                                                   value={item.prize} min={0}
-                                                                   onChange={(e) => SetPositions(index, e.target.value)}/>
+                                                                                           className="input-group-text  bg-dark border-success text-white h-100 w-100"
+                                                                                           value={item.prize} min={0}
+                                                                                           onChange={(e) => SetPositions(index, e.target.value)}/>
                                                         </td>
                                                     </tr>
                                                 ))
@@ -504,7 +515,9 @@ export const Operations = () => {
                                         </table>
                                     </div>
                                     <div className='d-flex flex-column container w-75'>
-                                        <button className="btn btn-success mt-3" type="button" onClick={UpdatePrizes}>Actualizar premios</button>
+                                        <button className="btn btn-success mt-3" type="button"
+                                                onClick={UpdatePrizes}>Actualizar premios
+                                        </button>
                                     </div>
                                 </div>
 
@@ -635,8 +648,13 @@ export const Operations = () => {
                                 <div className="form-inline">
                                     <label className="p-3"
                                            id="label1"><b>{(user2.credits !== undefined ? parseFloat(user2.credits) : 0) + ' Creditos'}</b></label>
-                                    <label className="p-3"
-                                           id="label1"><b>₲ {(user2.cash !== undefined ? parseInt(user2.cash).toLocaleString() : 0)}</b></label>
+                                    {
+                                        userdata.role === 1 ? (<label className="p-3"
+                                                                      id="label1"><b>₲ {(user2.cash !== undefined ? parseInt(user2.cash).toLocaleString() : 0)}</b></label>
+                                            )
+                                            : null
+                                    }
+
                                     <label className="p-3"
                                            id="label1"><b>Rol: {(user2.rolename !== undefined ? user2.rolename : 'No definido')}</b></label>
                                 </div>

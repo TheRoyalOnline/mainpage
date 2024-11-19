@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {GetUserCredits} from "./API";
+import {Button} from "react-bootstrap";
 
 export const Menu = (props) => {
 
@@ -101,12 +102,13 @@ export const Menu = (props) => {
                                         className="btn btn-outline-success">Perfil</span></Nav.Link>
                                     <Nav.Link onClick={Operations}><span
                                         className="btn btn-outline-success">Operaciones</span></Nav.Link>
+                                    <Nav.Link href="https://wa.me/595986919942" target="_blank"><span
+                                        className="btn btn-outline-info">Reclamos y sugerencias</span></Nav.Link>
                                     <Nav.Link onClick={Logout}><span className="btn btn-warning">Salir</span></Nav.Link>
                                 </Nav>
                             )
                     }
                 </Navbar.Collapse>
-
             </Container>
         </Navbar>
     );

@@ -88,14 +88,14 @@ export const Menu = (props) => {
                     {
                         !isLogged ?
                             (
-                                <Nav className="text-end">
+                                <Nav className="ms-auto text-end">
                                     <Nav.Link onClick={Signup}><span
                                         className="btn btn-outline-success">Registrarse</span></Nav.Link>
                                     <Nav.Link onClick={props.handler}><span
                                         className="btn btn-success">Iniciar sesión</span></Nav.Link>
                                 </Nav>
                             ) : (
-                                <Nav className="text-end">
+                                <Nav className="ms-auto text-end">
                                     <Nav.Link onClick={ForceQuitRoom}><span
                                         className="btn btn-outline-danger">Cerrar partida</span></Nav.Link>
                                     <Nav.Link onClick={Profile}><span

@@ -12,6 +12,9 @@ export const ShowDialog = (props) => {
                 <p dangerouslySetInnerHTML={{ __html: props.message }}></p>
             </Modal.Body>
             <Modal.Footer>
+                {
+                    props.actions ?? null
+                }
             </Modal.Footer>
         </Modal>
     );

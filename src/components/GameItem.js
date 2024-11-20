@@ -10,6 +10,7 @@ import { FaEdit, FaSplotch } from 'react-icons/fa'
 import { BiMath, BiEdit, BiXCircle } from 'react-icons/bi'
 import { ForceDisconnect } from "./Game";
 import {  GetUserCredits } from './API'
+import {Button} from "react-bootstrap";
 
 
 export const GameItem = props => {
@@ -97,7 +98,11 @@ export const GameItem = props => {
 
 
                 } else if (res === 202) {
-                    setMessage({ title: "Actualmente en partida.. 😱", body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar." });
+                    setMessage({ title: "Actualmente en partida.. 😱",
+                        body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar.",
+                        actions: <Button className="btn btn-danger" onClick={ForceDisconnectUser}>Cerrar partida</Button>
+
+                    });
                     Handler();
                 }
 
@@ -119,6 +124,13 @@ export const GameItem = props => {
         }
     }
 
+    async function ForceDisconnectUser() {
+        const res = await ForceDisconnect();
+        if (res === 200) {
+            setShow(false);
+        }
+    }
+
     function OnClick(e) {
         methods[e.target.name](e.target.value);
     }
@@ -126,14 +138,10 @@ export const GameItem = props => {
     let audioContext = null;
 
     function AudioContext() {
-        // Verificar si ya hay un contexto de audio creado
         if (!audioContext) {
-            // Crear un nuevo contexto de audio
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            // Tu lógica adicional para la manipulación del contexto de audio
         }
 
-        // Intentar reanudar el contexto de audio (esto es necesario en algunos navegadores)
         if (audioContext.state === 'suspended') {
             audioContext.resume();
         }
@@ -167,7 +175,7 @@ export const GameItem = props => {
                 </div>
             </div>
 
-            <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} />
+            <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} actions={message.actions} />
             <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
         </>
     );

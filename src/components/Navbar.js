@@ -88,23 +88,23 @@ export const Menu = (props) => {
                     {
                         !isLogged ?
                             (
-                                <Nav className="ms-auto">
+                                <Nav className="text-end">
                                     <Nav.Link onClick={Signup}><span
                                         className="btn btn-outline-success">Registrarse</span></Nav.Link>
                                     <Nav.Link onClick={props.handler}><span
                                         className="btn btn-success">Iniciar sesión</span></Nav.Link>
                                 </Nav>
                             ) : (
-                                <Nav className="ms-auto">
+                                <Nav className="text-end">
                                     <Nav.Link onClick={ForceQuitRoom}><span
-                                        className="btn btn-outline-danger">Cerrar sesión</span></Nav.Link>
+                                        className="btn btn-outline-danger">Cerrar partida</span></Nav.Link>
                                     <Nav.Link onClick={Profile}><span
                                         className="btn btn-outline-success">Perfil</span></Nav.Link>
                                     <Nav.Link onClick={Operations}><span
                                         className="btn btn-outline-success">Operaciones</span></Nav.Link>
                                     <Nav.Link href="https://wa.me/595986919942" target="_blank"><span
                                         className="btn btn-outline-info">Reclamos y sugerencias</span></Nav.Link>
-                                    <Nav.Link href={`https://wa.me/${cookie.get('userdata').seller_number}`} target="_blank"><span
+                                    <Nav.Link href={`https://wa.me/${cookie.get('userdata').seller_number ?? 595986919942}`} target="_blank"><span
                                         className="btn btn-warning">Comprar creditos</span></Nav.Link>
                                     <Nav.Link onClick={Logout}><span className="btn btn-danger">Salir</span></Nav.Link>
                                 </Nav>

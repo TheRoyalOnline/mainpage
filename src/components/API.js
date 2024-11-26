@@ -4,15 +4,11 @@ import axios from "axios";
 const URILogin = "https://royalonline.cloud/api/login";
 const URISetNewUser = "https://royalonline.cloud/api/createuser"
 const URIGetUser = "https://royalonline.cloud/api/user/"
-const URIUpdateUser = "https://royalonline.cloud/api/user"
 const URIrol = "https://royalonline.cloud/api/user/rol"
 const URImail = "https://royalonline.cloud/api/sendmail"
 const URIrecover = "https://royalonline.cloud/api/recover"
-const URIFind = "https://royalonline.cloud/api/user/find"
 const URIAssign = "https://royalonline.cloud/api/user/assign"
-const URITransact = "https://royalonline.cloud/api/user/transact"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
-const URITransactions = "https://royalonline.cloud/api/user/transactions"
 const URIUpdateAdmin = "https://royalonline.cloud/api/user/adminupdate"
 const URIList = "https://royalonline.cloud/api/user/list"
 const URIRequests = "https://royalonline.cloud/api/user/requests"
@@ -25,8 +21,8 @@ export const Logon = async (user, pass) => {
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user, password: pass })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: user, password: pass})
     };
 
     const res = await fetch(URILogin, requestOptions);
@@ -64,7 +60,7 @@ export const SetNewUser = async (formData) => {
     };
 
     const res = await fetch(URISetNewUser, requestOptions);
-    return { "token": res.text(), "status": res.status};
+    return {"token": res.text(), "status": res.status};
 };
 
 export const GetUserDetails = async (username) => {
@@ -84,28 +80,13 @@ export const GetUserDetails = async (username) => {
 
 
 export const UpdateUserDetails = async user => {
+    const URIUpdateUser = "https://royalonline.cloud/api/user"
     const cookie = new Cookies();
-
+    const data = {...user, token: cookie.get('userdata').token};
     const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-            {
-                token: cookie.get('userdata').token,
-                iduser: user.iduser,
-                password: user.password,
-                name: user.name,
-                surname: user.surname,
-                phonecode: user.phonecode,
-                phonenumber: user.phonenumber,
-                email: user.email,
-                active: user.active,
-                changepass: user.changepass,
-                district: user.district,
-                city: user.city,
-                street: user.street
-            }
-        )
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
     };
 
     const res = await fetch(URIUpdateUser, requestOptions);
@@ -117,8 +98,8 @@ export const UpdateUserDetails = async user => {
 export const TestPassword = async (user, pass) => {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user, password: pass })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: user, password: pass})
     };
 
     const res = await fetch(URILogin, requestOptions);
@@ -135,7 +116,7 @@ export const GetRol = async () => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             username: cookie.get('userdata').username,
@@ -150,7 +131,7 @@ export const GetRol = async () => {
 export const SendMail = async (_subject, _message, mail, _token) => {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: _token,
             email: mail,
@@ -179,7 +160,7 @@ export const RecoverPassword = async (user, mail) => {
     const newPass = randomPass();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             username: user,
             password: newPass,
@@ -202,11 +183,11 @@ export const RecoverPassword = async (user, mail) => {
 
 
 export const FindUser = async (_dni) => {
-
+    const URIFind = "https://royalonline.cloud/api/user/find";
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             dni: _dni,
@@ -222,7 +203,7 @@ export const GetUserCredits = async (_iduser) => {
     const URICredits = "https://royalonline.cloud/api/user/credits";
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             iduser: _iduser
@@ -234,12 +215,11 @@ export const GetUserCredits = async (_iduser) => {
 };
 
 
-
 export const AssignToUser = async (data) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             from: data.from,
@@ -253,18 +233,13 @@ export const AssignToUser = async (data) => {
 };
 
 export const TransactToUser = async (data) => {
+    const URITransact = "https://royalonline.cloud/api/user/transact";
     const cookie = new Cookies();
+    const user = {...data, token: cookie.get('userdata').token}
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            token: cookie.get('userdata').token,
-            from: data.from,
-            for: data.for,
-            credits: data.credits,
-            cash: data.cash,
-            type: data.type
-        })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(user)
     };
 
     const res = await fetch(URITransact, requestOptions);
@@ -277,7 +252,7 @@ export const TransactToUser = async (data) => {
             SendMail("Transaccion realizada", message, data.email, "");
         }
     }
-    return await res.status;
+    return res.status;
 };
 
 
@@ -285,7 +260,7 @@ export const CreateEconomy = async (data) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             from: data.from,
@@ -295,21 +270,22 @@ export const CreateEconomy = async (data) => {
         })
     };
     const res = await fetch(URICreate, requestOptions);
-    return await res.status;
+    return res.status;
 };
 
 export const MovementsList = async (iduser) => {
+    const URITransactions = "https://royalonline.cloud/api/user/transactions"
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             iduser: iduser
         })
     };
     const res = await fetch(URITransactions, requestOptions);
-    return await res.json();
+    return res.json();
 };
 
 
@@ -317,7 +293,7 @@ export const UpdateByAdmin = async (user, password) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             rolefrom: cookie.get('userdata').role,
@@ -348,7 +324,7 @@ export const GetRequests = async (dni) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             role: cookie.get('userdata').role,
@@ -360,7 +336,7 @@ export const GetRequests = async (dni) => {
     const res = await fetch(URIRequests, requestOptions);
 
     if (res.status === 200) {
-        return await res.json();
+        return res.json();
     }
 };
 
@@ -369,7 +345,7 @@ export const Response = async (id, state, iduser) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             idrequest: id,
@@ -380,7 +356,7 @@ export const Response = async (id, state, iduser) => {
 
     const res = await fetch(URIResponse, requestOptions);
 
-    return await res.status;
+    return res.status;
 };
 
 
@@ -388,7 +364,7 @@ export const UsersList = async () => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             idrole: cookie.get('userdata').role
@@ -396,14 +372,14 @@ export const UsersList = async () => {
     };
 
     const res = await fetch(URIList, requestOptions);
-    return await res.json();
+    return res.json();
 };
 
 export const UserCommission = async (iduser, since, until) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             idseller: iduser,
@@ -413,7 +389,7 @@ export const UserCommission = async (iduser, since, until) => {
     };
 
     const res = await fetch(URICommission, requestOptions);
-    return await res.json();
+    return res.json();
 };
 
 
@@ -421,7 +397,7 @@ export const UserCommissionAud = async (iduser, since, until, amount) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             iduser: iduser,
@@ -440,7 +416,7 @@ export const SetRankingTimer = async (date) => {
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             date: date,
@@ -461,7 +437,7 @@ export const SetRankingPosition = async (position, prize) => {
     const uri = "https://royalonline.cloud/api/ranking/positions"
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             token: cookie.get('userdata').token,
             position: position,
@@ -470,4 +446,19 @@ export const SetRankingPosition = async (position, prize) => {
     };
     const res = await fetch(uri, requestOptions);
     return res.status;
+};
+
+
+export const GetEntities = async () => {
+    const cookie = new Cookies();
+    const uri = "https://royalonline.cloud/api/user/entities"
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            token: cookie.get('userdata').token,
+        })
+    };
+    const res = await fetch(uri, requestOptions);
+    return res.json();
 };

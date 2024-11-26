@@ -2,7 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {RiCoinFill} from "react-icons/ri";
 import {Modal} from "react-bootstrap";
 import Requests from "./Requests";
-import {TransactToUser} from "./API";
+import {GetUserDetails, TransactToUser, UpdateUserDetails} from "./API";
+import Entities from "./Entities";
 import Cookies from "universal-cookie";
 
 const CashingRequest = (props) => {
@@ -11,13 +12,30 @@ const CashingRequest = (props) => {
         for: 0,
         credits: 0,
         cash: 0,
-        type: "buy"
+        type: "buy",
+        iduser_entity: 0,
+        entity: 1,
+        numbercode: "",
+        namecode: "",
+        dnicode: "",
+        alias: "",
+        alias_type: 1,
+        change: 0
     }
     const [user, setUser] = useState(init);
     const confirmRef = useRef(null);
     const [errMessage, seterrMessage] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
 
+    useEffect(()=>{
+        Starting();
+    },[]);
+
+    async function Starting() {
+        const cookies = new Cookies();
+        const c = await GetUserDetails(cookies.get("userdata").username);
+        setUser(c);
+    }
 
     function OnChange(e) {
         setUser({...user, [e.target.name]:e.target.value});
@@ -29,6 +47,7 @@ const CashingRequest = (props) => {
             ...prevUser,
             from: 0,
             for: props.iduser,
+            type: "buy",
             cash: parseFloat(prevUser.credits) * props.convertion
         }));
         setShowDialog(true);
@@ -37,6 +56,7 @@ const CashingRequest = (props) => {
     async function Confirm(e) {
         confirmRef.current.disabled = true;
         const res = await TransactToUser(user);
+        const u = await UpdateUserDetails(user);
         if(res === 200){
             confirmRef.current.disabled = false;
             setShowDialog(false);
@@ -74,7 +94,7 @@ const CashingRequest = (props) => {
                             </div>
                         </div>
 
-
+                        <Entities OnChangeEvent={OnChange} user={user} />
                         <label className="text-center text-danger"><b>{errMessage}</b></label>
                         <h5 className="card-header border-success text-white pt-4"></h5>
                         <div className='text-center mt-3 mb-4'>

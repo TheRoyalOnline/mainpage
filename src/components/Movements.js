@@ -37,6 +37,7 @@ export const Movements = () => {
                         <table className="table table-dark table-striped text-center">
                             <thead>
                                 <tr >
+                                    <th>ID</th>
                                     <th>Codigo</th>
                                     <th>Creditos</th>
                                     <th>Saldo</th>
@@ -52,6 +53,7 @@ export const Movements = () => {
                                 {
                                     movements.map((item) => (
                                         <tr>
+                                            <td>{item.id}</td>
                                             <td>{item.code}</td>
                                             <td>{parseInt(item.credits).toLocaleString()}</td>
                                             <td>{parseInt(item.balancecre).toLocaleString()}</td>

@@ -11,7 +11,6 @@ const URIAssign = "https://royalonline.cloud/api/user/assign"
 const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URIUpdateAdmin = "https://royalonline.cloud/api/user/adminupdate"
 const URIList = "https://royalonline.cloud/api/user/list"
-const URIRequests = "https://royalonline.cloud/api/user/requests"
 const URIResponse = "https://royalonline.cloud/api/user/response"
 const URICommission = "https://royalonline.cloud/api/user/commissions"
 const URICommissionAud = "https://royalonline.cloud/api/user/commissions_aud"
@@ -321,6 +320,8 @@ export const UpdateByAdmin = async (user, password) => {
 
 
 export const GetRequests = async (dni) => {
+
+    const URIRequests = "https://royalonline.cloud/api/user/requests"
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',

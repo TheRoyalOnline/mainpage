@@ -69,7 +69,7 @@ const CashingRequest = (props) => {
             {props.canAccess ? (
                 <form className='text-white container register' name="transact" id="transact" onSubmit={OnSubmit}>
                     <div className='card border-success text-white bg-transparent mt-5'>
-                        <h5 className="card-header border-success text-white">Solicitud de venta</h5>
+                        <h5 className="card-header border-success text-white">Cobro de premio</h5>
 
                         <div className="form-group justify-content-center row pt-3">
                             <label htmlFor="monto" className="col-sm-2 col-form-label">Creditos</label>

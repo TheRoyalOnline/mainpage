@@ -161,7 +161,7 @@ export const UserList = () => {
                                         <td>{item.cash}</td>
                                         <td>{item.email}</td>
                                         <td>{item.dni}</td>
-                                        <td><a href={"https://wa.me/" + item.cellphone.substring(1)} target={"_blank"}
+                                        <td><a href={"https://wa.me/" + item.cellphone} target={"_blank"}
                                                className="link-light link-underline link-underline-opacity-0">{item.cellphone}</a>
                                         </td>
                                         <td>{rol[item.role]}</td>

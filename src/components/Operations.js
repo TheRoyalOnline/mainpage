@@ -74,7 +74,6 @@ export const Operations = () => {
             navigate('/');
 
         setUserdata(cookie.get('userdata'));
-        console.log(cookie.get("userdata"));
         setShowAsing(access[cookie.get('userdata').role][0])
         setAsign(access[cookie.get('userdata').role][1])
         setTransact(access[cookie.get('userdata').role][2])

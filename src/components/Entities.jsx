@@ -25,8 +25,6 @@ const Entities = ({OnChangeEvent, user}) => {
 
     return (
         <>
-            <h5 className="card-header border-success text-white pt-4">Datos bancarios</h5>
-
             <div className='flex-column justify-content-center p-3'>
                 <div className="justify-content-center pt-3">
                     <label htmlFor="idDir">Banco</label>

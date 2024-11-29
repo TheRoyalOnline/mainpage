@@ -74,6 +74,7 @@ export const Operations = () => {
             navigate('/');
 
         setUserdata(cookie.get('userdata'));
+        console.log(cookie.get("userdata"));
         setShowAsing(access[cookie.get('userdata').role][0])
         setAsign(access[cookie.get('userdata').role][1])
         setTransact(access[cookie.get('userdata').role][2])
@@ -400,7 +401,7 @@ export const Operations = () => {
                     <>
                         <div className='pt-2 text-white container register'>
                             <h1 className='text-center'>Operaciones</h1>
-                            <h2 className='text-center'>{userdata.surname}, {userdata.name} - {userdata.rolename}</h2>
+                            <h2 className='text-center'>{userdata.surname}, {userdata.firstname} - {userdata.rolename}</h2>
                             <div className="d-flex justify-content-between pt-4">
                                 <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
                                 {

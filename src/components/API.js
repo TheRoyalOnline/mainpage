@@ -35,7 +35,7 @@ export const Logon = async (user, pass) => {
         userdata = {
             iduser: data.iduser,
             username: data.username,
-            name: data.name,
+            firstname: data.firstname,
             surname: data.surname,
             email: data.email,
             role: data.role,
@@ -43,7 +43,6 @@ export const Logon = async (user, pass) => {
             seller_number: data.seller_number,
             token: token
         }
-        console.log(userdata)
         cookies.set('userdata', userdata);
         return true;
     }
@@ -90,6 +89,22 @@ export const UpdateUserDetails = async user => {
     const res = await fetch(URIUpdateUser, requestOptions);
 
     return res.status === 200;
+
+};
+
+export const UpdateUserPassword = async user => {
+    const url = "https://royalonline.cloud/api/user/password"
+    const cookie = new Cookies();
+    const data = {...user, token: cookie.get('userdata').token};
+    const requestOptions = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+
+    const res = await fetch(url, requestOptions);
+
+    return res.status;
 
 };
 

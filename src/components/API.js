@@ -32,7 +32,6 @@ export const Logon = async (user, pass) => {
         }
         cookies.set('userdata', userdata);
         const data = await GetUserDetails(user.trim());
-
         userdata = {
             iduser: data.iduser,
             username: data.username,
@@ -44,6 +43,7 @@ export const Logon = async (user, pass) => {
             seller_number: data.seller_number,
             token: token
         }
+        console.log(userdata)
         cookies.set('userdata', userdata);
         return true;
     }

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import Cookies from "universal-cookie";
-import {Modal, Spinner} from "react-bootstrap";
+import {Modal, Spinner, Tab, Tabs} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {GetCities, GetCountries} from "./APIExtras";
 import {GetEntities, GetUserDetails, TestPassword, UpdateUserDetails} from "./API";
@@ -12,17 +12,17 @@ export const Profile = () => {
         username: "",
         password: "",
         newpassword: "",
-        name: "",
+        firstname: "",
         surname: "",
         dni: "",
         email: "",
         birthdate: new Date().toISOString().split('T')[0],
         nationality: "PRY",
-        phonecode: "+595",
-        phonenumber: "",
-        district: 1,
+        cellphonecode: "+595",
+        cellphonenumber: "",
+        iddistrict: 1,
         city: "",
-        street: "",
+        address: "",
         active: 0,
         iduser_entity: 0,
         entity: 1,
@@ -34,7 +34,7 @@ export const Profile = () => {
         change: 0
     };
 
-
+    const [key, setKey] = useState('general');
     var invalidate = false;
     const navigate = useNavigate();
     const form = useRef(null);
@@ -47,8 +47,6 @@ export const Profile = () => {
     const [user, setUser] = useState(initialValues);
     const [countries, setCountry] = useState([]);
     const [cities, setCity] = useState([]);
-    const [cellphoneCode, setCellphoneCode] = useState('+595');
-    const [cellphoneNumber, setCellphoneNumber] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -69,11 +67,6 @@ export const Profile = () => {
         const cookie = new Cookies();
         const u = await GetUserDetails(cookie.get('userdata').username);
         setUser(u);
-
-        if (u.cellphone) {
-            setCellphoneCode(u.cellphone.slice(0, -9));
-            setCellphoneNumber(u.cellphone.slice(-9));
-        }
         setIsLoading(false);
     }
 
@@ -93,25 +86,7 @@ export const Profile = () => {
     }
 
     function OnChangeEvent(event) {
-        switch (event.target.name) {
-            case 'cellphoneCode':
-                setCellphoneCode(event.target.value);
-
-                setUser({...user, cellphone: `${event.target.value}${cellphoneNumber}`});
-                break;
-            case 'cellphoneNumber':
-                setCellphoneNumber(event.target.value);
-
-                setUser({...user, cellphone: `${cellphoneCode}${event.target.value}`});
-                break;
-
-            default:
-                setUser({...user, [event.target.name]: event.target.value});
-                break;
-
-
-        }
-
+        setUser({...user, [event.target.name]: event.target.value});
     }
 
 
@@ -176,60 +151,103 @@ export const Profile = () => {
         </Spinner>
     </div>)
 
-    return (<div className='pt-2 text-white container register'>
-            <form ref={form} onSubmit={OnSubmit}>
-                <h1 className='text-center '>Mi perfil</h1>
-                <div className='card border-success text-white bg-transparent mt-5'>
-                    <h5 className="card-header border-success text-white">Datos generales</h5>
+    return (
+        <div className='pt-2 text-white container register'>
+            <h1 className='text-center mt-2'>Mi perfil</h1>
+            <Tabs id="controlled-tab-example"
+                  activeKey={key}
+                  onSelect={(k) => setKey(k)}
+                  className="mt-5">
+                <Tab eventKey="general" title="Datos generales">
+                    <form ref={form} onSubmit={OnSubmit}>
 
-                    <div className='flex-column justify-content-center p-3'>
-                        <div className="justify-content-center pt-3">
-                            <label htmlFor="idNombre">Nombre</label>
-                            <input type="text" className="form-control bg-dark border-success text-white"
-                                   id="idNombre"
-                                   value={user.name} required name='name'
-                                   onChange={OnChangeEvent}/>
-                        </div>
+                        <div className='card border-success text-white bg-transparent'>
+                            <div className='flex-column justify-content-center p-3'>
+                                <div className="justify-content-center pt-3">
+                                    <label htmlFor="idNombre">Nombre</label>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           id="idNombre"
+                                           value={user.firstname} required name='firstname'
+                                           onChange={OnChangeEvent}/>
+                                </div>
 
-                        <div className="justify-content-center  pt-3">
-                            <label htmlFor="idSurname">Apellido</label>
-                            <input type="text" className="form-control bg-dark border-success text-white"
-                                   id="idSurname"
-                                   value={user.surname} required name='surname'
-                                   onChange={OnChangeEvent}/>
-                        </div>
+                                <div className="justify-content-center  pt-3">
+                                    <label htmlFor="idSurname">Apellido</label>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           id="idSurname"
+                                           value={user.surname} required name='surname'
+                                           onChange={OnChangeEvent}/>
+                                </div>
 
-                        <div className="justify-content-center  pt-3">
-                            <label htmlFor="idmail">Email</label>
-                            <input type="email" className="form-control bg-dark border-success text-white"
-                                   id="idmail"
-                                   value={user.email} required name='email'
-                                   onChange={OnChangeEvent}/>
-                        </div>
+                                <div className="justify-content-center  pt-3">
+                                    <label htmlFor="idmail">Email</label>
+                                    <input type="email" className="form-control bg-dark border-success text-white"
+                                           id="idmail"
+                                           value={user.email} required name='email'
+                                           onChange={OnChangeEvent}/>
+                                </div>
 
-                        <div className="justify-content-center pt-3">
-                            <label htmlFor="idcod">Movil</label>
-                            <div className='d-flex'>
-                                <select className="form-select w-50 bg-dark border-success text-white"
-                                        id="idcod"
-                                        value={cellphoneCode} name='cellphoneCode'
-                                        onChange={OnChangeEvent}
-                                        required>
-                                    {countries.map((item) => (<option key={item.id}
-                                                                      value={item.phone}>{item.id + ": " + item.phone}</option>))}
-                                </select>
-                                <input type="text"
-                                       className="form-control flex-fill bg-dark border-success text-white"
-                                       id="idmovil" value={cellphoneNumber} name='cellphoneNumber'
-                                       onChange={OnChangeEvent}
-                                       required maxLength={9}/>
+                                <div className="justify-content-center pt-3">
+                                    <label htmlFor="idcod">Movil</label>
+                                    <div className='d-flex'>
+                                        <select className="form-select w-50 bg-dark border-success text-white"
+                                                id="idcod"
+                                                value={user.cellphonecode} name='cellphonecode'
+                                                onChange={OnChangeEvent}
+                                                required>
+                                            {countries.map((item) => (<option key={item.id}
+                                                                              value={item.phone}>{item.id + ": " + item.phone}</option>))}
+                                        </select>
+                                        <input type="text"
+                                               className="form-control flex-fill bg-dark border-success text-white"
+                                               id="idmovil" value={user.cellphonenumber} name='cellphonenumber'
+                                               onChange={OnChangeEvent}
+                                               required maxLength={9}/>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
+
+                            <h5 className="card-header border-success text-white pt-4">Dirección</h5>
+
+                            <div className='flex-column justify-content-center p-3'>
+                                <div className="justify-content-center pt-3">
+                                    <label htmlFor="idDir">Distrito</label>
+                                    <select className="form-select bg-dark border-success text-white"
+                                            id="idDistrito"
+                                            value={user.district} name='district' onChange={OnChangeEvent} required>
+                                        {cities.map(item => (
+                                            <option key={item.id} value={item.id}>{item.city}</option>))}
+                                    </select>
+                                </div>
+                                <div className="justify-content-center pt-3">
+                                    <label htmlFor="idCiudad">Ciudad</label>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           id="idCiudad"
+                                           placeholder="Ciudad" value={user.city} name='city'
+                                           onChange={OnChangeEvent}
+                                           required/>
+                                </div>
+                                <div className="justify-content-center pt-3">
+                                    <label htmlFor="idCalle">Calle</label>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           id="idCalle"
+                                           placeholder="Calle" value={user.address} name='address'
+                                           onChange={OnChangeEvent}
+                                           required/>
+                                </div>
+                            </div>
+
+
                         </div>
+                    </form>
 
-                    </div>
 
+                </Tab>
+                <Tab title="Cambiar contraseña" eventKey="password">
                     <h5 className="card-header border-success text-white pt-4">Cambiar contraseña
                         <div className="form-check form-switch">
                             <input type="checkbox" className="form-check-input" name="changepass"
@@ -283,68 +301,37 @@ export const Profile = () => {
                         </div>
 
                     </div>
-
-                    <h5 className="card-header border-success text-white pt-4">Dirección</h5>
-
-                    <div className='flex-column justify-content-center p-3'>
-                        <div className="justify-content-center pt-3">
-                            <label htmlFor="idDir">Distrito</label>
-                            <select className="form-select bg-dark border-success text-white"
-                                    id="idDistrito"
-                                    value={user.district} name='district' onChange={OnChangeEvent} required>
-                                {cities.map(item => (<option key={item.id} value={item.id}>{item.city}</option>))}
-                            </select>
-                        </div>
-                        <div className="justify-content-center pt-3">
-                            <label htmlFor="idCiudad">Ciudad</label>
-                            <input type="text" className="form-control bg-dark border-success text-white"
-                                   id="idCiudad"
-                                   placeholder="Ciudad" value={user.city} name='city'
-                                   onChange={OnChangeEvent}
-                                   required/>
-                        </div>
-                        <div className="justify-content-center pt-3">
-                            <label htmlFor="idCalle">Calle</label>
-                            <input type="text" className="form-control bg-dark border-success text-white"
-                                   id="idCalle"
-                                   placeholder="Calle" value={user.street} name='street'
-                                   onChange={OnChangeEvent}
-                                   required/>
-                        </div>
-                    </div>
-
+                </Tab>
+                <Tab title="Banco" eventKey="bancos">
                     <Entities OnChangeEvent={OnChangeEvent} user={user}/>
+                </Tab>
 
-                    <h5 className="card-header border-success text-white pt-4"></h5>
-                    <div className='text-center mt-3 mb-4'>
-                        <div className="form-group ">
+            </Tabs>
+            <h5 className="card-header border-success text-white"></h5>
+            <div className='text-center mt-3 mb-4'>
+                <div className="form-group ">
 
-                            <div className='d-flex flex-column container w-75'>
-                                <button className="btn btn-success mt-3" type="submit">Actualizar</button>
-                            </div>
-
-                        </div>
+                    <div className='d-flex flex-column container w-75'>
+                        <button className="btn btn-success mt-3" type="submit">Actualizar</button>
                     </div>
-
 
                 </div>
-                <Modal size="sm" backdrop="static" show={show} onHide={Showing} centered={true}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Informacion </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Usuario actualizado 😀
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
-            </form>
-
+            </div>
+            <Modal size="sm" backdrop="static" show={show} onHide={Showing} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Informacion </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Usuario actualizado 😀
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+            </Modal>
 
         </div>
 
 
-    );
+    )
 };
 
 

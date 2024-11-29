@@ -4,6 +4,7 @@ import {UsersList} from "./API";
 import Cookies from "universal-cookie";
 import {DateConnection} from "./utils/DateConnection";
 import {Spinner} from "react-bootstrap";
+import {FaArrowAltCircleRight, FaSearch} from "react-icons/fa";
 
 export const UserList = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -20,9 +21,10 @@ export const UserList = () => {
     const roles = [1, 4];
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
+    const [searchKey, setSearchKey] = useState("");
+    const [filterUser, setFilterUser] = useState([]);
 
     useEffect(() => {
-
         Start();
     }, []);
 
@@ -33,13 +35,13 @@ export const UserList = () => {
         }
         setSortConfig({key, direction});
 
-        const sortedData = [...users].sort((a, b) => {
+        const sortedData = [...filterUser].sort((a, b) => {
             if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
             if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
             return 0;
         });
 
-        setUsers(sortedData);
+        setFilterUser(sortedData);
     };
 
     function ShowMovements(iduser) {
@@ -60,6 +62,7 @@ export const UserList = () => {
             navigate('/Operations');
         const data = await UsersList();
         setUsers(data);
+        setFilterUser(data);
         setCanEdit(role === 1);
         setIsLoading(false);
     }
@@ -72,6 +75,17 @@ export const UserList = () => {
         navigate('/Operations/Commissions', {state: {username: item.username, iduser: item.iduser}});
     }
 
+    function Search(e){
+        e.preventDefault();
+        const filter = users.filter(u => {
+            const searchLower = searchKey.toLowerCase();
+            return Object.values(u).some(value =>
+                value?.toString().toLowerCase().includes(searchLower)
+            );
+        });
+        setFilterUser(filter);
+    }
+
     if (isLoading) {
         return (<div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
             <Spinner className="spinner-grow text-success" animation="border" role="status">
@@ -80,13 +94,29 @@ export const UserList = () => {
         </div>)
     }
 
+
     return (
 
         <div className='pt-2 text-white container'>
             <h1 className='text-center '>Lista de usuarios</h1>
             <div className='card border-success text-white bg-transparent mt-5'>
 
-                <h5 className="card-header border-success text-white pt-4">Todos</h5>
+                <h5 className="card-header border-success text-white pt-4">Busqueda</h5>
+                <form className="row justify-content-center pt-3" onSubmit={Search}>
+                    <div className="col-sm-4">
+                        <input type="text"
+                               className="form-control bg-dark border-success text-white"
+                               value={searchKey}
+                               placeholder="Ingresar palabra clave" onChange={(e) => setSearchKey(e.target.value)}
+                        />
+                    </div>
+                    <div className="col-sm-2">
+                        <button className="btn btn-success" type="submit"  title="Buscar">
+                            <FaSearch/>
+                        </button>
+                    </div>
+                </form>
+                <h5 className="card-header border-success text-white"></h5>
                 <div className='flex-column justify-content-center p-3'>
                     <div className="table-responsive">
                         <table className="table table-dark table-striped text-center">
@@ -121,7 +151,7 @@ export const UserList = () => {
                             </thead>
                             <tbody>
                             {
-                                users.map((item, index) => (
+                                filterUser.map((item, index) => (
                                     <tr key={item.iduser}>
                                         <td><b>{index + 1}</b></td>
                                         <td>{item.username}</td>

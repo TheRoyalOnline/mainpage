@@ -26,10 +26,10 @@ const CashingRequest = (props) => {
     const confirmRef = useRef(null);
     const [errMessage, seterrMessage] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
-
-    useEffect(()=>{
+    const [maxCredits, setMaxCredits] = useState(props.credits);
+    useEffect(() => {
         Starting();
-    },[]);
+    }, []);
 
     async function Starting() {
         const cookies = new Cookies();
@@ -38,7 +38,7 @@ const CashingRequest = (props) => {
     }
 
     function OnChange(e) {
-        setUser({...user, [e.target.name]:e.target.value});
+        setUser({...user, [e.target.name]: e.target.value});
     }
 
     function OnSubmit(e) {
@@ -56,8 +56,10 @@ const CashingRequest = (props) => {
     async function Confirm(e) {
         confirmRef.current.disabled = true;
         const res = await TransactToUser(user);
+console.log(user);
         const u = await UpdateUserDetails(user);
-        if(res === 200){
+        if (res === 200) {
+            setMaxCredits(maxCredits - user.credits);
             confirmRef.current.disabled = false;
             setShowDialog(false);
             setUser(init);
@@ -67,9 +69,9 @@ const CashingRequest = (props) => {
     return (
         <>
             {props.canAccess ? (
-                <form className='text-white container register' name="transact" id="transact" onSubmit={OnSubmit}>
-                    <div className='card border-success text-white bg-transparent mt-5'>
-                        <h5 className="card-header border-success text-white">Cobro de premio</h5>
+                <form className='text-white register' name="transact" id="transact" onSubmit={OnSubmit}>
+                    <div className='border-success text-white bg-transparent'>
+                        <h5 className="card-header border-success text-white">Solicitud de premio</h5>
 
                         <div className="form-group justify-content-center row pt-3">
                             <label htmlFor="monto" className="col-sm-2 col-form-label">Creditos</label>
@@ -81,10 +83,19 @@ const CashingRequest = (props) => {
                                     </div>
                                     <input type="number"
                                            className="form-control bg-dark border-success text-white"
-                                           value={user.credits} min={1} max={props.credits} name='credits' onChange={OnChange} required/>
+                                           value={user.credits} min={1} max={maxCredits} name='credits'
+                                           onChange={OnChange} required/>
 
                                 </div>
                             </div>
+                        </div>
+                        <div className='d-flex justify-content-center'>
+                            <div className="form-inline">
+                                <label htmlFor="label1">Cobro maximo:</label>
+                                <label className="p-1"
+                                       id="label1"><b>{maxCredits}</b></label>
+                            </div>
+
                         </div>
                         <div className='d-flex justify-content-center'>
                             <div className="form-inline">
@@ -92,9 +103,10 @@ const CashingRequest = (props) => {
                                 <label className="p-1"
                                        id="label1"><b>₲ {user.credits !== undefined ? parseFloat(parseFloat(user.credits) * props.convertion).toLocaleString() : 0}</b></label>
                             </div>
+
                         </div>
 
-                        <Entities OnChangeEvent={OnChange} user={user} />
+                        <Entities OnChangeEvent={OnChange} user={user}/>
                         <label className="text-center text-danger"><b>{errMessage}</b></label>
                         <h5 className="card-header border-success text-white pt-4"></h5>
                         <div className='text-center mt-3 mb-4'>

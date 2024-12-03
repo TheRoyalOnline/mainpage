@@ -34,8 +34,8 @@ const Requests = (props) => {
 
     return (
 
-        <div className='pt-2 text-white container register' name='assign' id="assign">
-            <div className='card border-success text-white bg-transparent mb-5'>
+        <div className='pt-2 text-white register' name='assign' id="assign">
+            <div className='border-success text-white bg-transparent mb-5'>
                 <h5 className="card-header border-success text-white">Cobro de premio</h5>
                 {canFind ? (<div className="form-group row justify-content-center pt-3 pb-3">
                         <label htmlFor="idNombre" className="col-sm-4 col-form-label">Buscar por CI</label>

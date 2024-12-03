@@ -4,7 +4,7 @@ import {RiCoinFill, RiCoinLine} from "react-icons/ri";
 import {GiCreditsCurrency} from "react-icons/gi";
 import {useNavigate} from "react-router-dom";
 import Cookies from "universal-cookie";
-import {Modal, Spinner} from "react-bootstrap";
+import {Modal, Spinner, Tab, Tabs} from "react-bootstrap";
 import {
     FindUser,
     GetUserCredits,
@@ -13,10 +13,12 @@ import {
     CreateEconomy,
     GetPositions,
     SetRankingPosition,
-    SetRankingTimer
+    SetRankingTimer, ForcedRanking
 } from "./API";
 import {GetGlobal} from "./APIExtras";
 import CashingRequest from "./CashingRequest";
+import OperationsRanking from "./OperationsRanking";
+import OperationsAssign from "./OperationsAssign";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -44,6 +46,7 @@ export const Operations = () => {
     const [deposit, setDeposit] = useState();
     const [positions, setPositions] = useState([]);
 
+    const [key, setKey] = useState('general');
     const refInputAssing = useRef(null);
     const refInputTransact = useRef(null);
     const refCheckAssing1 = useRef(null);
@@ -319,6 +322,10 @@ export const Operations = () => {
                 }
                 res = await CreateEconomy(data3);
                 break;
+
+            case 'forced':
+                res = await ForcedRanking();
+                break;
         }
         if (res === 200)
             Reset();
@@ -387,240 +394,99 @@ export const Operations = () => {
         e.target.disabled = false;
     }
 
+    if (isLoading)
+        return <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+            <Spinner className="spinner-grow text-success" animation="border" role="status">
+                <span className="visually-hidden">Cargando...</span>
+            </Spinner>
+        </div>
+
     return (
         <>
-            {
+            <div className='pt-2 text-white container register'>
+                <h1 className='text-center'>Operaciones</h1>
+                <h2 className='text-center'>{userdata.surname}, {userdata.firstname} - {userdata.rolename}</h2>
 
-                isLoading ? (
-                    <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
-                        <Spinner className="spinner-grow text-success" animation="border" role="status">
-                            <span className="visually-hidden">Cargando...</span>
-                        </Spinner>
-                    </div>) : (
-                    <>
-                        <div className='pt-2 text-white container register'>
-                            <h1 className='text-center'>Operaciones</h1>
-                            <h2 className='text-center'>{userdata.surname}, {userdata.firstname} - {userdata.rolename}</h2>
-                            <div className="d-flex justify-content-between pt-4">
-                                <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
-                                {
-                                    userdata.role === 1 ? (
-                                            <button className="btn btn-info" onClick={EditUsers}>Modificar usuarios</button>
-                                        )
-                                        : null
-                                }
-                                {
-                                    [2, 3, 4].includes(userdata.role) ? (
-                                            <button className="btn btn-primary" onClick={OpenCommissions}>Ver
-                                                comisiones</button>
-                                        )
-                                        : null
-                                }
-                            </div>
-                            <div className='card border-success text-white bg-transparent mt-5'>
-                                <h5 className="card-header border-success text-white">Datos operacionales</h5>
+                <Tabs id="controlled-tab-example"
+                      activeKey={key}
+                      onSelect={(k) => setKey(k)}
+                      className="border-0 mt-3">
+                    <Tab eventKey="general" title="Datos generales"
+                         tabClassName={key === "general" ? "bg-success text-white border-success" : "bg-transparent text-white"}
+                         className=' card border-success text-white bg-transparent'>
 
-                                <div className='flex-column p-3'>
-                                    {
-                                        showAsing ? (
-                                            <div>
-                                                <div className="form-group justify-content-center row pt-3">
-                                                    <label htmlFor="as"
-                                                           className="col-sm-3 col-form-label">Asignacion</label>
-                                                    <div className="col-sm-5">
-                                                        <div className="input-group">
-                                                            <div className="input-group-prepend ">
+
+                        <div className='border-success text-white bg-transparent'>
+                            <h5 className="card-header border-success text-white">Datos operacionales</h5>
+
+                            <div className='flex-column p-3'>
+                                {
+                                    showAsing ? (
+                                        <div>
+                                            <div className="form-group justify-content-center row pt-3">
+                                                <label htmlFor="as"
+                                                       className="col-sm-3 col-form-label">Asignacion</label>
+                                                <div className="col-sm-5">
+                                                    <div className="input-group">
+                                                        <div className="input-group-prepend ">
                                                     <span
                                                         className="input-group-text bg-success border-success text-white text-white h-100"
                                                         id="idUser"><GiCreditsCurrency/></span>
-                                                            </div>
-                                                            <input type="text" id="as"
-                                                                   className="form-control bg-dark border-success text-white"
-                                                                   value={parseFloat((parseFloat(userdata.credits) * convertion) + parseFloat(userdata.cash)).toLocaleString()}
-                                                                   readOnly/>
                                                         </div>
+                                                        <input type="text" id="as"
+                                                               className="form-control bg-dark border-success text-white"
+                                                               value={parseFloat((parseFloat(userdata.credits) * convertion) + parseFloat(userdata.cash)).toLocaleString()}
+                                                               readOnly/>
                                                     </div>
                                                 </div>
-                                                <div className="form-group justify-content-center row pt-3">
-                                                    <label htmlFor="mon"
-                                                           className="col-sm-3 col-form-label">Guaranies</label>
-                                                    <div className="col-sm-5">
-                                                        <div className="input-group">
-                                                            <div className="input-group-prepend ">
-                                                    <span
-                                                        className="input-group-text bg-success border-success text-white text-white h-100"
-                                                        id="idUser"><GiCreditsCurrency/></span>
-                                                            </div>
-                                                            <input type="text" id="mon"
-                                                                   className="form-control bg-dark border-success text-white"
-                                                                   value={parseFloat(userdata.cash).toLocaleString()}
-                                                                   readOnly/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                             </div>
-                                        ) : null
-                                    }
+                                            <div className="form-group justify-content-center row pt-3">
+                                                <label htmlFor="mon"
+                                                       className="col-sm-3 col-form-label">Guaranies</label>
+                                                <div className="col-sm-5">
+                                                    <div className="input-group">
+                                                        <div className="input-group-prepend ">
+                                                    <span
+                                                        className="input-group-text bg-success border-success text-white text-white h-100"
+                                                        id="idUser"><GiCreditsCurrency/></span>
+                                                        </div>
+                                                        <input type="text" id="mon"
+                                                               className="form-control bg-dark border-success text-white"
+                                                               value={parseFloat(userdata.cash).toLocaleString()}
+                                                               readOnly/>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                    <div className="form-group justify-content-center row pt-3">
-                                        <label className="col-sm-3 col-form-label">Creditos</label>
-                                        <div className="col-sm-5">
-                                            <div className="input-group">
-                                                <div className="input-group-prepend ">
+                                        </div>
+                                    ) : null
+                                }
+
+                                <div className="form-group justify-content-center row pt-3">
+                                    <label className="col-sm-3 col-form-label">Creditos</label>
+                                    <div className="col-sm-5">
+                                        <div className="input-group">
+                                            <div className="input-group-prepend ">
                                         <span
                                             className="input-group-text bg-success border-success text-white text-white h-100"
                                             id="idUser"><RiCoinFill/></span>
-                                                </div>
-                                                <input type="number"
-                                                       className="form-control bg-dark border-success text-white"
-                                                       value={userdata.credits} readOnly/>
                                             </div>
+                                            <input type="number"
+                                                   className="form-control bg-dark border-success text-white"
+                                                   value={userdata.credits} readOnly/>
                                         </div>
                                     </div>
-
                                 </div>
 
                             </div>
+
                         </div>
 
                         {
-                            userdata.role === 1 ? (
-                                    <div className='pt-2 text-white container register'>
-                                        <div className='card border-success text-white bg-transparent mt-5'>
-                                            <h5 className="card-header border-success text-white">Fecha limite para
-                                                ranking</h5>
-
-                                            <div className='flex-column p-3'>
-                                                <div className="form-group justify-content-center row pt-3">
-                                                    <label className="col-sm-3 col-form-label">Hasta:</label>
-                                                    <div className="col-sm-5">
-                                                        <div className="input-group">
-                                                            <input type="date"
-                                                                   className="input-group-text bg-dark border-success text-white h-100"
-                                                                   value={rankingDate}
-                                                                   onChange={e => setRankingDate(e.target.value)}/>
-                                                        </div>
-                                                    </div>
-                                                    <div className='d-flex flex-column container w-75'>
-                                                        <button className="btn btn-success mt-3" type="button"
-                                                                onClick={UpdateDate}>Actualizar fecha
-                                                        </button>
-                                                    </div>
-                                                    <div className="table-responsive pt-4">
-                                                        <table className="table table-dark table-striped text-center">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>Posicion</th>
-                                                                <th>Premio</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {
-                                                                positions.map((item, index) => (
-                                                                    <tr>
-                                                                        <td key={item.id}>{item.position}</td>
-                                                                        <td className='text-center'><input type="number"
-                                                                                                           className="input-group-text  bg-dark border-success text-white h-100 w-100"
-                                                                                                           value={item.prize}
-                                                                                                           min={0}
-                                                                                                           onChange={(e) => SetPositions(index, e.target.value)}/>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
-                                                            }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div className='d-flex flex-column container w-75'>
-                                                        <button className="btn btn-success mt-3" type="button"
-                                                                onClick={UpdatePrizes}>Actualizar premios
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                ) :
-                                null
-                        }
-
-                        {
-                            assign ? (
-
-                                <form className='pt-2 text-white container register' name='assign' id="assign"
-                                      onSubmit={OnSubmit}>
-                                    <div className='card border-success text-white bg-transparent mt-5'>
-                                        <h5 className="card-header border-success text-white">Asignaciones</h5>
-
-                                        <div className='d-flex justify-content-center p-3'>
-                                            <div className="form-check form-check-inline">
-                                                <input ref={refCheckAssing1} className="btn-check" type="radio"
-                                                       name="assigntype"
-                                                       id="idcredits" value="credits" onChange={OnChange} required/>
-                                                <label className="btn btn-outline-success text-white"
-                                                       htmlFor="idcredits">
-                                                    Creditos
-                                                </label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input ref={refCheckAssing2} className="btn-check" type="radio"
-                                                       name="assigntype"
-                                                       id="idmoney" value="money" onChange={OnChange} required/>
-                                                <label className="btn btn-outline-success text-white" htmlFor="idmoney">
-                                                    Guaranies
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className='d-flex justify-content-center'>
-                                            <div className="form-group row pt-3">
-                                                <label htmlFor="idNombre"
-                                                       className="col-sm-3 col-form-label">Monto</label>
-                                                <div className="col-sm-8">
-                                                    <input ref={refInputAssing} type="number"
-                                                           className="form-control bg-dark border-success text-white"
-                                                           value={user1.amount} name='amount1' min={1}
-                                                           onChange={OnChange}
-                                                           required/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='d-flex justify-content-center'>
-                                            <div className="form-inline">
-                                                <label htmlFor="label1 ">Asignado a:</label>
-                                                <label className="p-3"
-                                                       id="label1"><b>{user1.iduser !== undefined ? '(' + user1.dni + ') ' + user1.surname + ', ' + user1.name : 'Sin Asignacion'}</b></label>
-                                            </div>
-                                        </div>
-                                        <h5 className="card-header border-success text-white pt-4"></h5>
-                                        <div className='text-center mt-3 mb-4'>
-                                            <div className="form-group ">
-                                                <div className='d-flex flex-column container w-75'>
-                                                    <button className="btn btn-purple mt-3 text-white" type="button"
-                                                            onClick={() => CallModal('op1')}>Seleccionar usuario
-                                                    </button>
-                                                </div>
-                                                <div className='d-flex flex-column container w-75'>
-                                                    <button className="btn btn-success mt-3" type="submit">Mandar
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            ) : null
-                        }
-
-                        {
                             transact ? (
-                                <form className='pt-2 text-white container register' name="transact" id="transact"
+                                <form className='pt-2 text-white register' name="transact" id="transact"
                                       onSubmit={OnSubmit}>
-                                    <div className='card border-success text-white bg-transparent mt-5'>
+                                    <div className='border-success text-white bg-transparent mt-5'>
                                         <h5 className="card-header border-success text-white">Transacciones</h5>
 
                                         <div className='d-flex justify-content-center p-3'>
@@ -710,11 +576,77 @@ export const Operations = () => {
 
                             ) : null
                         }
+
+                    </Tab>
+                    {
+                        userdata.role === 1 && (
+                            <Tab eventKey="ranking" title="Ranking"
+                                 tabClassName={key === "ranking" ? "bg-success text-white border-success" : "bg-transparent text-white"}
+                                 className='card border-success text-white bg-transparent'>
+                                <OperationsRanking role={userdata.role} rankingDate={rankingDate}
+                                                   setRankingDate={setRankingDate} UpdateDate={UpdateDate}
+                                                   positions={positions}
+                                                   SetPositions={SetPositions} UpdatePrizes={UpdatePrizes}/>
+                            </Tab>)
+                    }
+
+                    {
+                        userdata.role === 1 && (
+                            <Tab eventKey="assign" title="Asignaciones"
+                                 tabClassName={key === "assign" ? "bg-success text-white border-success" : "bg-transparent text-white"}
+                                 className='card border-success text-white bg-transparent'>
+                                <OperationsAssign role={userdata.role} OnSubmit={OnSubmit}
+                                                  refCheckAssing1={refCheckAssing1}
+                                                  OnChange={OnChange} refCheckAssing2={refCheckAssing2}
+                                                  refInputAssing={refInputAssing} user1={user1}
+                                                  CallModal={CallModal}/>
+                            </Tab>)
+                    }
+
+
+                    <Tab eventKey="prize" title="Cobros"
+                         tabClassName={key === "prize" ? "bg-success text-white border-success" : "bg-transparent text-white"}
+                         className='card border-success text-white bg-transparent'>
+                        <CashingRequest canAccess={userdata.role === 5} convertion={convertion} iduser={userdata.iduser}
+                                        credits={userdata.credits}/>
+                    </Tab>
+
+                    <Tab eventKey="others" title="Otros"
+                         tabClassName={key === "others" ? "bg-success text-white border-success" : "bg-transparent text-white"}
+                         className='card border-success text-white bg-transparent'>
+                        <div className="row px-5 pt-3 pb-3 gap-3">
+                            <button className="btn btn-success p-2" onClick={ShowMovements}>Ver movimientos</button>
+
+                            {
+                                [1, 2].includes(userdata.role) ? (
+                                        <button className="btn btn-info" onClick={EditUsers}>Lista de usuarios</button>
+                                    )
+                                    : null
+                            }
+                            {
+                                [2, 3, 4].includes(userdata.role) ? (
+                                        <button className="btn btn-primary" onClick={OpenCommissions}>Ver
+                                            comisiones</button>
+                                    )
+                                    : null
+                            }
+                            {
+                                userdata.role === 1 ? (
+                                        <button className="btn btn-danger p-2" onClick={()=>{
+                                            setTypeConfirm('forced');
+                                            setShowConfirmDialog(true);
+                                        }}>Forzar premiacion del
+                                            ranking
+                                        </button>
+                                    )
+                                    : null
+                            }
+                        </div>
                         {
                             others ? (
-                                <div className='pt-2 pb-5 text-white container register' name='others'>
-                                    <div className='card border-success text-white bg-transparent mt-5'>
-                                        <h5 className="card-header border-success text-white">Otros movimientos</h5>
+                                <div className='text-white register' name='others'>
+                                    <div className='border-success text-white bg-transparent mt-2'>
+                                        <h5 className="card-header border-success text-white">Movimientos</h5>
 
                                         <div className='flex-column p-3'>
                                             <form className="form-group row justify-content-center pt-3"
@@ -776,82 +708,81 @@ export const Operations = () => {
 
                             ) : null
                         }
+                    </Tab>
+                </Tabs>
+            </div>
 
 
-                        <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal}
-                               size="lg"
-                               centered={true}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Buscar</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <div className="d-flex justify-content-center">
-                                    <label htmlFor="idNombre" className="col-sm-2 col-form-label">Cedula</label>
-                                    <div className="col-sm-5">
-                                        <input type="number" className="form-control bg-dark border-success text-white"
-                                               id="dni"
-                                               value={dni} name='dni' onChange={OnChange}/>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <button className="btn btn-success" type="button" onClick={Search}>
-                                            <FaArrowAltCircleRight/>
+            <Modal className="container-fluid" backdrop="static" show={showModal} onHide={CallModal}
+                   size="lg"
+                   centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Buscar</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="d-flex justify-content-center">
+                        <label htmlFor="idNombre" className="col-sm-2 col-form-label">Cedula</label>
+                        <div className="col-sm-5">
+                            <input type="number" className="form-control bg-dark border-success text-white"
+                                   id="dni"
+                                   value={dni} name='dni' onChange={OnChange}/>
+                        </div>
+                        <div className="col-sm-2">
+                            <button className="btn btn-success" type="button" onClick={Search}>
+                                <FaArrowAltCircleRight/>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="table-responsive pt-4" hidden={showTable}>
+                        <table className="table table-dark table-striped text-center">
+                            <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cedula</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{user.name}</td>
+                                <td>{user.surname}</td>
+                                <td>{user.dni}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    <div className="form-group">
+                                        <button className="btn btn-success" type="button"
+                                                onClick={Assign}>Asignar
                                         </button>
                                     </div>
-                                </div>
-                                <div className="table-responsive pt-4" hidden={showTable}>
-                                    <table className="table table-dark table-striped text-center">
-                                        <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Cedula</th>
-                                            <th>Email</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>{user.name}</td>
-                                            <td>{user.surname}</td>
-                                            <td>{user.dni}</td>
-                                            <td>{user.email}</td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <button className="btn btn-success" type="button"
-                                                            onClick={Assign}>Asignar
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </Modal.Body>
-                            <Modal.Footer>
-                            </Modal.Footer>
-                        </Modal>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+            </Modal>
 
-                        <Modal className="container-fluid" backdrop="static" show={showConfirmDialog}
-                               onHide={() => setShowConfirmDialog(false)} centered={true}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Confirmacion 🤔</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <p>Esta seguro que desea confirmar la operacion?</p>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <button ref={refBtnConfirm} className="btn btn-success"
-                                        onClick={ConfirmSubmit}>Confirmar
-                                </button>
-                            </Modal.Footer>
-                        </Modal>
-                        <CashingRequest canAccess={userdata.role === 5} convertion={convertion} iduser={userdata.iduser}
-                                        credits={userdata.credits}/>
-                    </>
-                )}
+            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog}
+                   onHide={() => setShowConfirmDialog(false)} centered={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmacion 🤔</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Esta seguro que desea confirmar la operacion?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button ref={refBtnConfirm} className="btn btn-success"
+                            onClick={ConfirmSubmit}>Confirmar
+                    </button>
+                </Modal.Footer>
+            </Modal>
+
         </>
 
 
-    )
-        ;
+    );
 };

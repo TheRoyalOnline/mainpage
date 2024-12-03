@@ -18,7 +18,7 @@ export const UserList = () => {
 
     const [canEdit, setCanEdit] = useState(false);
     const [sortConfig, setSortConfig] = useState({key: null, direction: 'asc'});
-    const roles = [1, 4];
+    const roles = [1, 2];
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [searchKey, setSearchKey] = useState("");
@@ -61,8 +61,12 @@ export const UserList = () => {
         if (cookie.get("userdata") === undefined || !roles.includes(role))
             navigate('/Operations');
         const data = await UsersList();
-        setUsers(data);
-        setFilterUser(data);
+        let filter_data = data;
+        if(role !== 1)
+            filter_data = data.filter((user) => user.role === 4);
+
+        setUsers(filter_data);
+        setFilterUser(filter_data);
         setCanEdit(role === 1);
         setIsLoading(false);
     }

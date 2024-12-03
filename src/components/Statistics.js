@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom'
-import { RiCoinFill, RiCoinLine, RiPercentFill } from "react-icons/ri";
-import { CiCalendarDate } from "react-icons/ci"
-import { GetDetails, GetStatistics, RoomById } from "./Game";
-import { Modal, ProgressBar } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom'
+import React, {useEffect, useState} from "react";
+import {useLocation} from 'react-router-dom'
+import {RiCoinFill, RiCoinLine, RiPercentFill} from "react-icons/ri";
+import {CiCalendarDate} from "react-icons/ci"
+import {DeleteResume, GetDetails, GetStatistics, RoomById} from "./Game";
+import {Modal, ProgressBar} from "react-bootstrap";
+import {useNavigate} from 'react-router-dom'
 
 export const Statistics = () => {
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ export const Statistics = () => {
     const [details, setDetails] = useState([]);
     const location = useLocation();
     const [loading, setLoading] = useState(true);
+    const [show, setShow] = useState(false);
     const [idroom, setIdroom] = useState(0);
 
     useEffect(() => {
@@ -39,7 +40,7 @@ export const Statistics = () => {
         setIdroom(idr);
         const data = await GetStatistics(idr);
         setAlldata(data);
-       
+
         if (data === undefined)
             return;
 
@@ -73,7 +74,7 @@ export const Statistics = () => {
         setNumberBonus(numberBonus);
         setNumberSBonus(numberSuperBonus);
 
-        if (loading) {           
+        if (loading) {
             setLoading(false);
             const today = new Date();
             setSince(today.toISOString().split('T')[0]);
@@ -89,8 +90,15 @@ export const Statistics = () => {
             setUntil(e.target.value);
     }
 
-    async function FindLog(e){
-        navigate("/Operations/Details", { state: { idroom: idroom } });
+    async function FindLog(e) {
+        navigate("/Operations/Details", {state: {idroom: idroom}});
+    }
+
+    async function ClearResume(e) {
+        setShow(false);
+        setLoading(true);
+        const res = await DeleteResume(idroom);
+        setLoading(false);
     }
 
     return (
@@ -98,21 +106,25 @@ export const Statistics = () => {
             <div className='pt-2 text-white container register pb-5'>
                 <h1 className='text-center'>Estadisticas</h1>
                 <h2 className='text-center'>Sala {location.state.idroom}</h2>
-                <div className="d-flex justify-content-left pt-4">
+                <div className="d-flex justify-content-between pt-4">
                     <button className="btn btn-success p-2" onClick={FindLog}>Log de la sala</button>
+                    <button className="btn btn-danger p-2" onClick={() => setShow(true)}>Eliminar datos</button>
                 </div>
-                <div className='card border-success text-white bg-transparent mt-5' >
+                <div className='card border-success text-white bg-transparent mt-5'>
                     <h5 className="card-header border-success text-white">Generales</h5>
 
-                    <div className='flex-column p-3' >
+                    <div className='flex-column p-3'>
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">All total win:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={allwin.toFixed(2)} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={allwin.toFixed(2)} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -121,9 +133,12 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalbet.toFixed(2)} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={totalbet.toFixed(2)} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -132,9 +147,12 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiPercentFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiPercentFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={(allwin / totalbet * 100).toFixed(2)} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={(allwin / totalbet * 100).toFixed(2)} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -143,28 +161,35 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={(allwin - totalbet).toFixed(2)} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={(allwin - totalbet).toFixed(2)} readOnly/>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <div className='card border-success text-white bg-transparent mt-5' >
+                <div className='card border-success text-white bg-transparent mt-5'>
                     <h5 className="card-header border-success text-white">De juego</h5>
 
-                    <div className='flex-column p-3' >
+                    <div className='flex-column p-3'>
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">Main:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalMain} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalMain / allwin * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={totalMain} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(totalMain / allwin * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -173,10 +198,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalBonus / allwin * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={totalBonus} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(totalBonus / allwin * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -185,10 +214,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={totalSBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(totalSBonus / allwin * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={totalSBonus} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(totalSBonus / allwin * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -197,10 +230,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={cres} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(cres / allwin * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={cres} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(cres / allwin * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -208,18 +245,21 @@ export const Statistics = () => {
 
                 </div>
 
-                <div className='card border-success text-white bg-transparent mt-5' >
+                <div className='card border-success text-white bg-transparent mt-5'>
                     <h5 className="card-header border-success text-white">De frecuencia</h5>
 
-                    <div className='flex-column p-3' >
+                    <div className='flex-column p-3'>
                         <div className="form-group justify-content-center row pt-3">
                             <label className="col-sm-3 col-form-label">All spins:</label>
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={allspins} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={allspins} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -228,10 +268,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={numberMain} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberMain / allspins * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={numberMain} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(numberMain / allspins * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -240,10 +284,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={numberBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberBonus / allspins * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={numberBonus} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(numberBonus / allspins * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -252,10 +300,14 @@ export const Statistics = () => {
                             <div className="col-sm-5">
                                 <div className="input-group">
                                     <div className="input-group-prepend ">
-                                        <span className="input-group-text bg-success border-success text-white text-white h-100" id="idUser"><RiCoinFill /></span>
+                                        <span
+                                            className="input-group-text bg-success border-success text-white text-white h-100"
+                                            id="idUser"><RiCoinFill/></span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={numberSBonus} readOnly />
-                                    <input type="text" className="form-control bg-dark border-success text-white" value={(numberSBonus / allspins * 100).toFixed(2) + "%"} readOnly />
+                                    <input type="number" className="form-control bg-dark border-success text-white"
+                                           value={numberSBonus} readOnly/>
+                                    <input type="text" className="form-control bg-dark border-success text-white"
+                                           value={(numberSBonus / allspins * 100).toFixed(2) + "%"} readOnly/>
                                 </div>
                             </div>
                         </div>
@@ -265,13 +317,24 @@ export const Statistics = () => {
 
 
             </div>
-
+            <Modal show={show} backdrop="static" keyboard={false} centered={true}>
+                <Modal.Header>
+                    <Modal.Title>Borrar datos 🗑️</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Estas seguro del reinicio de las estadisticas de esta sala?
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button" className="btn btn-success" onClick={() => setShow(false)}>Cancelar</button>
+                    <button type="button" className="btn btn-danger" onClick={ClearResume}>Continuar</button>
+                </Modal.Footer>
+            </Modal>
             <Modal show={loading} backdrop="static" keyboard={false} centered={true}>
                 <Modal.Header>
                     <Modal.Title>CARGANDO.. ⌛</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ProgressBar className="progress-bar progress-bar-striped bg-success progress-bar-animated" />
+                    <ProgressBar className="progress-bar progress-bar-striped bg-success progress-bar-animated"/>
                 </Modal.Body>
             </Modal>
         </div>

@@ -8,7 +8,6 @@ const URIrol = "https://royalonline.cloud/api/user/rol"
 const URImail = "https://royalonline.cloud/api/sendmail"
 const URIrecover = "https://royalonline.cloud/api/recover"
 const URIAssign = "https://royalonline.cloud/api/user/assign"
-const URICreate = "https://royalonline.cloud/api/user/createconomy"
 const URIUpdateAdmin = "https://royalonline.cloud/api/user/adminupdate"
 const URIResponse = "https://royalonline.cloud/api/user/response"
 const URICommission = "https://royalonline.cloud/api/user/commissions"
@@ -270,6 +269,8 @@ export const TransactToUser = async (data) => {
 
 
 export const CreateEconomy = async (data) => {
+
+    const URICreate = "https://royalonline.cloud/api/user/createconomy"
     const cookie = new Cookies();
     const requestOptions = {
         method: 'POST',
@@ -478,4 +479,20 @@ export const GetEntities = async () => {
     };
     const res = await fetch(uri, requestOptions);
     return res.json();
+};
+
+
+export const ForcedRanking = async (data) => {
+
+    const url = "https://royalonline.cloud/api/ranking/forced";
+    const cookie = new Cookies();
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            token: cookie.get('userdata').token
+        })
+    };
+    const res = await fetch(url, requestOptions);
+    return res.status;
 };

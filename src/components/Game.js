@@ -179,7 +179,7 @@ export const DeleteResume = async (idroom) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             idroom: parseInt(idroom),
-            token: process.env.token_slotpy,
+            token: process.env.REACT_APP_TOKEN_SLOTPY,
         })
     };
     const res = await fetch(url, requestOptions);

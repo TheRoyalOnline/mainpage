@@ -8,6 +8,7 @@ import { ShowDialog } from "./Dialogs";
 const Commission = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState(0);
+    const roles = [1,2];
     const today = new Date();
     const refBtnConfirm = useRef(null);
     const [confirm, setConfirm] = useState(false);
@@ -120,13 +121,13 @@ const Commission = () => {
                                 {/*    <button className="btn btn-warning" onClick={(e) => GetCommissions()}>Buscar</button>*/}
                                 {/*</div>*/}
                                 {
-                                    role === 1 ?(
+                                    roles.includes(role) && (
                                         <div className="col-sm-5">
                                             <div className="input-group">
                                                 <button className="btn btn-success" onClick={Cobrar} disabled={total <= 0}>{`Cobrar ${total.toFixed(2)} CRE`}</button>
                                             </div>
                                         </div>
-                                    ) : null
+                                    )
                                 }
 
                         </div>

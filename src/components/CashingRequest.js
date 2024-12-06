@@ -56,7 +56,6 @@ const CashingRequest = (props) => {
     async function Confirm(e) {
         confirmRef.current.disabled = true;
         const res = await TransactToUser(user);
-console.log(user);
         const u = await UpdateUserDetails(user);
         if (res === 200) {
             setMaxCredits(maxCredits - user.credits);

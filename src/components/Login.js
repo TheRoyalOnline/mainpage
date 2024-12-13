@@ -8,14 +8,14 @@ export const Login = (props) => {
   const navigate = useNavigate();
 
   const initialValues = { username: "", password: "" };
-  const [user, setUser] = useState(initialValues); 
+  const [game, setUser] = useState(initialValues);
   const year = new Date().getFullYear();
   const userRef = useRef(null);
   const passRef = useRef(null);
 
   const TryLogin = async () => {
     try {
-        const res = await API.Logon(user.username.trim(), user.password);
+        const res = await API.Logon(game.username.trim(), game.password);
         if (res)             
             window.location.reload();        
         else {
@@ -38,7 +38,7 @@ export const Login = (props) => {
 
 
   const InputChangeEvent = event => {
-    setUser({ ...user, [event.target.name]: event.target.value });
+    setUser({ ...game, [event.target.name]: event.target.value });
   };
 
   function GoToSingup(event) {
@@ -63,11 +63,11 @@ export const Login = (props) => {
             <h1 className="h3 mb-3 fw-normal text-white">Iniciar sesión</h1>
 
             <div className="form-floating  text-white">
-              <input ref={userRef} type="text" className="form-control bg-dark border-success  text-white" id="floatingInput" placeholder="User name" name='username' value={user.username} onChange={InputChangeEvent} required />
+              <input ref={userRef} type="text" className="form-control bg-dark border-success  text-white" id="floatingInput" placeholder="User name" name='username' value={game.username} onChange={InputChangeEvent} required />
               <label htmlFor="floatingInput">Nombre de usuario</label>
             </div>
             <div className="form-floating text-white mt-1">
-              <input ref={passRef} type="password" className="form-control bg-dark border-success  text-white" id="floatingPassword" placeholder="Password" name='password' value={user.password} onChange={InputChangeEvent} required />
+              <input ref={passRef} type="password" className="form-control bg-dark border-success  text-white" id="floatingPassword" placeholder="Password" name='password' value={game.password} onChange={InputChangeEvent} required />
               <label htmlFor="floatingPassword">Contraseña</label>
               <div className="invalid-feedback" id="userfeedback">
                 Usuario o contraseña invalidos.

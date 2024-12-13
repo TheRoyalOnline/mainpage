@@ -1,0 +1,1409 @@
+{
+    "combinations": {
+        "888": {
+            "prize": 200,
+            "description": "3 crazy",
+            "jackpot": false
+        },
+        "8888": {
+            "prize": 1000,
+            "description": "4 crazy",
+            "jackpot": false
+        },
+        "88888": {
+            "prize": 5000,
+            "description": "5 crazy",
+            "jackpot": true
+        },
+        "777": {
+            "prize": 100,
+            "description": "3 joker",
+            "jackpot": false
+        },
+        "7777": {
+            "prize": 500,
+            "description": "4 joker",
+            "jackpot": false
+        },
+        "77777": {
+            "prize": 2000,
+            "description": "5 joker",
+            "jackpot": true
+        },
+        "666": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "667": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "677": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "776": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "676": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "766": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "767": {
+            "prize": 30,
+            "description": "3 leon",
+            "jackpot": false
+        },
+        "6666": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7666": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6766": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6676": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6667": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7766": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7776": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6677": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6777": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7676": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7667": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6776": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "6767": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7767": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "7677": {
+            "prize": 100,
+            "description": "4 leon",
+            "jackpot": false
+        },
+        "67667": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66667": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76766": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "77666": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66677": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "67666": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66666": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": true
+        },
+        "67676": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "67776": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66676": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "67766": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76667": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66767": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76666": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76676": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66766": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "66776": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "77667": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76677": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "77676": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "67677": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "77677": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76767": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "76776": {
+            "prize": 500,
+            "description": "5 leon",
+            "jackpot": false
+        },
+        "575": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "577": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "775": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "555": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "755": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "557": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "757": {
+            "prize": 20,
+            "description": "3 pina",
+            "jackpot": false
+        },
+        "5577": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5557": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5775": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5755": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7555": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7575": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5575": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7557": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7755": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5757": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5777": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7775": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "5555": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7757": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "7577": {
+            "prize": 50,
+            "description": "4 pina",
+            "jackpot": false
+        },
+        "55575": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55755": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "57557": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75557": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55555": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": true
+        },
+        "57555": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55577": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55757": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "77555": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75755": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "57575": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "57755": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "57775": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75575": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55557": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "55775": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75555": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "77557": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75577": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "77575": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "57577": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "77577": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75757": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "75775": {
+            "prize": 200,
+            "description": "5 pina",
+            "jackpot": false
+        },
+        "444": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "474": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "477": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "774": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "447": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "744": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "747": {
+            "prize": 10,
+            "description": "3 ancla",
+            "jackpot": false
+        },
+        "4444": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4474": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4744": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7744": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4477": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4747": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4774": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7474": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7444": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7447": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4447": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7747": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7774": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "4777": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "7477": {
+            "prize": 30,
+            "description": "4 ancla",
+            "jackpot": false
+        },
+        "44747": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74447": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44774": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74444": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44474": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74474": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47447": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47744": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47774": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44477": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47444": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47474": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44444": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": true
+        },
+        "74744": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "77444": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44447": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "44744": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "77447": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74477": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "77474": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "47477": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "77477": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74747": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "74774": {
+            "prize": 100,
+            "description": "5 ancla",
+            "jackpot": false
+        },
+        "373": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "337": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "377": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "773": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "733": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "737": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "333": {
+            "prize": 5,
+            "description": "3 serpiente",
+            "jackpot": false
+        },
+        "7337": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3333": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3377": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3737": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3733": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7373": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7333": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3373": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3773": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7733": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3337": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7773": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "3777": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7737": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "7377": {
+            "prize": 10,
+            "description": "4 serpiente",
+            "jackpot": false
+        },
+        "73337": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33373": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33337": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33333": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": true
+        },
+        "37333": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "37733": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "37773": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73373": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33737": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73333": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73733": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33773": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "37373": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "77333": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33733": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "37337": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "33377": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "77337": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73377": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "77373": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "77377": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "37377": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73737": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "73773": {
+            "prize": 50,
+            "description": "5 serpiente",
+            "jackpot": false
+        },
+        "722": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "772": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "277": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "272": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "227": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "727": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "222": {
+            "prize": 3,
+            "description": "3 banana",
+            "jackpot": false
+        },
+        "2277": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2227": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7722": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2772": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2722": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7227": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7272": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2272": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2222": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2727": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "2777": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7772": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7222": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7727": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "7277": {
+            "prize": 5,
+            "description": "4 banana",
+            "jackpot": false
+        },
+        "22277": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22227": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "27722": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72227": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72722": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22772": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22722": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "27272": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "27222": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "77222": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72272": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22272": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22222": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": true
+        },
+        "72222": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "22727": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "27227": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "77227": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72277": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "77272": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "27277": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "77277": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72727": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "72772": {
+            "prize": 20,
+            "description": "5 banana",
+            "jackpot": false
+        },
+        "711": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "171": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "771": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "177": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "111": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "117": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "717": {
+            "prize": 2,
+            "description": "3 mariposa",
+            "jackpot": false
+        },
+        "1117": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1177": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7111": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7171": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1711": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1717": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1771": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7711": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7117": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7771": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1777": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1111": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "1171": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7717": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "7177": {
+            "prize": 3,
+            "description": "4 mariposa",
+            "jackpot": false
+        },
+        "11117": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "11711": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "11177": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17171": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17711": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71171": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71711": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17111": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17117": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71111": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71117": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "11111": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": true
+        },
+        "11717": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "11171": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "77111": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "11771": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17771": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "77117": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71177": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "77171": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "17177": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "77177": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71717": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        },
+        "71771": {
+            "prize": 10,
+            "description": "5 mariposa",
+            "jackpot": false
+        }
+    }
+}

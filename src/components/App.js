@@ -20,6 +20,7 @@ import Statistics from './Statistics';
 import StatisticsDetails from './StatisticsDetails';
 import UserList from './UserList';
 import Ranking from "./Ranking";
+import {Simulator} from "./Simulator";
 
 export const App = () => {
     const [show, setShow] = useState(false);
@@ -47,6 +48,7 @@ export const App = () => {
                 <Route exact path='/Operations/Editgame' element={<EditGame />} />
                 <Route exact path='/Operations/Commissions' element={<Commission />} />
                 <Route exact path='/Operations/Statisticsuser' element={<StatisticsUser />} />
+                <Route exact path='/Simulator' element={<Simulator />} />
             </Routes>
             
         </div>

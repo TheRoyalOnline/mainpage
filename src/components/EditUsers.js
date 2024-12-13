@@ -14,7 +14,7 @@ export const EditUser = () => {
     }
     const location = useLocation();
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-    const [user, setUser] = useState([]);
+    const [game, setUser] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
     const [confirm, setConfirm] = useState(false);
@@ -32,7 +32,7 @@ export const EditUser = () => {
         if (cookie.get("userdata") === undefined && cookie.get("userdata").role !== 1)
             navigate('/');
 
-        const u = location.state.user;
+        const u = location.state.game;
         u.active = u.active === 1 ? true : false;
         setUser(u);
     }
@@ -40,10 +40,10 @@ export const EditUser = () => {
 
     function OnChange(e) {
         if (e.target.type === "checkbox") {
-            setUser({ ...user, active: e.target.checked });
+            setUser({ ...game, active: e.target.checked });
         }
         else
-            setUser({ ...user, [e.target.name]: e.target.value });
+            setUser({ ...game, [e.target.name]: e.target.value });
     }
 
 
@@ -72,7 +72,7 @@ export const EditUser = () => {
         setConfirm(true);
 
 
-        const up = await UpdateByAdmin(user, password.password);
+        const up = await UpdateByAdmin(game, password.password);
 
         if (up) {
             setConfirm(false);
@@ -87,40 +87,40 @@ export const EditUser = () => {
                 <h1 className='text-center'>Editar usuario</h1>
                 <form className='pt-2 text-white container register' name='assign' id="assign" onSubmit={OnSubmit}>
                     <div className='card border-success text-white bg-transparent'>
-                        <h5 className="card-header border-success text-white">Usuario: <b className="text-success">{user.username}</b></h5>
+                        <h5 className="card-header border-success text-white">Usuario: <b className="text-success">{game.username}</b></h5>
 
                         <div className='flex-column justify-content-center pt-3'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Nombre</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.firstname} name="name" onChange={OnChange} required />
+                                <label htmlFor="game">Nombre</label>
+                                <input id="game" className="form-control bg-dark border-success text-white" value={game.firstname} name="name" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Apellido</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.surname} name="surname" onChange={OnChange} required />
+                                <label htmlFor="game">Apellido</label>
+                                <input id="game" className="form-control bg-dark border-success text-white" value={game.surname} name="surname" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Nro. CI</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" value={user.dni} type="number" name="dni" onChange={OnChange} required />
+                                <label htmlFor="game">Nro. CI</label>
+                                <input id="game" className="form-control bg-dark border-success text-white" value={game.dni} type="number" name="dni" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Email</label>
-                                <input id="mail" className="form-control bg-dark border-success text-white" value={user.email} type="email" onChange={OnChange} required />
+                                <label htmlFor="game">Email</label>
+                                <input id="mail" className="form-control bg-dark border-success text-white" value={game.email} type="email" onChange={OnChange} required />
                             </div>
                         </div>
 
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
                                 <label htmlFor="idRol">Nuevo rol</label>
-                                <select className="form-select bg-dark border-success text-white" id="idRol" value={user.role} required name='role' onChange={OnChange}>
+                                <select className="form-select bg-dark border-success text-white" id="idRol" value={game.role} required name='role' onChange={OnChange}>
                                     <option value={5}>Cliente</option>
                                     <option value={4}>Vendedor</option>
                                     <option value={3}>Operador</option>
@@ -135,7 +135,7 @@ export const EditUser = () => {
                             <div className="justify-content-center p-3">
                                 <label htmlFor="check">Activo</label>
                                 <div className="form-check form-switch">
-                                    <input id="check" className="form-check-input" checked={user.active} type="checkbox" name="active" onChange={OnChange} />
+                                    <input id="check" className="form-check-input" checked={game.active} type="checkbox" name="active" onChange={OnChange} />
                                 </div>
                             </div>
                         </div>
@@ -147,7 +147,7 @@ export const EditUser = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100">%</span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={user.commission_earn} min={0} max={100} name='commission_earn' onChange={OnChange}/>
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={game.commission_earn} min={0} max={100} name='commission_earn' onChange={OnChange}/>
                                 </div>
                             </div>
                         </div>
@@ -158,21 +158,21 @@ export const EditUser = () => {
                                     <div className="input-group-prepend ">
                                         <span className="input-group-text bg-success border-success text-white text-white h-100">%</span>
                                     </div>
-                                    <input type="number" className="form-control bg-dark border-success text-white" value={user.commission_lose} min={0} max={100} name='commission_lose' onChange={OnChange}/>
+                                    <input type="number" className="form-control bg-dark border-success text-white" value={game.commission_lose} min={0} max={100} name='commission_lose' onChange={OnChange}/>
                                 </div>
                             </div>
                         </div>
                         <h5 className="card-header border-success"></h5>
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Cambiar contraseña</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" name="password" value={password.password} type="password" onChange={OnChangePassword} />
+                                <label htmlFor="game">Cambiar contraseña</label>
+                                <input id="game" className="form-control bg-dark border-success text-white" name="password" value={password.password} type="password" onChange={OnChangePassword} />
                             </div>
                         </div>
                         <div className='flex-column justify-content-center'>
                             <div className="justify-content-center p-3">
-                                <label htmlFor="user">Repetir contraseña</label>
-                                <input id="user" className="form-control bg-dark border-success text-white" name="replypassword" value={password.replypassword} type="password" onChange={OnChangePassword} />
+                                <label htmlFor="game">Repetir contraseña</label>
+                                <input id="game" className="form-control bg-dark border-success text-white" name="replypassword" value={password.replypassword} type="password" onChange={OnChangePassword} />
                             </div>
                         </div>
                         <h5 className="card-header border-success text-white pt-4"></h5>

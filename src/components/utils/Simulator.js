@@ -58,7 +58,7 @@ export function Simulate(game, roomData) {
             credits += totalEarn;
 
         accumulated += totalEarn - totalBet;
-        results.push({spin: i, lines: game.lines, bet: bet, totalBet: totalBet, credits: credits, details: prizes, mainPrize: mainPrize,
+        results.push({spin: i, lines: game.lines, bet: bet, totalBet: totalBet, credits: credits, details: prizes.map(item => `(${item.prize}) ${item.description}`).join(', '), mainPrize: mainPrize,
             bonus: bonus && bonus.bonusPrize, sbonus: sbonus, card_in: risk?.card_in, card_out: risk?.card_out, totalEarn: totalEarn, accumulated: accumulated});
     }
 

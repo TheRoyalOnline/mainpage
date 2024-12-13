@@ -249,18 +249,19 @@ export const Simulator = () => {
                                     <td>{item.totalBet}</td>
                                     <td>{item.credits > 0 ? item.credits.toFixed(2) : item.credits}</td>
                                     <td>
-                                        <table>
-                                            <tbody>
-                                            {
-                                                item.details.map(d => (
-                                                    <tr>
-                                                        <td>{d.description} </td>
-                                                        <td className="text-warning">| {d.prize}</td>
-                                                    </tr>
-                                                ))
-                                            }
-                                            </tbody>
-                                        </table>
+                                        {item.details}
+                                        {/*<table>*/}
+                                        {/*    <tbody>*/}
+                                        {/*    {*/}
+                                        {/*        item.details.map(d => (*/}
+                                        {/*            <tr>*/}
+                                        {/*                <td>{d.description} </td>*/}
+                                        {/*                <td className="text-warning">| {d.prize}</td>*/}
+                                        {/*            </tr>*/}
+                                        {/*        ))*/}
+                                        {/*    }*/}
+                                        {/*    </tbody>*/}
+                                        {/*</table>*/}
                                     </td>
                                     <td className={item.mainPrize > 0 ? "text-success fw-bold" : "text-secondary"}>{item.mainPrize.toFixed(2)}</td>
                                     <td className="text-danger">{item.card_in?.toFixed(2)}</td>

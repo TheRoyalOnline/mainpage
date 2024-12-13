@@ -371,6 +371,10 @@ export const Operations = () => {
         });
     }
 
+    function OpenSimulator() {
+        navigate('/Simulator');
+    }
+
     function SetPositions(index, value) {
         const data = [...positions];
         data[index] = {...data[index], prize: value, modified: true};
@@ -638,6 +642,12 @@ export const Operations = () => {
                                         }}>Forzar premiacion del
                                             ranking
                                         </button>
+                                    )
+                                    : null
+                            }
+                            {
+                                userdata.role === 1 ? (
+                                        <button className="btn btn-purple p-2" onClick={OpenSimulator}>Simulador</button>
                                     )
                                     : null
                             }

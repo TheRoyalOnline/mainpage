@@ -204,7 +204,7 @@ function Bonus(ropePossibility, totalBet, haveHat, prizes) {
     let bonusPrize = 0;
     const maxPercent = prizes.reduce((sum, item) => sum + item.percent, 0);
     while (true) {
-        if(bonusIndex >= 4)
+        if(bonusIndex > 4)
             break;
 
         if (randomNumber(0, 100) < ropePossibility[bonusIndex].percent)

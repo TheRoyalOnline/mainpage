@@ -39,8 +39,8 @@ export function Simulate(game, roomData) {
         let bonus = null;
         let sbonus = 0;
         if (spin.bonus) {
-            bonus = Bonus(setup.bonusRopePosibility, totalBet, totalBet >= setup.minBetToHardHat , setup.BPrizes);
-            if(bonus.bonusAmount >= 5)
+            bonus = Bonus(setup.RopeSequence, totalBet, totalBet >= setup.minBetToHardHat , setup.BPrizes);
+            if(bonus.bonusIndex >= 4)
                 sbonus = sBonus(setup.SBPrizes, setup.sbonusPosibility, totalBet);
 
         } else if (prizes.length > 0 && game.risk) {
@@ -85,10 +85,11 @@ export function Spin(symbols) {
     let bonus = 0;
     const lst = [];
     let idcell = 0;
-    for (let row = 0; row < 3; row++) {
-        for (let col = 0; col < 5; col++) {
+    const randomOrder = getRandomOrder();
+    for (let col = 0; col < 5; col++) {
+        for (let row = 0; row < 3; row++) {
+            lst.push({idcell: randomOrder[idcell], iditem: itemMatrix[row][col]});
             idcell += 1;
-            lst.push({idcell: idcell, iditem: itemMatrix[row][col]});
 
             if (itemMatrix[row][col] === 9)
                 bonus++;
@@ -96,6 +97,36 @@ export function Spin(symbols) {
     }
 
     return {symbols: lst, bonus: bonus >= 3};
+}
+
+function getRandomOrder() {
+    const col1 = [1, 6, 11];
+    const col2 = [2, 7, 12];
+    const col3 = [3, 8, 13];
+    const col4 = [4, 9, 14];
+    const col5 = [5, 10, 15];
+
+    // Shuffle an array in place
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    shuffle(col1);
+    shuffle(col2);
+    shuffle(col3);
+    shuffle(col4);
+    shuffle(col5);
+
+    const arrays = [col1, col2, col3, col4, col5];
+    shuffle(arrays);
+
+    // Combine all arrays into a single array
+    const combined = arrays.flat();
+
+    return combined;
 }
 
 export function Risk(percents, riskMaxBet, card_in) {
@@ -168,22 +199,22 @@ function PrizeAnalyzer(number, spinResult) {
     return prizes;
 }
 
-function Bonus(ropePosibility, totalBet, haveHat, prizes) {
-    let bonusAmount = 1;
+function Bonus(ropePossibility, totalBet, haveHat, prizes) {
+    let bonusIndex = 1;
     let bonusPrize = 0;
     const maxPercent = prizes.reduce((sum, item) => sum + item.percent, 0);
     while (true) {
 
-        if (bonusAmount === 1 || randomNumber(0, 100) < ropePosibility)
+        if (randomNumber(0, 100) < ropePossibility[bonusIndex].percent)
             bonusPrize += selectBonusPrize(maxPercent, prizes);
          else if(haveHat)
             haveHat = false;
         else
             break;
 
-        bonusAmount++;
+        bonusIndex++;
     }
-    return {bonusPrize: bonusPrize * totalBet, bonusAmount: bonusAmount};
+    return {bonusPrize: bonusPrize * totalBet, bonusIndex: bonusIndex};
 }
 
 function sBonus(prizes, probability, totalBet){

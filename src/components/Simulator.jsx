@@ -49,7 +49,6 @@ export const Simulator = () => {
         setCurrentProgress(100);
         setIsLoading(true);
         const roomSetup = await RoomById(game.idroom);
-
         const simulation = Simulate(game, roomSetup.setup);
         setResults(simulation);
         setIsLoading(false);

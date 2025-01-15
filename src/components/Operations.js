@@ -19,6 +19,7 @@ import {GetGlobal} from "./APIExtras";
 import CashingRequest from "./CashingRequest";
 import OperationsRanking from "./OperationsRanking";
 import OperationsAssign from "./OperationsAssign";
+import Loading from "./utils/Loading";
 
 export const Operations = () => {
     const navigate = useNavigate();
@@ -399,11 +400,7 @@ export const Operations = () => {
     }
 
     if (isLoading)
-        return <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
-            <Spinner className="spinner-grow text-success" animation="border" role="status">
-                <span className="visually-hidden">Cargando...</span>
-            </Spinner>
-        </div>
+        return <Loading />;
 
     return (
         <>

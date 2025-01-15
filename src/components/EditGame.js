@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { Modal } from "react-bootstrap";
-import { FaArrowAltCircleRight } from "react-icons/fa";
 import { RoomById, GamesSetup } from "./Game";
 import { useLocation } from 'react-router-dom'
+import Loading from "./utils/Loading";
 
 export const EditGame = () => {
     const location = useLocation();
+    const [isLoading, setIsLoading] = useState(true);
     const [confirm, setConfirm] = useState(false);
     const [errMessage2, setErrMessage2] = useState('');
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -22,6 +23,7 @@ export const EditGame = () => {
     const [allCards, setAllCards] = useState([]);
     const [bonus, setBonus] = useState([]);
     const [sbonus, setSBonus] = useState([]);
+    const [ropes, setRopes] = useState([]);
 
     const symbols = {
         "1": "🦋",
@@ -68,11 +70,14 @@ export const EditGame = () => {
             const riskPercents = roomDetailsData.RiskPercents;
             const BPrizes = roomDetailsData.BPrizes;
             const SBPrizes = roomDetailsData.SBPrizes;
+            const ropeSeq = roomDetailsData.RopeSequence;
 
+            setRopes(ropeSeq);
             setAllSymbols(symbols);
             setAllCards(riskPercents);
             setBonus(BPrizes);
             setSBonus(SBPrizes);
+            setIsLoading(false);
         } catch (error) {
 
         }
@@ -96,6 +101,7 @@ export const EditGame = () => {
         roomDetails.RiskPercents = allCards;
         roomDetails.BPrizes = bonus;
         roomDetails.SBPrizes = sbonus;
+        roomDetails.RopeSequence = ropes;
 
         var res = 0;
         res = await GamesSetup(room.id, roomDetails);
@@ -164,8 +170,21 @@ export const EditGame = () => {
                     setSBonus(aux);
                 }
                 break;
+
+            case "sequence":
+
+                aux = [...ropes];
+                newvalue = aux.find(c => c.sequence === id);
+
+                if (newvalue) {
+                    newvalue.percent = parseFloat(value);
+                    setRopes(aux);
+                }
+                break;
         }
     }
+
+    if(isLoading) return <Loading />;
 
     return (
         <div>
@@ -178,50 +197,72 @@ export const EditGame = () => {
                         <div className='d-flex justify-content-center  pt-3'>
                             <div className="form-inline">
                                 <div className="mb-3">
-                                    <label htmlFor="riskMaxBet" className="form-label">Maximo en apuesta {"(IA)"}</label>
-                                    <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" id="riskMaxBet" name="RiskMaxBet" value={roomDetails.RiskMaxBet} onChange={ChangeSetup} />
+                                    <label htmlFor="riskMaxBet" className="form-label">Maximo en
+                                        apuesta {"(IA)"}</label>
+                                    <input type="number" min={0} step={0.01}
+                                           className="form-control text-white bg-dark border-success" id="riskMaxBet"
+                                           name="RiskMaxBet" value={roomDetails.RiskMaxBet} onChange={ChangeSetup}/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="bonusPosibility" className="form-label">Posibilidad de bonus</label>
-                                    <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" id="bonusPosibility" name="bonusPosibility" value={roomDetails.bonusPosibility} onChange={ChangeSetup} />
+                                    <input type="number" min={0} step={0.01}
+                                           className="form-control text-white bg-dark border-success"
+                                           id="bonusPosibility" name="bonusPosibility"
+                                           value={roomDetails.bonusPosibility} onChange={ChangeSetup}/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="bonusRopePosibility" className="form-label">Posibilidad cuerda Bonus</label>
-                                    <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" id="bonusRopePosibility" name="bonusRopePosibility" value={roomDetails.bonusRopePosibility} onChange={ChangeSetup} />
+                                    <label htmlFor="bonusRopePosibility" className="form-label">Posibilidad cuerda
+                                        Bonus</label>
+                                    <input type="number" min={0} step={0.01}
+                                           className="form-control text-white bg-dark border-success"
+                                           id="bonusRopePosibility" name="bonusRopePosibility"
+                                           value={roomDetails.bonusRopePosibility} onChange={ChangeSetup}/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="minBetToHardHat" className="form-label">Minimo en apuesta para Casco</label>
-                                    <input type="number" min={0} className="form-control text-white bg-dark border-success" id="minBetToHardHat" name="minBetToHardHat" value={roomDetails.minBetToHardHat} onChange={ChangeSetup} />
+                                    <label htmlFor="minBetToHardHat" className="form-label">Minimo en apuesta para
+                                        Casco</label>
+                                    <input type="number" min={0}
+                                           className="form-control text-white bg-dark border-success"
+                                           id="minBetToHardHat" name="minBetToHardHat"
+                                           value={roomDetails.minBetToHardHat} onChange={ChangeSetup}/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="sbonusPosibility" className="form-label">Posibilidad Super Bonus</label>
-                                    <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" id="sbonusPosibility" name="sbonusPosibility" value={roomDetails.sbonusPosibility} onChange={ChangeSetup} />
+                                    <label htmlFor="sbonusPosibility" className="form-label">Posibilidad Super
+                                        Bonus</label>
+                                    <input type="number" min={0} step={0.01}
+                                           className="form-control text-white bg-dark border-success"
+                                           id="sbonusPosibility" name="sbonusPosibility"
+                                           value={roomDetails.sbonusPosibility} onChange={ChangeSetup}/>
                                 </div>
                                 <div className="table-responsive">
                                     <label htmlFor="sbonusPosibility" className="form-label">Lista de simbolos</label>
                                     <table className="table table-dark table-striped text-center">
                                         <thead>
-                                            <tr >
-                                                <th>Codigo</th>
-                                                <th>Icono</th>
-                                                <th>Porcentaje</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Icono</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {
-                                                allSymbols ? (
+                                        {
+                                            allSymbols ? (
 
-                                                    allSymbols.map((item) => (
-                                                        <tr key={item.id}>
-                                                            <td>{item.id}</td>
-                                                            <td>{symbols[item.id]}</td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.id, e.target.value, "symbols")} /></td>
+                                                allSymbols.map((item) => (
+                                                    <tr key={item.id}>
+                                                        <td>{item.id}</td>
+                                                        <td>{symbols[item.id]}</td>
+                                                        <td><input type="number" min={0} step={0.01}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.percent}
+                                                                   onChange={e => ChangeTable(item.id, e.target.value, "symbols")}/>
+                                                        </td>
 
-                                                        </tr>
+                                                    </tr>
 
-                                                    ))
-                                                ) : null
-                                            }
+                                                ))
+                                            ) : null
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -230,82 +271,131 @@ export const EditGame = () => {
                                     <label htmlFor="sbonusPosibility" className="form-label">Lista de cartas</label>
                                     <table className="table table-dark table-striped text-center">
                                         <thead>
-                                            <tr >
-                                                <th>Codigo</th>
-                                                <th>Icono</th>
-                                                <th>Porcentaje</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Icono</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {
-                                                allCards ? (
+                                        {
+                                            allCards ? (
 
-                                                    allCards.map((item) => (
-                                                        <tr key={item.value}>
-                                                            <td>{item.value}</td>
-                                                            <td>{cards[item.value]}</td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.value, e.target.value, "cards")} /></td>
+                                                allCards.map((item) => (
+                                                    <tr key={item.value}>
+                                                        <td>{item.value}</td>
+                                                        <td>{cards[item.value]}</td>
+                                                        <td><input type="number" min={0} step={0.01}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.percent}
+                                                                   onChange={e => ChangeTable(item.value, e.target.value, "cards")}/>
+                                                        </td>
 
-                                                        </tr>
+                                                    </tr>
 
-                                                    ))
-                                                ) : null
-                                            }
+                                                ))
+                                            ) : null
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div className="table-responsive">
-                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios bonus</label>
+                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios
+                                        bonus</label>
                                     <table className="table table-dark table-striped text-center">
                                         <thead>
-                                            <tr >
-                                                <th>P. minimo</th>
-                                                <th>P. maximo</th>
-                                                <th>Porcentaje</th>
-                                            </tr>
+                                        <tr>
+                                            <th>P. minimo</th>
+                                            <th>P. maximo</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {
-                                                bonus ? (
+                                        {
+                                            bonus ? (
 
-                                                    bonus.map((item) => (
-                                                        <tr key={item.minPrize}>
-                                                            <td>{item.minPrize}</td>
-                                                            <td>{item.maxPrize}</td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.minPrize, e.target.value, "bonus")} /></td>
+                                                bonus.map((item) => (
+                                                    <tr key={item.minPrize}>
+                                                        <td>{item.minPrize}</td>
+                                                        <td>{item.maxPrize}</td>
+                                                        <td><input type="number" min={0} step={0.01}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.percent}
+                                                                   onChange={e => ChangeTable(item.minPrize, e.target.value, "bonus")}/>
+                                                        </td>
 
-                                                        </tr>
+                                                    </tr>
 
-                                                    ))
-                                                ) : null
-                                            }
+                                                ))
+                                            ) : null
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div className="table-responsive">
-                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios super bonus</label>
+                                    <label htmlFor="sbonusPosibility" className="form-label">Secuencia de la cuerda</label>
                                     <table className="table table-dark table-striped text-center">
                                         <thead>
-                                            <tr >
-                                                <th>Premio</th>
-                                                <th>Porcentaje</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Secuencia</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            {
-                                                sbonus ? (
-                                                    sbonus.map((item) => (
-                                                        <tr key={item.prize}>
-                                                            <td><input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.prize} onChange={e => ChangeTable(item.prize, e.target.value, "sbprize")} /></td>
-                                                            <td> <input type="number" min={0} step={0.01} className="form-control text-white bg-dark border-success" value={item.percent} onChange={e => ChangeTable(item.prize, e.target.value, "sbonus")} /></td>
+                                        {
+                                            ropes ? (
 
-                                                        </tr>
+                                                ropes.map((item) => (
+                                                    <tr key={item.sequence}>
+                                                        <td>{item.sequence}</td>
+                                                        <td><input type="number" min={0} step={0.01} max={100}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.percent}
+                                                                   onChange={e => ChangeTable(item.sequence, e.target.value, "sequence")}/>
+                                                        </td>
 
-                                                    ))
-                                                ) : null
-                                            }
+                                                    </tr>
+
+                                                ))
+                                            ) : null
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="table-responsive">
+                                    <label htmlFor="sbonusPosibility" className="form-label">Configuracion de premios
+                                        super bonus</label>
+                                    <table className="table table-dark table-striped text-center">
+                                        <thead>
+                                        <tr>
+                                            <th>Premio</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            sbonus ? (
+                                                sbonus.map((item) => (
+                                                    <tr key={item.prize}>
+                                                        <td><input type="number" min={0} step={0.01}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.prize}
+                                                                   onChange={e => ChangeTable(item.prize, e.target.value, "sbprize")}/>
+                                                        </td>
+                                                        <td><input type="number" min={0} step={0.01}
+                                                                   className="form-control text-white bg-dark border-success"
+                                                                   value={item.percent}
+                                                                   onChange={e => ChangeTable(item.prize, e.target.value, "sbonus")}/>
+                                                        </td>
+
+                                                    </tr>
+
+                                                ))
+                                            ) : null
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -323,11 +413,12 @@ export const EditGame = () => {
                     </div>
                 </form>
             </div>
-            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered={true}>
+            <Modal className="container-fluid" backdrop="static" show={showConfirmDialog}
+                   onHide={() => setShowConfirmDialog(false)} centered={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmacion 🤔</Modal.Title>
                 </Modal.Header>
-                <Modal.Body >
+                <Modal.Body>
                     <p>Esta seguro que desea actualizar la sala?</p>
                 </Modal.Body>
                 <Modal.Footer>

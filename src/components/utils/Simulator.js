@@ -200,10 +200,12 @@ function PrizeAnalyzer(number, spinResult) {
 }
 
 function Bonus(ropePossibility, totalBet, haveHat, prizes) {
-    let bonusIndex = 1;
+    let bonusIndex = 0;
     let bonusPrize = 0;
     const maxPercent = prizes.reduce((sum, item) => sum + item.percent, 0);
     while (true) {
+        if(bonusIndex >= 4)
+            break;
 
         if (randomNumber(0, 100) < ropePossibility[bonusIndex].percent)
             bonusPrize += selectBonusPrize(maxPercent, prizes);

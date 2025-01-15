@@ -245,7 +245,7 @@ export const Simulator = () => {
                                     <td>{item.spin}</td>
                                     <td>{item.lines}</td>
                                     <td>{item.bet}</td>
-                                    <td>{item.totalBet}</td>
+                                    <td>{item.totalBet?.toFixed(2)}</td>
                                     <td>{item.credits > 0 ? item.credits.toFixed(2) : item.credits}</td>
                                     <td>
                                         {item.details}

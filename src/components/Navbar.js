@@ -55,7 +55,11 @@ export const Menu = (props) => {
     }
 
     function Operations() {
-        navigate('/Operations');
+        navigate('/Operations', {state: {key: 'general'}});
+    }
+
+    function Received() {
+        navigate('/Operations', {state: {key: 'prize'}});
     }
 
     function Logout() {
@@ -77,7 +81,7 @@ export const Menu = (props) => {
                         <Link to="/"><img src={logo} width="200px" alt="logo"/></Link>
                         {
                             isLogged ? (<div className="text-white align-self-center">
-                                <b>{userdata}</b><br></br>Créditos: <b>{credits.credits}</b></div>) : null
+                                <b>{userdata}</b><br></br><b>₲ {parseFloat(credits.credits * 1000).toLocaleString()}</b></div>) : null
                         }
 
                     </div>
@@ -96,16 +100,20 @@ export const Menu = (props) => {
                                 </Nav>
                             ) : (
                                 <Nav className="ms-auto text-end">
-                                    <Nav.Link onClick={ForceQuitRoom}><span
-                                        className="btn btn-outline-danger">Cerrar partida</span></Nav.Link>
+                                    {/*<Nav.Link onClick={ForceQuitRoom}><span*/}
+                                    {/*    className="btn btn-outline-danger">Cerrar partida</span></Nav.Link>*/}
                                     <Nav.Link onClick={Profile}><span
                                         className="btn btn-outline-success">Perfil</span></Nav.Link>
                                     <Nav.Link onClick={Operations}><span
                                         className="btn btn-outline-success">Operaciones</span></Nav.Link>
                                     <Nav.Link href="https://wa.me/595986919942" target="_blank"><span
                                         className="btn btn-outline-info">Reclamos y sugerencias</span></Nav.Link>
-                                    <Nav.Link href={`https://wa.me/${cookie.get('userdata').seller_number ?? 595986919942}`} target="_blank"><span
+                                    <Nav.Link href={`https://wa.me/${cookie.get('userdata').seller_number ?? 595986919942}`}
+                                              target="_blank"><span
                                         className="btn btn-warning">Comprar creditos</span></Nav.Link>
+                                    <Nav.Link onClick={Received}
+                                              target="_blank"><span
+                                        className="btn btn-success">Cobrar creditos</span></Nav.Link>
                                     <Nav.Link onClick={Logout}><span className="btn btn-danger">Salir</span></Nav.Link>
                                 </Nav>
                             )

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {FaArrowAltCircleRight} from "react-icons/fa";
 import {RiCoinFill, RiCoinLine} from "react-icons/ri";
 import {GiCreditsCurrency} from "react-icons/gi";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Cookies from "universal-cookie";
 import {Modal, Spinner, Tab, Tabs} from "react-bootstrap";
 import {
@@ -46,6 +46,7 @@ export const Operations = () => {
     const [ccredit, setCcredit] = useState();
     const [deposit, setDeposit] = useState();
     const [positions, setPositions] = useState([]);
+    const location = useLocation();
 
     const [key, setKey] = useState('general');
     const refInputAssing = useRef(null);
@@ -77,6 +78,8 @@ export const Operations = () => {
         if (cookie.get("userdata") === undefined)
             navigate('/');
 
+        const _key = location.state.key;
+        setKey(_key ? _key : 'general');
         setUserdata(cookie.get('userdata'));
         setShowAsing(access[cookie.get('userdata').role][0])
         setAsign(access[cookie.get('userdata').role][1])

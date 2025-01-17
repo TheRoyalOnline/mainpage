@@ -23,9 +23,10 @@ export const GameItem = props => {
     const [message, setMessage] = useState(initialMessage);
     const [fullURL, setFullURL] = useState('');
     const numberRef = useRef(null);
+    const statusRef = useRef(null);
     const [credits, setCredits] = useState([]);
-
-    const Handler = () => {
+    const [status, setStatus] = useState('Libre');
+    const ShowMessage = () => {
         setShow(!show);
     }
     const card = useRef(null);
@@ -57,11 +58,14 @@ export const GameItem = props => {
         () =>{
 
             if (room.iduser) {
-                card.current.classList.add('bg-danger');
+                setStatus(room.iduser === cookie.get('userdata').iduser ? 'Conectado' : 'En uso')
+                card.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
                 card.current.classList.remove('bg-success');
-                numberRef.current.classList.add('bg-danger');
+                numberRef.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
                 numberRef.current.classList.remove('bg-success');
-                const cookies = new Cookies();
+                statusRef.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
+                statusRef.current.classList.remove('bg-success');
+
                 if(cookie.get('userdata') !== undefined)
                     GetDetails();
             } else {
@@ -69,6 +73,8 @@ export const GameItem = props => {
                 card.current.classList.add('bg-success');
                 numberRef.current.classList.remove('bg-danger');
                 numberRef.current.classList.add('bg-success');
+                statusRef.current.classList.remove('bg-danger');
+                statusRef.current.classList.add('bg-success');
             }
         }
         , [room]);
@@ -78,41 +84,44 @@ export const GameItem = props => {
         setCredits(cre);
     }
 
-    async function Selectgame() {
+    async function SelectGame() {
         setMessage(initialMessage);
         if (cookie.get('userdata') !== undefined) {
             const r = await GetRoom(room.id);
             setRoom(r);
             
-            if (r.iduser !== 0) {
-                Handler();
-                return;
+            if (r.iduser !== 0 && r.iduser !== cookie.get('userdata').iduser) {
+                ShowMessage();
             } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
                 const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
                 if (res === 200) {
-                    setShowGame(true);
-                    setRoom({ ...room, iduser: cookie.get('userdata').iduser });
-                    AudioContext();
-                    const fullURL = url[room.idgame] + cookie.get('userdata').token;
-                    setFullURL(fullURL);
-
-
-                } else if (res === 202) {
-                    setMessage({ title: "Actualmente en partida.. 😱",
-                        body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar.",
-                        actions: <Button className="btn btn-danger" onClick={ForceDisconnectUser}>Cerrar partida</Button>
-
-                    });
-                    Handler();
+                    OpenGame();
+                }
+                else if (res === 202) {
+                    ForceDisconnectUser();
+                    // setMessage({ title: "Actualmente en partida.. 😱",
+                    //     body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar.",
+                    //     actions: <Button className="btn btn-danger" onClick={ForceDisconnectUser}>Cerrar partida</Button>
+                    //
+                    // });
+                    // ShowMessage();
                 }
 
             } else {
                 setMessage({ title: "Acceso restringido 🔒", body: "Tu rol no posee permisos para acceder a los slots." });
-                Handler();
+                ShowMessage();
             }
         } else {
             props.handler();
         }
+    }
+
+    function OpenGame(){
+        setShowGame(true);
+        setRoom({ ...room, iduser: cookie.get('userdata').iduser });
+        AudioContext();
+        const fullURL = url[room.idgame] + cookie.get('userdata').token;
+        setFullURL(fullURL);
     }
 
     async function ExitGame() {
@@ -128,6 +137,7 @@ export const GameItem = props => {
         const res = await ForceDisconnect();
         if (res === 200) {
             setShow(false);
+            SelectGame();
         }
     }
 
@@ -170,12 +180,13 @@ export const GameItem = props => {
                             ) : null
                         }
                     </div>
-                    <img src={Images[room.idgame]} className='image' onClick={Selectgame} alt='logo' />
+                    <img src={Images[room.idgame]} className='image' onClick={SelectGame} alt='logo' />
                     <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
+                    <div className="connected-message bg-success" ref={statusRef}>{status}</div>
                 </div>
             </div>
 
-            <ShowDialog show={show} handler={Handler} title={message.title} message={message.body} actions={message.actions} />
+            <ShowDialog show={show} handler={ShowMessage} title={message.title} message={message.body} actions={message.actions} />
             <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
         </>
     );

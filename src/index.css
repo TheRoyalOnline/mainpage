@@ -121,11 +121,20 @@ footer {
   bottom: 0;
   right: 0;
   padding: 2.5px 10px;
-  /* Ajusta según tu necesidad */
   border-radius: 50px;
-  /* Para darle un aspecto redondeado */
 }
 
+.connected-message {
+  border-radius: 300px;
+  position: absolute;
+  color: white;
+  font-size: x-large;
+  font-weight: 1000;
+  top: 0;
+  right: 0;
+  padding: 0px 10px;
+  border-radius: 50px;
+}
 
 input[type=date]::-webkit-calendar-picker-indicator {
   background-color: #198754;

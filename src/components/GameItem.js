@@ -57,13 +57,14 @@ export const GameItem = props => {
     useEffect(
         () =>{
 
+            const currentUser = cookie.get('userdata') !== undefined && room.iduser === cookie.get('userdata').iduser;
             if (room.iduser) {
-                setStatus(room.iduser === cookie.get('userdata').iduser ? 'Conectado' : 'En uso')
-                card.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
+                setStatus( currentUser ? 'Conectado' : 'En uso')
+                card.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 card.current.classList.remove('bg-success');
-                numberRef.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
+                numberRef.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 numberRef.current.classList.remove('bg-success');
-                statusRef.current.classList.add(room.iduser === cookie.get('userdata').iduser ? 'bg-info' : 'bg-danger');
+                statusRef.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 statusRef.current.classList.remove('bg-success');
 
                 if(cookie.get('userdata') !== undefined)

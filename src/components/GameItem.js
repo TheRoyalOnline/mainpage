@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Crazy from './imgs/crazy.png'
 import King from './imgs/king.png'
 import Cookies from 'universal-cookie'
-import { ShowDialog } from './Dialogs'
-import { ConnectRoom, GetRoom, ForceDisconnectAdmin } from './Game'
+import {ShowDialog} from './Dialogs'
+import {ConnectRoom, GetRoom, ForceDisconnectAdmin} from './Game'
 import Iframe from './Iframe'
-import { useNavigate } from 'react-router-dom'
-import { FaEdit, FaSplotch } from 'react-icons/fa'
-import { BiMath, BiEdit, BiXCircle } from 'react-icons/bi'
-import { ForceDisconnect } from "./Game";
-import {  GetUserCredits } from './API'
-import {Button} from "react-bootstrap";
+import {useNavigate} from 'react-router-dom'
+import {ForceDisconnect} from "./Game";
+import {GetUserCredits} from './API'
 
 
 export const GameItem = props => {
     const cookie = new Cookies();
     const navigate = useNavigate();
-    const initialMessage = { title: "Sala ocupada.. 😥", body: "Actualmente esta sala se encuentra ocupada por otro usuario, favor intentalo mas tarde." }
+    const initialMessage = {
+        title: "Sala ocupada.. 😥",
+        body: "Actualmente esta sala se encuentra ocupada por otro usuario, favor intentalo mas tarde."
+    }
     const [room, setRoom] = useState(props.item);
     const [show, setShow] = useState(false);
     const [showGame, setShowGame] = useState(false);
@@ -37,10 +37,10 @@ export const GameItem = props => {
 
     const methods = {
         'edit': v => {
-            navigate("/Operations/Editgame", { state: { idroom: v } });
+            navigate("/Operations/Editgame", {state: {idroom: v}});
         },
         'stats': v => {
-            navigate("/Operations/Statistics", { state: { idroom: v } });
+            navigate("/Operations/Statistics", {state: {idroom: v}});
         },
         'force': async v => {
             const res = await ForceDisconnectAdmin(v);
@@ -55,11 +55,11 @@ export const GameItem = props => {
     }
 
     useEffect(
-        () =>{
+        () => {
 
             const currentUser = cookie.get('userdata') !== undefined && room.iduser === cookie.get('userdata').iduser;
             if (room.iduser) {
-                setStatus( currentUser ? 'Conectado' : 'En uso')
+                setStatus(currentUser ? 'Conectado' : 'Ocupado')
                 card.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 card.current.classList.remove('bg-success');
                 numberRef.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
@@ -67,7 +67,7 @@ export const GameItem = props => {
                 statusRef.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 statusRef.current.classList.remove('bg-success');
 
-                if(cookie.get('userdata') !== undefined)
+                if (cookie.get('userdata') !== undefined)
                     GetDetails();
             } else {
                 card.current.classList.remove('bg-danger');
@@ -80,7 +80,7 @@ export const GameItem = props => {
         }
         , [room]);
 
-    async function GetDetails(){
+    async function GetDetails() {
         const cre = await GetUserCredits(room.iduser);
         setCredits(cre);
     }
@@ -90,15 +90,14 @@ export const GameItem = props => {
         if (cookie.get('userdata') !== undefined) {
             const r = await GetRoom(room.id);
             setRoom(r);
-            
+
             if (r.iduser !== 0 && r.iduser !== cookie.get('userdata').iduser) {
                 ShowMessage();
             } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
                 const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
                 if (res === 200) {
                     OpenGame();
-                }
-                else if (res === 202) {
+                } else if (res === 202) {
                     ForceDisconnectUser();
                     // setMessage({ title: "Actualmente en partida.. 😱",
                     //     body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar.",
@@ -109,7 +108,7 @@ export const GameItem = props => {
                 }
 
             } else {
-                setMessage({ title: "Acceso restringido 🔒", body: "Tu rol no posee permisos para acceder a los slots." });
+                setMessage({title: "Acceso restringido 🔒", body: "Tu rol no posee permisos para acceder a los slots."});
                 ShowMessage();
             }
         } else {
@@ -117,9 +116,9 @@ export const GameItem = props => {
         }
     }
 
-    function OpenGame(){
+    function OpenGame() {
         setShowGame(true);
-        setRoom({ ...room, iduser: cookie.get('userdata').iduser });
+        setRoom({...room, iduser: cookie.get('userdata').iduser});
         AudioContext();
         const fullURL = url[room.idgame] + cookie.get('userdata').token;
         setFullURL(fullURL);
@@ -128,7 +127,7 @@ export const GameItem = props => {
     async function ExitGame() {
         const res = await ForceDisconnect();
         if (res === 200) {
-            setRoom({ ...room, iduser: 0 });
+            setRoom({...room, iduser: 0});
             setShowGame(false);
             setFullURL('');
         }
@@ -157,6 +156,7 @@ export const GameItem = props => {
             audioContext.resume();
         }
     }
+
     return (
         <>
             <div className="col-4 flex-fill">
@@ -166,12 +166,19 @@ export const GameItem = props => {
                             cookie.get("userdata") !== undefined ? (
                                 cookie.get("userdata").role === 1 ? (
                                     <div>
-                                        <button className='btn btn-transparent text-border' value={room.id} title='Editar' name='edit' onClick={OnClick} >✏️</button>
-                                        <button className='btn btn-transparent text-border' value={room.id} title='Estadisticas' name='stats' onClick={OnClick}>💰</button>                                        
+                                        <button className='btn btn-transparent text-border' value={room.id}
+                                                title='Editar' name='edit' onClick={OnClick}>✏️
+                                        </button>
+                                        <button className='btn btn-transparent text-border' value={room.id}
+                                                title='Estadisticas' name='stats' onClick={OnClick}>💰
+                                        </button>
                                         {
                                             room.iduser !== 0 ? (<React.Fragment>
-                                                <button className='btn btn-transparent text-border' value={room.id} title='Forzar' name='force' onClick={OnClick}>❌</button>
-                                                <label className='text-border'><b>{room.username} - {credits.credits}c </b></label>
+                                                <button className='btn btn-transparent text-border' value={room.id}
+                                                        title='Forzar' name='force' onClick={OnClick}>❌
+                                                </button>
+                                                <label
+                                                    className='text-border'><b>{room.username} - {credits.credits}c </b></label>
                                             </React.Fragment>) : null
                                         }
 
@@ -181,14 +188,15 @@ export const GameItem = props => {
                             ) : null
                         }
                     </div>
-                    <img src={Images[room.idgame]} className='image' onClick={SelectGame} alt='logo' />
+                    <img src={Images[room.idgame]} className='image' onClick={SelectGame} alt='logo'/>
                     <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
-                    <div className="connected-message bg-success" ref={statusRef}>{status}</div>
+                    <div className="connected-message bg-success" ref={statusRef} hidden={cookie.get('userdata') && cookie.get('userdata').role === 1}>{status}</div>
                 </div>
             </div>
 
-            <ShowDialog show={show} handler={ShowMessage} title={message.title} message={message.body} actions={message.actions} />
-            <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"} />
+            <ShowDialog show={show} handler={ShowMessage} title={message.title} message={message.body}
+                        actions={message.actions}/>
+            <Iframe show={showGame} url={fullURL} showGame={ExitGame} title={"CRAZY MONKEY"}/>
         </>
     );
 }

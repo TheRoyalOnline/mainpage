@@ -56,9 +56,8 @@ export const GameItem = props => {
 
     useEffect(
         () => {
-
             const currentUser = cookie.get('userdata') !== undefined && room.iduser === cookie.get('userdata').iduser;
-            if (room.iduser) {
+            if (room.iduser !== 0) {
                 setStatus(currentUser ? 'Conectado' : 'Ocupado')
                 card.current.classList.add(currentUser ? 'bg-info' : 'bg-danger');
                 card.current.classList.remove('bg-success');
@@ -71,9 +70,12 @@ export const GameItem = props => {
                     GetDetails();
             } else {
                 card.current.classList.remove('bg-danger');
+                card.current.classList.remove('bg-info');
                 card.current.classList.add('bg-success');
+                numberRef.current.classList.remove('bg-info');
                 numberRef.current.classList.remove('bg-danger');
                 numberRef.current.classList.add('bg-success');
+                statusRef.current.classList.remove('bg-info');
                 statusRef.current.classList.remove('bg-danger');
                 statusRef.current.classList.add('bg-success');
             }
@@ -90,7 +92,6 @@ export const GameItem = props => {
         if (cookie.get('userdata') !== undefined) {
             const r = await GetRoom(room.id);
             setRoom(r);
-
             if (r.iduser !== 0 && r.iduser !== cookie.get('userdata').iduser) {
                 ShowMessage();
             } else if (cookie.get('userdata').role === 1 || cookie.get('userdata').role === 5) {
@@ -98,7 +99,10 @@ export const GameItem = props => {
                 if (res === 200) {
                     OpenGame();
                 } else if (res === 202) {
-                    ForceDisconnectUser();
+                    const data = await ForceDisconnect();
+                    const res = await ConnectRoom(cookie.get('userdata').iduser, room.id);
+                    if (res === 200)
+                        OpenGame();
                     // setMessage({ title: "Actualmente en partida.. 😱",
                     //     body: "En estos instantes registramos una partida activa para tu cuenta, favor finalizar esa sesion antes de continuar.",
                     //     actions: <Button className="btn btn-danger" onClick={ForceDisconnectUser}>Cerrar partida</Button>
@@ -130,14 +134,6 @@ export const GameItem = props => {
             setRoom({...room, iduser: 0});
             setShowGame(false);
             setFullURL('');
-        }
-    }
-
-    async function ForceDisconnectUser() {
-        const res = await ForceDisconnect();
-        if (res === 200) {
-            setShow(false);
-            SelectGame();
         }
     }
 
@@ -190,7 +186,8 @@ export const GameItem = props => {
                     </div>
                     <img src={Images[room.idgame]} className='image' onClick={SelectGame} alt='logo'/>
                     <div className="green-box bg-success" ref={numberRef}>{room.id}</div>
-                    <div className="connected-message bg-success" ref={statusRef} hidden={cookie.get('userdata') && cookie.get('userdata').role === 1}>{status}</div>
+                    <div className="connected-message bg-success" ref={statusRef}
+                         hidden={cookie.get('userdata') && cookie.get('userdata').role === 1}>{status}</div>
                 </div>
             </div>
 

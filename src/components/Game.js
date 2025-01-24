@@ -1,8 +1,6 @@
 import Cookies from "universal-cookie";
 
-const URIConnectRoom = "https://royalonline.cloud/api/game/roomconnect";
 const URIRoom = "https://royalonline.cloud/api/game/room";
-const URIForce = "https://royalonline.cloud/api/game/force";
 const URIRoomByID = "https://royalonline.cloud/api/game/editroom";
 const URIForceAdmin = "https://royalonline.cloud/api/game/forceclose";
 const URISetup = "https://royalonline.cloud/api/game/setup";
@@ -12,6 +10,7 @@ const URIRanking = "https://royalonline.cloud/api/ranking/prizes";
 
 export const ConnectRoom = async (_iduser, _idroom) => {
     const cookie = new Cookies();
+    const URIConnectRoom = "https://royalonline.cloud/api/game/roomconnect";
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -43,6 +42,7 @@ export const GetRoom = async (_idroom) => {
 
 export const ForceDisconnect = async () => {
     const cookie = new Cookies();
+    const URIForce = "https://royalonline.cloud/api/game/force";
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -53,7 +53,7 @@ export const ForceDisconnect = async () => {
     };
 
     const res = await fetch(URIForce, requestOptions);
-    return await res.status;
+    return res.status;
 };
 
 export const RoomById = async (id) => {

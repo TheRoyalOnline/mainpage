@@ -81,7 +81,7 @@ export const Menu = (props) => {
                         <Link to="/"><img src={logo} width="200px" alt="logo"/></Link>
                         {
                             isLogged ? (<div className="text-white align-self-center">
-                                <b>{userdata}</b><br></br><b>₲ {credits.credits * 1000}</b></div>) : null
+                                <b>{userdata}</b><br></br><b>Créditos: {credits.credits}</b></div>) : null
                         }
 
                     </div>
